@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::pushButton_4_clicked);
+
     ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
@@ -130,6 +132,32 @@ void MainWindow::actualiserTableau() {
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
     }
 }
+void MainWindow::pushButton_4_clicked() {
+    if (selectedId.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un équipement à supprimer.");
+        return;
+    }
 
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirmation", "Voulez-vous vraiment supprimer cet équipement ?",
+                                  QMessageBox::Yes | QMessageBox::No);
 
-/
+    if (reply == QMessageBox::Yes) {
+        Equipement e;
+        qDebug() << "ID sélectionné: " << selectedId;  // Vérification de l'ID sélectionné
+        if (e.supprimer(selectedId)) {
+            QMessageBox::information(this, "Succès", "Équipement supprimé avec succès.");
+            actualiserTableau();  // Assurez-vous que cette méthode met à jour la table
+            QApplication::processEvents();  // Force la mise à jour de l'interface
+            selectedId.clear();
+        } else {
+            QMessageBox::critical(this, "Erreur", "La suppression a échoué.");
+        }
+    }
+}
+
+void MainWindow::on_tableWidget_itemClicked(QTableWidgetItem *item) {
+    int row = item->row();
+    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    selectedId = ui->tableWidget->item(row, 0)->text();  // Stocke l'ID de l'équipement sélectionné
+}

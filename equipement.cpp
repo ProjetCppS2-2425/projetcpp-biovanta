@@ -49,4 +49,38 @@ QList<Equipement> Equipement::afficher() {
     return liste;
 }
 
+bool Equipement::supprimer(const QString &id) {
+    // Vérification de la connexion à la base de données
+    if (!QSqlDatabase::database().isOpen()) {
+        qDebug() << "La connexion à la base de données a échoué.";
+        return false;
+    }
 
+    // Vérification de l'existence de l'équipement dans la base de données
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT COUNT(*) FROM \"MANEL\".\"EQUIPEMENT\" WHERE \"ID_EQUIPEMENT\" = :id");
+    checkQuery.bindValue(":id", id);
+    if (!checkQuery.exec()) {
+        qDebug() << "Erreur lors de la vérification de l'ID : " << checkQuery.lastError().text();
+        return false;
+    }
+
+    checkQuery.next();
+    int count = checkQuery.value(0).toInt();
+    if (count == 0) {
+        qDebug() << "Aucun équipement trouvé avec l'ID : " << id;
+        return false;
+    }
+
+    // Requête de suppression
+    QSqlQuery query;
+    query.prepare("DELETE FROM \"MANEL\".\"EQUIPEMENT\" WHERE \"ID_EQUIPEMENT\" = :id");
+    query.bindValue(":id", id);
+    if (!query.exec()) {
+        qDebug() << "Erreur lors de la suppression de l'équipement : " << query.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Suppression réussie pour l'équipement avec ID : " << id;
+    return true;
+}

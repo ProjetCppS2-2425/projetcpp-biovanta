@@ -19,6 +19,10 @@ private:
 public:
     Equipement();
     Equipement(QString id, QString nom, QString etat, QString image, QString type, QString dispo, int nombre);
+    // Dans equipement.h
+
+    bool supprimer(const QString &id);
+
 
     bool ajouter();
     static QList<Equipement> afficher();

@@ -496,7 +496,7 @@ public:
         label_11->setGeometry(QRect(300, 120, 63, 31));
         pushButton_4 = new QPushButton(groupBox_2);
         pushButton_4->setObjectName("pushButton_4");
-        pushButton_4->setGeometry(QRect(810, 220, 31, 31));
+        pushButton_4->setGeometry(QRect(830, 120, 31, 31));
         pushButton_4->setStyleSheet(QString::fromUtf8("\n"
 "QPushButton {\n"
 "        background-color: #ff4d4d;  /* Rouge */\n"

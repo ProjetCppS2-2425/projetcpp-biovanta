@@ -3,6 +3,7 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QMainWindow>
+#include <QTableWidgetItem>
 #include "equipement.h"
 
 QT_BEGIN_NAMESPACE
@@ -17,7 +18,12 @@ public:
     ~MainWindow();
 private:
     QString selectedImagePath;
+private:
+    QString selectedId; // Stocke l'ID de l'équipement sélectionné
 
+private slots:
+    void on_tableWidget_itemClicked(QTableWidgetItem *item); // Sélection de ligne
+    void pushButton_4_clicked(); // Suppression
 private slots:
     void actualiserTableau();
 private:
