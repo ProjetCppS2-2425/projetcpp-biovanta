@@ -83,7 +83,7 @@ void MainWindow::on_pushButton_clicked()
 
         file.close();
 
-        // Mise à jour de l'interface
+
         ui->pushButton->setText("Image sélectionnée"); // Ne pas afficher le chemin
         selectedImagePath = filePath; // Stocker le chemin dans la variable
 
@@ -132,18 +132,4 @@ void MainWindow::actualiserTableau() {
 }
 
 
-/*
-// Supprimer un équipement
-void MainWindow::on_pushButton_supprimer_clicked() {
-    QString id = ui->lineEdit->text();
-    if (equip.supprimer(id)) {
-        QMessageBox::information(this, "Succès", "Équipement supprimé !");
-        ui->tableView->setModel(equip.afficher());  // Rafraîchir la table
-    } else {
-        QMessageBox::critical(this, "Erreur", "Suppression échouée !");
-    }
-}*/
-
-
-
-
+/

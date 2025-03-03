@@ -15,7 +15,7 @@ Equipement::Equipement(QString id, QString nom, QString etat, QString image, QSt
     this->nbre_eq = nombre;
 }
 
-// Ajouter un équipement
+
 bool Equipement::ajouter() {
     QSqlQuery query;
     query.prepare("INSERT INTO Equipement (ID_EQUIPEMENT, NOM_EQ, ETAT, IMAGE, TYPE, DISPONIBILITÉ, NBRE_EQ) "
@@ -30,7 +30,7 @@ bool Equipement::ajouter() {
 
     return query.exec();
 }
-// Fonction pour récupérer les équipements et les stocker dans une liste
+
 QList<Equipement> Equipement::afficher() {
     QList<Equipement> liste;
     QSqlQuery query("SELECT * FROM EQUIPEMENT");
