@@ -4,17 +4,17 @@
 class Client
 {
 private:
-    int id_client ;
-    QString nom_association ;
+    int id_c ;
+    QString nomA ;
     QString adresse ;
-    QString type_association ;
-    QString nom_rep ;
+    QString typeA ;
+    QString nomR ;
     QString email;
     int id_contrat ;
-    int ID_emp ;
+    int id_emp ;
 public:
-    Client(int id_client, QString nom_association, QString adresse, QString type_association,
-           QString nom_rep, QString email, int id_contrat, int ID_emp);
+    Client(int id_c, QString nomA, QString adresse, QString typeA,
+           QString nomR, QString email, int id_contrat, int id_emp);
 
 
     int getIdClient() ;
@@ -27,14 +27,15 @@ public:
     int getIdEmp() ;
 
 
-    void setIdClient(int id_client);
-    void setNomA( QString &nom_association);
+    void setIdClient(int id_c);
+    void setNomA( QString &nomA);
     void setAdresse( QString &adresse);
-    void setTypeA( QString &type_association);
-    void setNomR( QString &nom_rep);
+    void setTypeA( QString &typeA);
+    void setNomR( QString &nomR);
     void setEmail( QString &email);
     void setIdContrat(int id_contrat);
-    void setIdEmp(int ID_emp);
+    void setIdEmp(int id_emp);
+    bool ajouter();
 
 };
 

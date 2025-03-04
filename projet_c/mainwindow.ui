@@ -59,7 +59,7 @@ QPushButton#btnEquipement:checked {
       <x>160</x>
       <y>50</y>
       <width>311</width>
-      <height>461</height>
+      <height>491</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -90,7 +90,7 @@ QPushButton#btnEquipement:checked {
       <string>Id Client</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="lineEdit_ID">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -139,19 +139,6 @@ QPushButton#btnEquipement:checked {
       <string>Adresse</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>270</y>
-       <width>131</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Numéro Téléphone</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
@@ -169,7 +156,7 @@ QPushButton#btnEquipement:checked {
      <property name="geometry">
       <rect>
        <x>40</x>
-       <y>400</y>
+       <y>430</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -182,7 +169,7 @@ QPushButton#btnEquipement:checked {
      <property name="geometry">
       <rect>
        <x>180</x>
-       <y>400</y>
+       <y>430</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -222,7 +209,7 @@ QPushButton#btnEquipement:checked {
       <string> Ajout </string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_3">
+    <widget class="QLineEdit" name="lineEdit_nomA">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -245,7 +232,7 @@ QPushButton#btnEquipement:checked {
       <string>Type</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_4">
+    <widget class="QComboBox" name="typeCombo">
      <property name="geometry">
       <rect>
        <x>140</x>
@@ -270,7 +257,7 @@ QPushButton#btnEquipement:checked {
       </property>
      </item>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_4">
+    <widget class="QLineEdit" name="lineEdit_Rep">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -280,7 +267,7 @@ QPushButton#btnEquipement:checked {
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_6">
+    <widget class="QLineEdit" name="lineEdit_ctr">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -290,7 +277,7 @@ QPushButton#btnEquipement:checked {
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_7">
+    <widget class="QLineEdit" name="lineEdit_email">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -300,17 +287,7 @@ QPushButton#btnEquipement:checked {
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_8">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>270</y>
-       <width>91</width>
-       <height>26</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_9">
+    <widget class="QLineEdit" name="lineEdit_adr">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -329,8 +306,41 @@ QPushButton#btnEquipement:checked {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">Qlabel{
+text-color:#080808;
+}</string>
+     </property>
      <property name="text">
       <string>Id du contrat</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>390</y>
+       <width>171</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">Qlabel{
+text-color:#080808;
+}</string>
+     </property>
+     <property name="text">
+      <string>Id employé:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_emp">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>390</y>
+       <width>91</width>
+       <height>26</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -944,7 +954,7 @@ QPushButton {
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>500</y>
+      <y>530</y>
       <width>311</width>
       <height>91</height>
      </rect>

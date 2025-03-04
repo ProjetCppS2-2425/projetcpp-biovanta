@@ -17,3 +17,7 @@ bool Connection::createconnect()
 
     return  test;
 }
+ void Connection::closeConnection()
+{
+    db.close();
+}

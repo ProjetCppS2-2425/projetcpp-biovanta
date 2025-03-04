@@ -9,10 +9,10 @@ int main(int argc, char *argv[])
     MainWindow w;
     Connection c;
 
-    w.show();
     bool test=c.createconnect();
     if(test)
-    {w.show();
+    {
+        w.show();
         QMessageBox::information(nullptr, QObject::tr("database is open"),
                                  QObject::tr("connection successful.\n"
                                              "Click Cancel to exit."), QMessageBox::Cancel);

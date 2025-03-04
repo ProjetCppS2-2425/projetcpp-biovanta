@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-
+#include "Client.cpp"
+#include <QMessageBox>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -19,19 +19,32 @@ MainWindow::MainWindow(QWidget *parent)
     ui->client->setIcon(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\client.png"));
     ui->stat->setIcon(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\search.png"));
-
-
-
-
-
-
-
-
-
 }
-
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+void MainWindow::on_pushButton_ajouter_clicked()
+{
+    int id=ui->lineEdit_ID->text().toInt();
+    QString nomA=ui->lineEdit_nomA->text();
+    //QString type=ui->typeCombo->text();
+    QString type="";
+    QString rep=ui->lineEdit_Rep->text();
+    QString adr=ui->lineEdit_adr->text();
+    QString email=ui->lineEdit_email->text();
+    int ctr=ui->lineEdit_ctr->text().toInt();
+    int emp=ui->lineEdit_emp->text().toInt();
+    Client C(id,nomA,adr,type,rep,email,ctr,emp)  ;
+    bool test=C.ajouter();
+    if (test){
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Ajout effectué\n"
+                                             "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+    else
+        QMessageBox::critical(nullptr, QObject::tr("Not OK"),
+                                 QObject::tr("Ajout non effectué.\n"
+                                          "Click Cancel to exit."), QMessageBox::Cancel);
 }
