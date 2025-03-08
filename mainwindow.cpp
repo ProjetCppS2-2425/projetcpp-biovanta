@@ -106,8 +106,9 @@ void MainWindow::on_pushButton_2_clicked() {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' ou 'Modifier' avant de valider.");
     }
 }
-void MainWindow::on_pushButton_clicked()
-{
+
+
+void MainWindow::on_pushButton_clicked() {
     // Ouvre une boîte de dialogue pour sélectionner une image
     QString filePath = QFileDialog::getOpenFileName(this, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)");
 
@@ -123,13 +124,18 @@ void MainWindow::on_pushButton_clicked()
 
         file.close();
 
+        // Extraire uniquement le nom du fichier (sans le chemin)
+        QFileInfo fileInfo(filePath);
+        QString fileName = fileInfo.fileName();
 
-        ui->pushButton->setText("Image sélectionnée"); // Ne pas afficher le chemin
-        selectedImagePath = filePath; // Stocker le chemin dans la variable
+        // Stocker le nom du fichier dans selectedImagePath
+        selectedImagePath = fileName;
 
-
+        // Afficher un message indiquant que l'image a été sélectionnée
+        ui->pushButton->setText("Image sélectionnée");
     }
 }
+
 void MainWindow::afficherEquipements() {
     QList<Equipement> liste = Equipement::afficher();
     ui->tableWidget->setRowCount(liste.size()); // Définir le nombre de lignes
@@ -145,32 +151,47 @@ void MainWindow::afficherEquipements() {
     }
 }
 
-
 void MainWindow::actualiserTableau() {
     ui->tableWidget->clear();  // Efface le tableau avant mise à jour
 
     // Redéfinir les en-têtes (si nécessaire)
     ui->tableWidget->setColumnCount(7);
-    QStringList headers = {"ID", "Nom", "État", "Image", "Type", "Disponibilité", "Nombre"};
+    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
 
     // Récupérer la liste des équipements
-    Equipement e;
-    QList<Equipement> liste = e.afficher();
+    QList<Equipement> liste = Equipement::afficher();
     ui->tableWidget->setRowCount(liste.size());
 
     // Remplir le tableau avec les données
     for (int i = 0; i < liste.size(); ++i) {
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
-        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(liste[i].getEtat()));
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(liste[i].getImage()));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(liste[i].getType()));
+
+        // Afficher l'image dans la colonne "Image"
+        QString imageName = liste[i].getImage();
+        if (!imageName.isEmpty()) {
+            QString imagePath = "C:/Users/manel/Desktop/projet_c/images/" + imageName;
+            QPixmap pixmap(imagePath);
+            if (!pixmap.isNull()) {
+                QLabel *imageLabel = new QLabel();
+                imageLabel->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
+                ui->tableWidget->setCellWidget(i, 2, imageLabel);
+            } else {
+                // Si l'image ne peut pas être chargée, afficher un message d'erreur
+                ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Image non trouvée"));
+            }
+        } else {
+            // Si aucune image n'est associée, afficher un message
+            ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Aucune image"));
+        }
+
+        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(liste[i].getType()));
+        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
         ui->tableWidget->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
     }
 }
-
 //supprimer
 
 void MainWindow::supp_clicked() {
@@ -237,19 +258,38 @@ void MainWindow::chargerEquipement() {
     ui->comboBox_2->setCurrentText(equip.getEtat());
     ui->comboBox_3->setCurrentText(equip.getDispo());
     ui->spinBox->setValue(equip.getNombre());
-    selectedImagePath = equip.getImage();
-    ui->pushButton->setText("Image sélectionnée");
+
+    // Afficher l'image
+    QString imageName = equip.getImage();
+    if (!imageName.isEmpty()) {
+        // Reconstruire le chemin complet de l'image
+        QString imagePath = QDir::currentPath() + "/images/" + imageName; // Chemin relatif
+
+        // Charger l'image dans un QLabel
+        QPixmap pixmap(imagePath);
+        if (!pixmap.isNull()) {
+            ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
+        } else {
+            QMessageBox::warning(this, "Erreur", "Impossible de charger l'image.");
+            ui->labelImage->clear(); // Effacer l'image si elle ne peut pas être chargée
+        }
+    } else {
+        ui->labelImage->clear(); // Effacer l'image si aucune image n'est associée
+    }
+
+    isModifying = true; // Passer en mode modification
 }
 void MainWindow::reinitialiserFormulaire() {
-    ui->lineEdit->clear();
-    ui->lineEdit_3->clear();
-    ui->comboBox_4->setCurrentIndex(0);
-    ui->comboBox_2->setCurrentIndex(0);
-    ui->comboBox_3->setCurrentIndex(0);
-    ui->spinBox->setValue(0);
-    selectedImagePath.clear();
-    ui->pushButton->setText("Choisir image");
-    ui->radioButton->setChecked(false);
-    ui->radioButton_2->setChecked(false);
-    isModifying = false; // Réinitialiser le mode modification
+    ui->lineEdit->clear();          // ID
+    ui->lineEdit_3->clear();        // Nom
+    ui->comboBox_4->setCurrentIndex(0); // Type
+    ui->comboBox_2->setCurrentIndex(0); // État
+    ui->comboBox_3->setCurrentIndex(0); // Disponibilité
+    ui->spinBox->setValue(0);       // Nombre
+    selectedImagePath.clear();      // Chemin de l'image
+    ui->pushButton->setText("Choisir image"); // Réinitialiser le texte du bouton image
+    ui->labelImage->clear();        // Effacer l'image affichée
+    ui->radioButton->setChecked(false); // Désélectionner "Ajouter"
+    ui->radioButton_2->setChecked(false); // Désélectionner "Modifier"
+    isModifying = false;            // Réinitialiser le mode modification
 }

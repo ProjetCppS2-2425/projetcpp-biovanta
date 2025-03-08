@@ -77,6 +77,7 @@ public:
     QLabel *label_10;
     QPushButton *supp;
     QLabel *label_13;
+    QLabel *labelImage;
     QGroupBox *groupBox_3;
     QRadioButton *radioButton;
     QRadioButton *radioButton_2;
@@ -473,7 +474,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
         tableWidget->setItem(1, 6, __qtablewidgetitem16);
         tableWidget->setObjectName("tableWidget");
-        tableWidget->setGeometry(QRect(90, 190, 751, 281));
+        tableWidget->setGeometry(QRect(100, 190, 751, 281));
         tableWidget->setStyleSheet(QString::fromUtf8("tableWidget->setStyleSheet(\n"
 "    \"QTableWidget {\"\n"
 "    \"   background-color: #f8f9fa;\"\n"
@@ -582,7 +583,7 @@ public:
         supp->setIconSize(QSize(25, 25));
         label_13 = new QLabel(groupBox_4);
         label_13->setObjectName("label_13");
-        label_13->setGeometry(QRect(510, 20, 251, 20));
+        label_13->setGeometry(QRect(520, 20, 251, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -591,6 +592,9 @@ public:
         label_13->setStyleSheet(QString::fromUtf8("label_12\n"
 "(rgb(0, 0, 100)\n"
 "font: 900 italic 14pt \"Segoe UI\";)"));
+        labelImage = new QLabel(groupBox_2);
+        labelImage->setObjectName("labelImage");
+        labelImage->setGeometry(QRect(380, 270, 63, 20));
         groupBox_4->raise();
         tableWidget->raise();
         label_8->raise();
@@ -602,6 +606,7 @@ public:
         ok->raise();
         checkBox->raise();
         checkBox_2->raise();
+        labelImage->raise();
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName("groupBox_3");
         groupBox_3->setGeometry(QRect(160, 530, 311, 91));
@@ -774,6 +779,7 @@ public:
         label_10->setText(QCoreApplication::translate("MainWindow", "  Listes ", nullptr));
         supp->setText(QString());
         label_13->setText(QCoreApplication::translate("MainWindow", " supprimer un \303\251quipement :", nullptr));
+        labelImage->setText(QString());
         groupBox_3->setTitle(QString());
         radioButton->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         radioButton_2->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
