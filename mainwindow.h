@@ -16,16 +16,23 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+public:
+    static Equipement getEquipementById(const QString &id);
 private:
     QString selectedImagePath;
 private:
     QString selectedId; // Stocke l'ID de l'équipement sélectionné
-
+    bool isModifying;
+    void reinitialiserFormulaire();
 private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item); // Sélection de ligne
-    void pushButton_4_clicked(); // Suppression
+    void supp_clicked(); // Suppression
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
 private slots:
     void actualiserTableau();
+    void chargerEquipement();
+
 private:
     void remplirTableWidget();
 
@@ -34,8 +41,7 @@ private slots:
     void on_pushButton_clicked();
 
 private slots:
-    void on_pushButton_2_clicked();
-    void afficherEquipements(); // Fonction pour mettre à jour le tableau
+    void afficherEquipements();    // Fonction pour mettre à jour le tableau
 
 private:
     Ui::MainWindow *ui;

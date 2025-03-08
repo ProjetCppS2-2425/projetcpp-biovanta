@@ -19,13 +19,16 @@ private:
 public:
     Equipement();
     Equipement(QString id, QString nom, QString etat, QString image, QString type, QString dispo, int nombre);
-    // Dans equipement.h
+    bool existe(const QString &id);
 
-    bool supprimer(const QString &id);
 
 
     bool ajouter();
     static QList<Equipement> afficher();
+    bool modifier();
+    bool supprimer(const QString &id);
+    // Ajoutez cette déclaration
+    static Equipement getEquipementById(const QString &id);
     QString getId() const { return id_equipement; }
     QString getNom() const { return nom_eq; }
     QString getEtat() const { return etat; }
@@ -33,6 +36,16 @@ public:
     QString getType() const { return type; }
     QString getDispo() const { return disponibilite; }
     int getNombre() const { return nbre_eq; }
+
+
+    void setId(const QString &id) { id_equipement = id; }
+    void setNom(const QString &nom) { nom_eq = nom; }
+    void setEtat(const QString &etat) { this->etat = etat; }
+    void setImage(const QString &img) { image = img; }
+    void setType(const QString &type) { this->type = type; }
+    void setDispo(const QString &dispo) { disponibilite = dispo; }
+    void setNombre(int nombre) { nbre_eq = nombre; }
+
 };
 
 #endif // EQUIPEMENT_H

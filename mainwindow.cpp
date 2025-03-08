@@ -11,12 +11,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::pushButton_4_clicked);
+    connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
+    isModifying = false; // Initialiser à false (mode ajout par défaut)
 
     ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
+    ui->supp->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
     ui->chercheur->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
     ui->pdf->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
     ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
@@ -26,6 +28,30 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stat->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
     afficherEquipements();
+    // Appliquer le stylesheet à tableWidget
+    ui->tableWidget->setStyleSheet(
+        "QTableWidget {"
+        "   background-color: #f8f9fa;"
+        "   gridline-color: #dee2e6;"
+        "   font-size: 14px;"
+        "}"
+        "QHeaderView::section {"
+        "   background-color: #2C3E50;"
+        "   color: white;"
+        "   padding: 5px;"
+        "   border: 1px solid #dee2e6;"
+        "}"
+        "QTableWidget::item {"
+        "   padding: 5px;"
+        "}"
+        "QTableWidget::item:selected {"
+        "   background-color: #cbddf5;"
+        "   color: black;"
+        "}"
+        );
+
+    // Forcer le rafraîchissement
+    ui->tableWidget->repaint();
 
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
@@ -37,37 +63,49 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// Ajouter un équipement
 void MainWindow::on_pushButton_2_clicked() {
-    // Vérifier si le bouton radio "Ajouter" est coché
-    if (ui->radioButton->isChecked()) {
-        QString id = ui->lineEdit->text();
-        QString nom = ui->lineEdit_3->text();
-        QString etat = ui->comboBox->currentText();
-        QString image = selectedImagePath;
-        QString type = ui->comboBox_2->currentText();
-        QString dispo = ui->comboBox_3->currentText();
-        int nombre = ui->spinBox->text().toInt();
+    QString id = ui->lineEdit->text();
+    QString nom = ui->lineEdit_3->text();
+    QString type = ui->comboBox_4->currentText();
+    QString img = selectedImagePath;
+    QString etat = ui->comboBox_2->currentText();
+    QString dispo = ui->comboBox_3->currentText();
+    int nbre = ui->spinBox->value();
 
-        // Vérification que l'utilisateur a bien choisi une image
-        if (image.isEmpty()) {
-            QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une image !");
+    if (ui->radioButton_2->isChecked()) { // Mode modification
+        if (!isModifying) {
+            // Première validation : Charger les informations de l'équipement
+            chargerEquipement();
+            isModifying = true; // Passer en mode modification
+        } else {
+            // Deuxième validation : Enregistrer les modifications
+            Equipement equip(id, nom, etat, img, type, dispo, nbre);
+            if (equip.modifier()) {
+                QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
+                actualiserTableau();
+                reinitialiserFormulaire(); // Réinitialiser le formulaire
+            } else {
+                QMessageBox::critical(this, "Erreur", "La modification a échoué.");
+            }
+        }
+    } else if (ui->radioButton->isChecked()) { // Mode ajout
+        if (id.isEmpty() || nom.isEmpty() || type.isEmpty() || etat.isEmpty() || dispo.isEmpty() || nbre == 0) {
+            QMessageBox::warning(this, "Erreur", "Veuillez remplir tous les champs.");
             return;
         }
 
-        Equipement e(id, nom, etat, image, type, dispo, nombre);
-        if (e.ajouter()) {
-            QMessageBox::information(this, "Succès", "Équipement ajouté avec succés !");
+        Equipement equip(id, nom, etat, img, type, dispo, nbre);
+        if (equip.ajouter()) {
+            QMessageBox::information(this, "Succès", "Équipement ajouté avec succès.");
             actualiserTableau();
-
+            reinitialiserFormulaire(); // Réinitialiser le formulaire
         } else {
-            QMessageBox::critical(this, "Erreur", "Ajout échoué !");
+            QMessageBox::critical(this, "Erreur", "L'ajout a échoué.");
         }
     } else {
-        QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' avant d'ajouter un équipement.");
+        QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' ou 'Modifier' avant de valider.");
     }
 }
-
 void MainWindow::on_pushButton_clicked()
 {
     // Ouvre une boîte de dialogue pour sélectionner une image
@@ -112,7 +150,7 @@ void MainWindow::actualiserTableau() {
     ui->tableWidget->clear();  // Efface le tableau avant mise à jour
 
     // Redéfinir les en-têtes (si nécessaire)
-    ui->tableWidget->setColumnCount(7);  // Nombre de colonnes
+    ui->tableWidget->setColumnCount(7);
     QStringList headers = {"ID", "Nom", "État", "Image", "Type", "Disponibilité", "Nombre"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
 
@@ -132,7 +170,10 @@ void MainWindow::actualiserTableau() {
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
     }
 }
-void MainWindow::pushButton_4_clicked() {
+
+//supprimer
+
+void MainWindow::supp_clicked() {
     if (selectedId.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un équipement à supprimer.");
         return;
@@ -160,4 +201,55 @@ void MainWindow::on_tableWidget_itemClicked(QTableWidgetItem *item) {
     int row = item->row();
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     selectedId = ui->tableWidget->item(row, 0)->text();  // Stocke l'ID de l'équipement sélectionné
+}
+
+
+void MainWindow::on_pushButton_3_clicked() {
+    // Vider tous les champs du formulaire
+    ui->lineEdit->clear();  // id
+    ui->lineEdit_3->clear();  // nom
+    ui->comboBox_4->setCurrentIndex(0);  // type
+    ui->comboBox_2->setCurrentIndex(0);  // etat
+    ui->comboBox_3->setCurrentIndex(0);  // dispo
+    ui->spinBox->setValue(0);  // nbre
+    selectedImagePath.clear();  // image
+    ui->radioButton->setChecked(false);  // "Ajouter"
+    ui->radioButton_2->setChecked(false);  // "Modifier"
+}
+void MainWindow::chargerEquipement() {
+    QString id = ui->lineEdit->text(); // Récupérer l'ID entré dans le formulaire
+
+    if (id.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer un ID d'équipement.");
+        return;
+    }
+
+    Equipement equip = Equipement::getEquipementById(id); // Récupérer l'équipement par son ID
+
+    if (equip.getId().isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Aucun équipement trouvé avec cet ID.");
+        return;
+    }
+
+    // Remplir le formulaire avec les informations de l'équipement
+    ui->lineEdit_3->setText(equip.getNom());
+    ui->comboBox_4->setCurrentText(equip.getType());
+    ui->comboBox_2->setCurrentText(equip.getEtat());
+    ui->comboBox_3->setCurrentText(equip.getDispo());
+    ui->spinBox->setValue(equip.getNombre());
+    selectedImagePath = equip.getImage();
+    ui->pushButton->setText("Image sélectionnée");
+}
+void MainWindow::reinitialiserFormulaire() {
+    ui->lineEdit->clear();
+    ui->lineEdit_3->clear();
+    ui->comboBox_4->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+    ui->comboBox_3->setCurrentIndex(0);
+    ui->spinBox->setValue(0);
+    selectedImagePath.clear();
+    ui->pushButton->setText("Choisir image");
+    ui->radioButton->setChecked(false);
+    ui->radioButton_2->setChecked(false);
+    isModifying = false; // Réinitialiser le mode modification
 }
