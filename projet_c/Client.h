@@ -11,10 +11,9 @@ private:
     QString nomR ;
     QString email;
     int id_contrat ;
-    int id_emp ;
 public:
     Client(int id_c, QString nomA, QString adresse, QString typeA,
-           QString nomR, QString email, int id_contrat, int id_emp);
+           QString nomR, QString email, int id_contrat);
 
 
     int getIdClient() ;
@@ -24,7 +23,7 @@ public:
     QString getNomR() ;
     QString getEmail() ;
     int getIdContrat() ;
-    int getIdEmp() ;
+
 
 
     void setIdClient(int id_c);
@@ -34,7 +33,10 @@ public:
     void setNomR( QString &nomR);
     void setEmail( QString &email);
     void setIdContrat(int id_contrat);
-    void setIdEmp(int id_emp);
+
+
+
+
     bool ajouter();
 
 };

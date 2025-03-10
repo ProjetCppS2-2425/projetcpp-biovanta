@@ -1,4 +1,4 @@
-#include "Client.h"
+#include  "Client.h"
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -6,7 +6,7 @@
 
 
 Client::Client(int id_c, QString nomA, QString adresse, QString typeA,
-               QString nomR, QString email, int id_contrat, int id_emp)
+               QString nomR, QString email, int id_contrat)
 {
     this->id_c = id_c;
     this->nomA = nomA;
@@ -15,8 +15,9 @@ Client::Client(int id_c, QString nomA, QString adresse, QString typeA,
     this->nomR = nomR;
     this->email = email;
     this->id_contrat = id_contrat;
-    this->id_emp = id_emp;
+
 }
+//****************************GETTERS**************************************
 
 int Client::getIdClient() {
     return id_c;
@@ -39,11 +40,7 @@ QString Client::getEmail() {
 int Client::getIdContrat() {
     return id_contrat;
 }
-int Client::getIdEmp() {
-    return id_emp;
-}
-
-
+//****************************SETTERS**************************************
 void Client::setIdClient(int id_c) {
     this->id_c = id_c;
 }
@@ -65,16 +62,15 @@ void Client::setEmail(QString &email) {
 void Client::setIdContrat(int id_contrat) {
     this->id_contrat = id_contrat;
 }
-void Client::setIdEmp(int id_emp) {
-    this->id_emp = id_emp;
-}
+
+//****************************CRUD**************************************
 
 
 bool Client::ajouter()
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO CLIENT (ID_CLIENT, NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT, ID_EMP)"
-                  " VALUES (:ID_CLIENT, :NOM_ASSOCIATION, :ADRESSE, :TYPE_ASSOCIATION, :NOM_REP, :EMAIL, :ID_CONTRAT, :ID_EMP)");
+    query.prepare("INSERT INTO CLIENT (ID_CLIENT, NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT)"
+                  " VALUES (:ID_CLIENT, :NOM_ASSOCIATION, :ADRESSE, :TYPE_ASSOCIATION, :NOM_REP, :EMAIL, :ID_CONTRAT)");
 
     query.bindValue(":ID_CLIENT", id_c);
     query.bindValue(":NOM_ASSOCIATION", nomA);
@@ -83,7 +79,6 @@ bool Client::ajouter()
     query.bindValue(":NOM_REP", nomR);
     query.bindValue(":EMAIL", email);
     query.bindValue(":ID_CONTRAT", id_contrat);
-    query.bindValue(":ID_EMP", id_emp);
 
     if (query.exec()) {
         return true;
@@ -92,3 +87,4 @@ bool Client::ajouter()
         return false;
     }
 }
+
