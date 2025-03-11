@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "Client.cpp"
 #include <QMessageBox>
+#include <iostream>
+using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -43,10 +45,30 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
         QMessageBox::information(nullptr, QObject::tr("OK"),
                                  QObject::tr("Ajout effectué\n"
                                              "Click Cancel to exit."), QMessageBox::Cancel);
+        ui->radioButton_Ajouter->setAutoExclusive(false);
+        ui->radioButton_Ajouter->setChecked(false);
+        ui->radioButton_Ajouter->setAutoExclusive(true);
     }
-    else if (!test){
+    else {
         QMessageBox::critical(nullptr, QObject::tr("Not OK"),
                                  QObject::tr("Ajout non effectué.\n"
                                           "Click Cancel to exit."), QMessageBox::Cancel);}
     }
+}
+void MainWindow::on_pushButton_supp_clicked(){
+     int id=ui->lineEdit_ID->text().toInt();
+    bool test=C.supprimer(id);
+     if (test){
+         QMessageBox::information(nullptr, QObject::tr("OK"),
+                                  QObject::tr("Suppression effectuée\n"
+                                              "Click Cancel to exit."), QMessageBox::Cancel);
+         ui->radioButton_Ajouter->setAutoExclusive(false);
+         ui->radioButton_Ajouter->setChecked(false);
+         ui->radioButton_Ajouter->setAutoExclusive(true);
+     }
+     else {
+         QMessageBox::critical(nullptr, QObject::tr("Not OK"),
+                               QObject::tr("Suppression non effectuée.\n"
+                                           "Click Cancel to exit."), QMessageBox::Cancel);}
+     }
 }

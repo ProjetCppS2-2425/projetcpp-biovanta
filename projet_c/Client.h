@@ -38,6 +38,7 @@ public:
 
 
     bool ajouter();
+    bool supprimer(int);
 
 };
 

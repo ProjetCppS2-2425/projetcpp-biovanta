@@ -4,7 +4,7 @@
 #include <QIcon>
 
 #include <QMainWindow>
-
+#include "Client.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,10 +24,11 @@ public:
    // void on_pushButton_ajouter_clicked();
 public slots:
     void on_radioButton_Ajouter_toggled(bool checked);
-
+    void on_pushButton_supp_clicked();
 
 private:
     Ui::MainWindow *ui;
+    Client C;
 
 };
 #endif // MAINWINDOW_H

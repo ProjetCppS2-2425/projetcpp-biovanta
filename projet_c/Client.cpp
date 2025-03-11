@@ -87,4 +87,10 @@ bool Client::ajouter()
         return false;
     }
 }
+bool Client::supprimer(int id){
+     QSqlQuery query;
+     query.prepare("Delete from Client where ID_CLIENT=:id");
+    query.bindValue(":id",id);
+     return query.exec();
+}
 

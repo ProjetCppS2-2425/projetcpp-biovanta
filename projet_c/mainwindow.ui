@@ -871,7 +871,7 @@ QGroupBox {
     <widget class="QPushButton" name="stat">
      <property name="geometry">
       <rect>
-       <x>670</x>
+       <x>660</x>
        <y>80</y>
        <width>81</width>
        <height>31</height>
@@ -980,7 +980,7 @@ QGroupBox {
        <string>  Listes </string>
       </property>
      </widget>
-     <widget class="QPushButton" name="supp">
+     <widget class="QPushButton" name="pushButton_supp">
       <property name="geometry">
        <rect>
         <x>740</x>
@@ -1102,6 +1102,16 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
         <string>Id Contrat</string>
        </property>
       </column>
+     </widget>
+     <widget class="QLineEdit" name="LineEdit_supp">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>20</y>
+        <width>113</width>
+        <height>28</height>
+       </rect>
+      </property>
      </widget>
     </widget>
     <widget class="QLabel" name="bg">
