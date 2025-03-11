@@ -56,7 +56,7 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
     }
 }
 void MainWindow::on_pushButton_supp_clicked(){
-     int id=ui->lineEdit_ID->text().toInt();
+     int id=ui->LineEdit_supp->text().toInt();
     bool test=C.supprimer(id);
      if (test){
          QMessageBox::information(nullptr, QObject::tr("OK"),
@@ -71,4 +71,4 @@ void MainWindow::on_pushButton_supp_clicked(){
                                QObject::tr("Suppression non effectuée.\n"
                                            "Click Cancel to exit."), QMessageBox::Cancel);}
      }
-}
+

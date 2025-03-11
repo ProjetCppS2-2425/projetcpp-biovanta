@@ -4,7 +4,7 @@
 #include <QSqlError>
 #include <QVariant>
 
-
+Client::Client(){}
 Client::Client(int id_c, QString nomA, QString adresse, QString typeA,
                QString nomR, QString email, int id_contrat)
 {
@@ -90,7 +90,7 @@ bool Client::ajouter()
 bool Client::supprimer(int id){
      QSqlQuery query;
      query.prepare("Delete from Client where ID_CLIENT=:id");
-    query.bindValue(":id",id);
+    query.bindValue(":ID_CLIENT",id);
      return query.exec();
 }
 

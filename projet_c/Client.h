@@ -12,6 +12,7 @@ private:
     QString email;
     int id_contrat ;
 public:
+    Client();
     Client(int id_c, QString nomA, QString adresse, QString typeA,
            QString nomR, QString email, int id_contrat);
 
