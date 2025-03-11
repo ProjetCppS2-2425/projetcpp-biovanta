@@ -40,7 +40,7 @@ public:
 
     bool ajouter();
     bool supprimer(int);
-
+    bool exists(int);
 
 };
 

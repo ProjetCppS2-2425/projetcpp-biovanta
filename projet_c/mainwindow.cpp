@@ -3,6 +3,7 @@
 #include "Client.cpp"
 #include <QMessageBox>
 #include <iostream>
+#include <QTextStream>
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,36 +30,11 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-/*void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
-{
-    if (checked){
-    int id=ui->lineEdit_ID->text().toInt();
-    QString nomA=ui->lineEdit_nomA->text();
-    QString type = ui->typeCombo->currentText();
-    QString rep=ui->lineEdit_Rep->text();
-    QString adr=ui->lineEdit_adr->text();
-    QString email=ui->lineEdit_email->text();
-    int ctr=ui->lineEdit_ctr->text().toInt();
-    Client C(id,nomA,adr,type,rep,email,ctr)  ;
-    bool test=C.ajouter();
-    if (test){
-        QMessageBox::information(nullptr, QObject::tr("OK"),
-                                 QObject::tr("Ajout effectué\n"
-                                             "Click Cancel to exit."), QMessageBox::Cancel);
-        ui->radioButton_Ajouter->setAutoExclusive(false);
-        ui->radioButton_Ajouter->setChecked(false);
-        ui->radioButton_Ajouter->setAutoExclusive(true);
-    }
-    else {
-        QMessageBox::critical(nullptr, QObject::tr("Not OK"),
-                                 QObject::tr("Ajout non effectué.\n"
-                                          "Click Cancel to exit."), QMessageBox::Cancel);}
-    }
-}*/
+
 void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
 {
     if (checked) {
-        // Récupération des valeurs depuis l'UI
+
         int id = ui->lineEdit_ID->text().toInt();
         QString nomA = ui->lineEdit_nomA->text();
         QString type = ui->typeCombo->currentText();
@@ -67,7 +43,7 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
         QString email = ui->lineEdit_email->text();
         int ctr = ui->lineEdit_ctr->text().toInt();
 
-        // 🔥 Étape 1: Vérification des entrées avant de créer l'objet Client
+
         if (id <= 0) {
             QMessageBox::warning(this, "Entrée invalide", "L'ID doit être un nombre positif !");
             return;
@@ -84,7 +60,7 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
             QMessageBox::warning(this, "Entrée invalide", "Le type d'association ne peut pas être vide !");
             return;
         }
-        static const QRegularExpression repRegex("^[A-Za-z]+$");  // Only letters, no numbers or special characters
+        static const QRegularExpression repRegex("^[A-Za-z]+$");
 
         if (rep.isEmpty() || !repRegex.match(rep).hasMatch()) {
             QMessageBox::warning(this, "Entrée invalide", "Le nom du représentant doit contenir uniquement des lettres et ne peut pas être vide !");
@@ -94,7 +70,7 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
 
         if (!emailRegex.match(email).hasMatch()) {
             QMessageBox::warning(this, "Entrée invalide", "Veuillez saisir une adresse e-mail valide !");
-            return;  // 🔥 STOP ! L'email est invalide, donc pas d'ajout
+            return;
         }
 
         if (ctr <= 0) {
@@ -102,15 +78,15 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
             return;
         }
 
-        // 🔥 Étape 2: Création de l'objet Client après validation
+
         Client C(id, nomA, adr, type, rep, email, ctr);
 
-        // 🔥 Étape 3: Tentative d'ajout du client
+
         bool test = C.ajouter();
         if (test) {
             QMessageBox::information(this, "Succès", "Ajout effectué avec succès !");
 
-            // Réinitialisation des champs après un ajout réussi
+
             ui->lineEdit_ID->clear();
             ui->lineEdit_nomA->clear();
             ui->lineEdit_Rep->clear();
@@ -119,7 +95,6 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
             ui->lineEdit_ctr->clear();
             ui->typeCombo->setCurrentIndex(0);
 
-            // Réinitialisation du bouton radio
             ui->radioButton_Ajouter->setAutoExclusive(false);
             ui->radioButton_Ajouter->setChecked(false);
             ui->radioButton_Ajouter->setAutoExclusive(true);
@@ -132,7 +107,13 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
 
 void MainWindow::on_pushButton_supp_clicked(){
      int id=ui->LineEdit_supp->text().toInt();
+    //bool q=C.exists(id);
+    // QString result = QString("Value: %1").arg(q ? "true" : "false");
+    // ui->label_debug->setText(result);
+    if (C.exists(id)){
     bool test=C.supprimer(id);
+         QString result = QString("Value: %1").arg(test ? "true" : "false");
+         ui->label_debug->setText(result);
      if (test){
          QMessageBox::information(nullptr, QObject::tr("OK"),
                                   QObject::tr("Suppression effectuée\n"
@@ -140,10 +121,15 @@ void MainWindow::on_pushButton_supp_clicked(){
          ui->radioButton_Ajouter->setAutoExclusive(false);
          ui->radioButton_Ajouter->setChecked(false);
          ui->radioButton_Ajouter->setAutoExclusive(true);
-     }
+              }
      else {
          QMessageBox::critical(nullptr, QObject::tr("Not OK"),
                                QObject::tr("Suppression non effectuée.\n"
-                                           "Click Cancel to exit."), QMessageBox::Cancel);}
+                                           "Click Cancel to exit."), QMessageBox::Cancel);
+          }
+    }
+     else {
+        QMessageBox::warning(this, "ID Introuvable", "L'ID saisi n'existe pas dans la base de données.");
+    }
      }
 
