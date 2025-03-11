@@ -1090,6 +1090,42 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlQueryModel \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/qsqlquerymodel.h \
 		ui_mainwindow.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/QVariant \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QApplication \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qapplication.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QCheckBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QComboBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qcombobox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QFrame \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QGroupBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QHeaderView \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qheaderview.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QLabel \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlabel.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qpicture.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qtextdocument.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QLineEdit \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlineedit.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qtextcursor.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qtextformat.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qpen.h \
+		C:/Qt/6.7.3/mingw_64/include/QtGui/qtextoption.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMenuBar \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmenubar.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmenu.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QPushButton \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QRadioButton \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QSpinBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qspinbox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QStatusBar \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QTableWidget \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QWidget \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
@@ -1105,9 +1141,6 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qtimezone.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QFileDialog \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qfiledialog.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QPushButton \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qpushbutton.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qabstractbutton.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/QRegularExpression
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o ..\..\mainwindow.cpp
 

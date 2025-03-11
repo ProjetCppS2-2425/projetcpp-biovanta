@@ -346,30 +346,20 @@ void MainWindow::chargerEquipement() {
     ui->comboBox_3->setCurrentText(equip.getDispo());
     ui->spinBox->setValue(equip.getNombre());
 
-    // Afficher l'image
+    // Récupérer le chemin de l'image
     QString imageName = equip.getImage();
     if (!imageName.isEmpty()) {
         // Reconstruire le chemin complet de l'image
-        QString imagePath = QDir::currentPath() + "/images/" + imageName; // Chemin relatif
+        selectedImagePath = "C:/Users/manel/Desktop/projet_c/images/" + imageName; // Chemin absolu
 
-        // Vérifier si le fichier image existe
-        if (!QFile::exists(imagePath)) {
-            QMessageBox::warning(this, "Erreur", "Le fichier image n'existe pas : " + imagePath);
-            ui->labelImage->clear(); // Effacer l'image si le fichier n'existe pas
-            qDebug() << "Nom de l'image récupéré: " << equip.getImage();
-            return;
-        }
+        // Afficher un message indiquant que l'image a été chargée
+        ui->pushButton->setText("Image chargée");
 
-        // Charger l'image dans un QLabel
-        QPixmap pixmap(imagePath);
-        if (!pixmap.isNull()) {
-            ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
-        } else {
-            QMessageBox::warning(this, "Erreur", "Le fichier image est corrompu ou non supporté.");
-            ui->labelImage->clear(); // Effacer l'image si elle ne peut pas être chargée
-        }
+        // Afficher le chemin de l'image pour débogage
+        qDebug() << "Chemin de l'image : " << selectedImagePath;
     } else {
-        ui->labelImage->clear(); // Effacer l'image si aucune image n'est associée
+        selectedImagePath.clear(); // Effacer le chemin de l'image si aucune image n'est associée
+        ui->pushButton->setText("Choisir image"); // Réinitialiser le texte du bouton
     }
 
     isModifying = true; // Passer en mode modification
