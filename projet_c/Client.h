@@ -41,6 +41,7 @@ public:
     bool ajouter();
     bool supprimer(int);
 
+
 };
 
 #endif // CLIENT_H
