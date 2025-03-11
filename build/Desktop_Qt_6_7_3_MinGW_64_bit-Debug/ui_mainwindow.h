@@ -78,6 +78,7 @@ public:
     QPushButton *supp;
     QLabel *label_13;
     QLabel *labelImage;
+    QLineEdit *lineEdit_2;
     QGroupBox *groupBox_3;
     QRadioButton *radioButton;
     QRadioButton *radioButton_2;
@@ -506,7 +507,7 @@ public:
         comboBox_5->addItem(QString());
         comboBox_5->addItem(QString());
         comboBox_5->setObjectName("comboBox_5");
-        comboBox_5->setGeometry(QRect(270, 30, 351, 31));
+        comboBox_5->setGeometry(QRect(270, 30, 61, 31));
         comboBox = new QComboBox(groupBox_2);
         comboBox->addItem(QString());
         comboBox->addItem(QString());
@@ -595,6 +596,9 @@ public:
         labelImage = new QLabel(groupBox_2);
         labelImage->setObjectName("labelImage");
         labelImage->setGeometry(QRect(380, 270, 63, 20));
+        lineEdit_2 = new QLineEdit(groupBox_2);
+        lineEdit_2->setObjectName("lineEdit_2");
+        lineEdit_2->setGeometry(QRect(340, 30, 291, 31));
         groupBox_4->raise();
         tableWidget->raise();
         label_8->raise();
@@ -607,6 +611,7 @@ public:
         checkBox->raise();
         checkBox_2->raise();
         labelImage->raise();
+        lineEdit_2->raise();
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName("groupBox_3");
         groupBox_3->setGeometry(QRect(160, 530, 311, 91));

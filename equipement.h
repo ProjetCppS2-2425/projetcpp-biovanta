@@ -19,7 +19,6 @@ private:
 public:
     Equipement();
     Equipement(QString id, QString nom, QString etat, QString image, QString type, QString dispo, int nombre);
-    bool existe(const QString &id);
 
 
 
@@ -27,6 +26,7 @@ public:
     static QList<Equipement> afficher();
     bool modifier();
     bool supprimer(const QString &id);
+    bool existe(const QString &id);
     // Ajoutez cette déclaration
     static Equipement getEquipementById(const QString &id);
     QString getId() const { return id_equipement; }

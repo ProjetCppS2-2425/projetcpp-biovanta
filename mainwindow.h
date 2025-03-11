@@ -29,6 +29,7 @@ private slots:
     void supp_clicked(); // Suppression
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
+
 private slots:
     void actualiserTableau();
     void chargerEquipement();

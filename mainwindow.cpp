@@ -3,8 +3,10 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QFile>
+#include <QDir>
 #include <QFileDialog>
 #include <QPushButton>
+#include <QRegularExpression>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -13,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
     isModifying = false; // Initialiser à false (mode ajout par défaut)
+
 
     ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
@@ -50,7 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
 
-    // Forcer le rafraîchissement
     ui->tableWidget->repaint();
 
     if (!QSqlDatabase::database().isOpen()) {
@@ -65,32 +67,116 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_2_clicked() {
     QString id = ui->lineEdit->text();
-    QString nom = ui->lineEdit_3->text();
-    QString type = ui->comboBox_4->currentText();
-    QString img = selectedImagePath;
-    QString etat = ui->comboBox_2->currentText();
-    QString dispo = ui->comboBox_3->currentText();
-    int nbre = ui->spinBox->value();
+
+    // Contrôle de saisie pour l'ID : Ne dépasse pas 5 entiers
+    if (id.isEmpty() || id.length() > 5 || !id.toInt()) {
+        QMessageBox::warning(this, "Erreur", "L'ID de l'équipement doit être un nombre entier de maximum 5 chiffres.");
+        return;
+    }
 
     if (ui->radioButton_2->isChecked()) { // Mode modification
         if (!isModifying) {
-            // Première validation : Charger les informations de l'équipement
-            chargerEquipement();
+            // Phase 1 : Charger les informations de l'équipement
+            if (!equip.existe(id)) {
+                QMessageBox::warning(this, "Erreur", "L'équipement avec cet ID n'existe pas.");
+                return;
+            }
+
+            chargerEquipement(); // Charge les données de l'équipement dans les champs du formulaire
             isModifying = true; // Passer en mode modification
         } else {
-            // Deuxième validation : Enregistrer les modifications
+            // Phase 2 : Appliquer le contrôle de saisie lors de la modification
+            QString nom = ui->lineEdit_3->text();
+            QString type = ui->comboBox_4->currentText();
+            QString img = selectedImagePath;
+            QString etat = ui->comboBox_2->currentText();
+            QString dispo = ui->comboBox_3->currentText();
+            int nbre = ui->spinBox->value();
+
+            // Validation du nom : Accepte uniquement les lettres et les espaces
+            QRegularExpression nomRegex("^[A-Za-z\\s]+$");
+            if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
+                QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
+                return;
+            }
+
+            // Contrôle de saisie pour le type
+            if (type.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un type d'équipement.");
+                return;
+            }
+
+            // Contrôle de saisie pour l'état
+            if (etat.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un état pour l'équipement.");
+                return;
+            }
+
+            // Contrôle de saisie pour la disponibilité
+            if (dispo.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une disponibilité pour l'équipement.");
+                return;
+            }
+
+            // Contrôle de saisie pour le nombre
+            if (nbre <= 0) {
+                QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
+                return;
+            }
+
+            // Enregistrer les modifications
             Equipement equip(id, nom, etat, img, type, dispo, nbre);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
                 reinitialiserFormulaire(); // Réinitialiser le formulaire
+                isModifying = false; // Quitter le mode modification
             } else {
                 QMessageBox::critical(this, "Erreur", "La modification a échoué.");
             }
         }
     } else if (ui->radioButton->isChecked()) { // Mode ajout
-        if (id.isEmpty() || nom.isEmpty() || type.isEmpty() || etat.isEmpty() || dispo.isEmpty() || nbre == 0) {
-            QMessageBox::warning(this, "Erreur", "Veuillez remplir tous les champs.");
+        // Vérifier si l'équipement existe déjà
+        if (equip.existe(id)) {
+            QMessageBox::warning(this, "Erreur", "Un équipement avec cet ID existe déjà.");
+            return;
+        }
+
+        QString nom = ui->lineEdit_3->text();
+        QString type = ui->comboBox_4->currentText();
+        QString img = selectedImagePath;
+        QString etat = ui->comboBox_2->currentText();
+        QString dispo = ui->comboBox_3->currentText();
+        int nbre = ui->spinBox->value();
+
+        // Validation du nom : Accepte uniquement les lettres et les espaces
+        QRegularExpression nomRegex("^[A-Za-z\\s]+$");
+        if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
+            QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
+            return;
+        }
+
+        // Contrôle de saisie pour le type
+        if (type.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un type d'équipement.");
+            return;
+        }
+
+        // Contrôle de saisie pour l'état
+        if (etat.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un état pour l'équipement.");
+            return;
+        }
+
+        // Contrôle de saisie pour la disponibilité
+        if (dispo.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une disponibilité pour l'équipement.");
+            return;
+        }
+
+        // Contrôle de saisie pour le nombre
+        if (nbre <= 0) {
+            QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
             return;
         }
 
@@ -106,8 +192,6 @@ void MainWindow::on_pushButton_2_clicked() {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' ou 'Modifier' avant de valider.");
     }
 }
-
-
 void MainWindow::on_pushButton_clicked() {
     // Ouvre une boîte de dialogue pour sélectionner une image
     QString filePath = QFileDialog::getOpenFileName(this, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)");
@@ -240,13 +324,16 @@ void MainWindow::on_pushButton_3_clicked() {
 void MainWindow::chargerEquipement() {
     QString id = ui->lineEdit->text(); // Récupérer l'ID entré dans le formulaire
 
+    // Contrôle de saisie pour l'ID
     if (id.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez entrer un ID d'équipement.");
         return;
     }
 
-    Equipement equip = Equipement::getEquipementById(id); // Récupérer l'équipement par son ID
+    // Récupérer l'équipement par son ID
+    Equipement equip = Equipement::getEquipementById(id);
 
+    // Vérifier si l'équipement existe
     if (equip.getId().isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Aucun équipement trouvé avec cet ID.");
         return;
@@ -265,12 +352,20 @@ void MainWindow::chargerEquipement() {
         // Reconstruire le chemin complet de l'image
         QString imagePath = QDir::currentPath() + "/images/" + imageName; // Chemin relatif
 
+        // Vérifier si le fichier image existe
+        if (!QFile::exists(imagePath)) {
+            QMessageBox::warning(this, "Erreur", "Le fichier image n'existe pas : " + imagePath);
+            ui->labelImage->clear(); // Effacer l'image si le fichier n'existe pas
+            qDebug() << "Nom de l'image récupéré: " << equip.getImage();
+            return;
+        }
+
         // Charger l'image dans un QLabel
         QPixmap pixmap(imagePath);
         if (!pixmap.isNull()) {
             ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
         } else {
-            QMessageBox::warning(this, "Erreur", "Impossible de charger l'image.");
+            QMessageBox::warning(this, "Erreur", "Le fichier image est corrompu ou non supporté.");
             ui->labelImage->clear(); // Effacer l'image si elle ne peut pas être chargée
         }
     } else {
@@ -293,3 +388,5 @@ void MainWindow::reinitialiserFormulaire() {
     ui->radioButton_2->setChecked(false); // Désélectionner "Modifier"
     isModifying = false;            // Réinitialiser le mode modification
 }
+
+

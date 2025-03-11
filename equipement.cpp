@@ -126,33 +126,33 @@ bool Equipement::modifier() {
     qDebug() << "Modification réussie pour l'équipement ID :" << id_equipement;
     return true;
 }
-
-
-bool Equipement::existe(const QString &id) {
-    QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM \"RAWEN\".\"EQUIPEMENT\" WHERE \"ID_EQUIPEMENT\" = :id");
-    query.bindValue(":id", id);
-    if (query.exec() && query.next()) {
-        return query.value(0).toInt() > 0;
-    }
-    return false;
-}
 Equipement Equipement::getEquipementById(const QString &id) {
     QSqlQuery query;
     query.prepare("SELECT * FROM Equipement WHERE id_equipement = :id");
     query.bindValue(":id", id);
 
     if (query.exec() && query.next()) {
-        QString id = query.value(0).toString();
-        QString nom = query.value(1).toString();
-        QString etat = query.value(2).toString();
-        QString image = query.value(3).toString();
-        QString type = query.value(4).toString();
-        QString dispo = query.value(5).toString();
-        int nombre = query.value(6).toInt();
+        QString id = query.value("id_equipement").toString();
+        QString nom = query.value("nom_eq").toString();
+        QString etat = query.value("etat").toString();
+        QString image = query.value("image").toString(); // Récupérer le nom du fichier image
+        QString type = query.value("type").toString();
+        QString dispo = query.value("disponibilite").toString();
+        int nombre = query.value("nbre_eq").toInt();
 
         return Equipement(id, nom, etat, image, type, dispo, nombre);
     }
 
     return Equipement(); // Retourne un équipement vide si non trouvé
+}
+bool Equipement::existe(const QString &id) {
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM Equipement WHERE id_equipement = :id");
+    query.bindValue(":id", id);
+
+    if (query.exec() && query.next()) {
+        return query.value(0).toInt() > 0; // Retourne true si l'équipement existe
+    }
+
+    return false; // Retourne false en cas d'erreur ou si l'équipement n'existe pas
 }
