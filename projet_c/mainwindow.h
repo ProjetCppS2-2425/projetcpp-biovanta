@@ -25,6 +25,7 @@ public:
 public slots:
     void on_radioButton_Ajouter_toggled(bool checked);
     void on_pushButton_supp_clicked();
+    void on_radioButton_Modifier_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

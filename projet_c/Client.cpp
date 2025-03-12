@@ -4,6 +4,11 @@
 #include <QSqlError>
 #include <QVariant>
 #include <QMessageBox>
+#include <QDebug>
+#include <QRegularExpression>
+#include <QSqlQueryModel>
+#include "ui_mainwindow.h"
+
 
 Client::Client(){}
 Client::Client(int id_c, QString nomA, QString adresse, QString typeA,
@@ -88,30 +93,57 @@ bool Client::ajouter()
         return false;
     }
 }
-#include <QMessageBox>
-#include <QDebug>
-#include <QRegularExpression>
-#include <QSqlError>
-
 
 
 bool Client::supprimer(int id){
      QSqlQuery query;
-     query.prepare("Delete from Client where ID_CLIENT=:id");
+     query.prepare("Delete from Client where ID_CLIENT=:ID_CLIENT");
     query.bindValue(":ID_CLIENT",id);
      return query.exec();
 }
 bool Client::exists(int id) {
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM CLIENT WHERE ID_CLIENT = :id");
-    query.bindValue(":id", id);
-
+    query.prepare("SELECT ID_CLIENT FROM CLIENT WHERE ID_CLIENT = :ID_CLIENT");
+    query.bindValue(":ID_CLIENT", id);
     if (query.exec() && query.next()) {
         return true;  // Check if count > 0
     } else {
-        return false;  // Query failed or no ID found
+        return false;
     }
 }
 
 
+QSqlQueryModel * Client::afficher(){
+    QSqlQueryModel * model = new QSqlQueryModel();
+    model->setQuery("select * from CLIENT");
 
+    if( model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID Client"))){
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("set"
+                                     "Click Cancel to exit."), QMessageBox::Cancel);
+    }
+    model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom Association"));
+    model->setHeaderData(2,Qt::Horizontal,QObject::tr("Adresse"));
+    model->setHeaderData(3,Qt::Horizontal,QObject::tr("Type Association"));
+    model->setHeaderData(4,Qt::Horizontal,QObject::tr("Nom Representant"));
+    model->setHeaderData(5,Qt::Horizontal,QObject::tr("Email"));
+    model->setHeaderData(6,Qt::Horizontal,QObject::tr("ID contrat"));
+    return model;
+}
+bool Client::modifier(){
+    QSqlQuery query;
+    query.prepare("UPDATE CLIENTS SET NOM_ASSOCIATION = :nom_association, ADRESSE = :adresse, TYPE_ASSOCIATION = :type_association, NOM_REP = :nom_rep, EMAIL = :email, ID_CONTRAT = :id_contrat  WHERE ID_CLIENT = :id_client");
+    query.bindValue(":id_client", id_client);
+    query.bindValue(":nom_association", nomA);
+    query.bindValue(":adresse", adresse);
+    query.bindValue(":type_association", typeA);
+    query.bindValue(":nom_rep", nomR);
+    query.bindValue(":email", email);
+    query.bindValue(":id_contrat", id_contrat);
+    if (query.exec()) {
+        return true;
+    } else {
+        qDebug() << "Database Error: " << query.lastError().text();
+        return false;
+    }
+}

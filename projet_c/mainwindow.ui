@@ -557,7 +557,7 @@ QPushButton#pushButton_8::before {
       <string>Ajouter</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton_2">
+    <widget class="QRadioButton" name="radioButton_Modifier">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -1057,65 +1057,6 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
        <string> supprimer un équipement :</string>
       </property>
      </widget>
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>881</width>
-        <height>331</height>
-       </rect>
-      </property>
-      <property name="rowCount">
-       <number>8</number>
-      </property>
-      <property name="columnCount">
-       <number>7</number>
-      </property>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <column>
-       <property name="text">
-        <string>Id Client</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Type Association</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nom Représentant</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Nom Association</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Adresse</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Email</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Id Contrat</string>
-       </property>
-      </column>
-     </widget>
      <widget class="QLineEdit" name="LineEdit_supp">
       <property name="geometry">
        <rect>
@@ -1123,6 +1064,16 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
         <y>20</y>
         <width>113</width>
         <height>28</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTableView" name="tableView">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>871</width>
+        <height>301</height>
        </rect>
       </property>
      </widget>

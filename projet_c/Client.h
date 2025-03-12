@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
-
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 class Client
 {
 private:
@@ -41,6 +42,8 @@ public:
     bool ajouter();
     bool supprimer(int);
     bool exists(int);
+    QSqlQueryModel * afficher();
+    bool modifier();
 
 };
 
