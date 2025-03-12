@@ -8,6 +8,7 @@
 #include <QRegularExpression>
 #include <QSqlQueryModel>
 #include "ui_mainwindow.h"
+#include  <QSqlTableModel>
 
 
 Client::Client(){}
@@ -101,27 +102,37 @@ bool Client::supprimer(int id){
     query.bindValue(":ID_CLIENT",id);
      return query.exec();
 }
-bool Client::exists(int id) {
+QSqlQueryModel* Client::afficher()
+{
+    QSqlQueryModel* model = new QSqlQueryModel();
+    model->setQuery("SELECT * FROM CLIENT");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID_CLIENT"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("NOM_ASSOCIATION"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("ADRESSE"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("TYPE_ASSOCIATION"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("NOM_REP"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("EMAIL"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("ID_CONTRAT"));
+
+    return model;
+}
+/*bool Client::exists(int id) {
     QSqlQuery query;
     query.prepare("SELECT ID_CLIENT FROM CLIENT WHERE ID_CLIENT = :ID_CLIENT");
     query.bindValue(":ID_CLIENT", id);
     if (query.exec() && query.next()) {
-        return true;  // Check if count > 0
+        return true;
     } else {
         return false;
     }
-}
+}*/
 
 
-QSqlQueryModel * Client::afficher(){
+/*QSqlQueryModel * Client::afficher(){
     QSqlQueryModel * model = new QSqlQueryModel();
     model->setQuery("select * from CLIENT");
 
-    if( model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID Client"))){
-        QMessageBox::information(nullptr, QObject::tr("OK"),
-                                 QObject::tr("set"
-                                     "Click Cancel to exit."), QMessageBox::Cancel);
-    }
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID Client"));
     model->setHeaderData(1,Qt::Horizontal,QObject::tr("Nom Association"));
     model->setHeaderData(2,Qt::Horizontal,QObject::tr("Adresse"));
     model->setHeaderData(3,Qt::Horizontal,QObject::tr("Type Association"));
@@ -130,10 +141,19 @@ QSqlQueryModel * Client::afficher(){
     model->setHeaderData(6,Qt::Horizontal,QObject::tr("ID contrat"));
     return model;
 }
+QSqlQueryModel * Client::afficher(){
+    QSqlQueryModel * model = new QSqlQueryModel();
+    model->setQuery("SELECT ID_CLIENT AS \"ID\", NOM_ASSOCIATION AS \"Association\", "
+                    "ADRESSE AS \"Address\", TYPE_ASSOCIATION AS \"Type\", "
+                    "NOM_REP AS \"Representative\", EMAIL AS \"Email\", "
+                    "ID_CONTRAT AS \"Contract\" FROM CLIENTS");
+
+    return model;
+}
 bool Client::modifier(){
     QSqlQuery query;
     query.prepare("UPDATE CLIENTS SET NOM_ASSOCIATION = :nom_association, ADRESSE = :adresse, TYPE_ASSOCIATION = :type_association, NOM_REP = :nom_rep, EMAIL = :email, ID_CONTRAT = :id_contrat  WHERE ID_CLIENT = :id_client");
-    query.bindValue(":id_client", id_client);
+    query.bindValue(":id_client", id_c);
     query.bindValue(":nom_association", nomA);
     query.bindValue(":adresse", adresse);
     query.bindValue(":type_association", typeA);
@@ -143,7 +163,24 @@ bool Client::modifier(){
     if (query.exec()) {
         return true;
     } else {
-        qDebug() << "Database Error: " << query.lastError().text();
         return false;
     }
+}
+*/
+bool Client::modifier()
+{
+    QSqlQuery query;
+    query.prepare("UPDATE CLIENT SET NOM_ASSOCIATION = :NOM_ASSOCIATION, ADRESSE = :ADRESSE, "
+                  "TYPE_ASSOCIATION = :TYPE_ASSOCIATION, NOM_REP = :NOM_REP, "
+                  "EMAIL = :EMAIL, ID_CONTRAT = :ID_CONTRAT WHERE ID_CLIENT = :ID_CLIENT");
+
+    query.bindValue(":ID_CLIENT", id_c);
+    query.bindValue(":NOM_ASSOCIATION", nomA);
+    query.bindValue(":ADRESSE", adresse);
+    query.bindValue(":TYPE_ASSOCIATION", typeA);
+    query.bindValue(":NOM_REP", nomR);
+    query.bindValue(":EMAIL", email);
+    query.bindValue(":ID_CONTRAT", id_contrat);
+
+    return query.exec();
 }

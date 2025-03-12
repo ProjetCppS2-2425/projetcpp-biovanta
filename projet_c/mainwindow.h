@@ -21,7 +21,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-   // void on_pushButton_ajouter_clicked();
 public slots:
     void on_radioButton_Ajouter_toggled(bool checked);
     void on_pushButton_supp_clicked();
