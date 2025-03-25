@@ -8,6 +8,13 @@
 #include <QAbstractProxyModel>
 #include <QSortFilterProxyModel>
 #include "Client.h"
+#include <QFileDialog>
+#include <QSqlQueryModel>
+#include <QTextDocument>
+#include <QPrinter>
+#include <QDebug>
+#include <QPageLayout>
+
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,13 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ok->setIcon(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\search.png"));
     connect(ui->radioButton_Ajouter, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Ajouter_toggled);
     connect(ui->radioButton_Modifier, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Modifier_toggled);
-  // ui->tableView->setModel(C.afficher());
-   /* auto* proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(C.afficher());
-    ui->tableView->setModel(proxyModel);*/
     Client C;
     ui->tableView->setModel(C.afficher());
-
+    connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
 }
 
 MainWindow::~MainWindow()
@@ -214,3 +217,86 @@ void MainWindow::on_pushButton_supp_clicked(){
                 }
             }
         }
+
+        void MainWindow::onPdfButtonClicked() {
+            // Open a file dialog to choose the save location
+            QString fileName = QFileDialog::getSaveFileName(this, "Save PDF", "", "PDF Files (*.pdf)");
+            if (fileName.isEmpty()) {
+                return; // User canceled the dialog
+            }
+
+            // Fetch the list of clients from the database
+            Client C;
+            QSqlQueryModel *model = C.afficher(); // Fetch data using your afficher() method
+
+            // Create an HTML string for the PDF content
+            QString html = "<div style='border: 5px solid green; padding: 20px; font-family: Arial;'>"
+                           "<h1 style='text-align: center; color: green;'>Liste des Clients</h1>"
+                           "<div style='margin: 0 auto; width: 100%;'>"
+                           "<table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse; font-size: 12px; margin: 0 auto;'>"
+                           "<tr>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>ID</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>Nom</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>Adresse</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>Type</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>Nom Responsable</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>Email</th>"
+                           "<th style='background-color: #f2f2f2; padding: 10px;'>ID Contrat</th>"
+                           "</tr>";
+
+            for (int row = 0; row < model->rowCount(); ++row) {
+                int id_c = model->data(model->index(row, 0)).toInt();
+                QString nomA = model->data(model->index(row, 1)).toString();
+                QString adresse = model->data(model->index(row, 2)).toString();
+                QString typeA = model->data(model->index(row, 3)).toString();
+                QString nomR = model->data(model->index(row, 4)).toString();
+                QString email = model->data(model->index(row, 5)).toString();
+                int id_contrat = model->data(model->index(row, 6)).toInt();
+
+                html += QString("<tr>"
+                                "<td style='padding: 10px;'>%1</td>"
+                                "<td style='padding: 10px;'>%2</td>"
+                                "<td style='padding: 10px;'>%3</td>"
+                                "<td style='padding: 10px;'>%4</td>"
+                                "<td style='padding: 10px;'>%5</td>"
+                                "<td style='padding: 10px;'>%6</td>"
+                                "<td style='padding: 10px;'>%7</td>"
+                                "</tr>")
+                            .arg(id_c)
+                            .arg(nomA)
+                            .arg(adresse)
+                            .arg(typeA)
+                            .arg(nomR)
+                            .arg(email)
+                            .arg(id_contrat);
+            }
+
+            html += "</table></div>"; // Close the table
+
+            // Footer with Contact Information
+            html += "<div style='text-align: center; font-family: Arial; font-size: 12px; margin-top: 20px;'>"
+                    "<p style='margin: 5px;'>Adresse: Ariana 2083</p>"
+                    "<p style='margin: 5px;'>Email: smartvax@yahoo.com</p>"
+                    "<p style='margin: 5px;'>Téléphone: +216 21 276 002</p>"
+                    "<p style='margin-top: 15px; font-style: italic;'>Le Centre de Vaccination et de Recherche Biologique offre des services de vaccination de qualité et mène des recherches avancées pour la santé publique.</p>"
+                    "</div>"
+                    "</div>"; // Close outer div
+
+            // Create a QTextDocument and set the HTML content
+            QTextDocument document;
+            document.setHtml(html);
+
+            // Create a QPrinter to generate the PDF
+            QPrinter printer(QPrinter::PrinterResolution);
+            printer.setOutputFormat(QPrinter::PdfFormat);
+            printer.setOutputFileName(fileName);
+
+            // Set page margins (optional)
+            printer.setPageMargins(QMarginsF(20, 20, 20, 20), QPageLayout::Millimeter); // 20mm margins on all sides
+
+            // Print the document to the PDF file
+            document.print(&printer);
+
+            qDebug() << "PDF saved to:" << fileName;
+        }
+

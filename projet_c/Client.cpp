@@ -184,3 +184,4 @@ bool Client::modifier()
 
     return query.exec();
 }
+

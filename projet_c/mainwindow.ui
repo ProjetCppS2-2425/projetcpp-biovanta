@@ -86,6 +86,11 @@ QPushButton#btnEquipement:checked {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label{
+color: #000000;
+}</string>
+     </property>
      <property name="text">
       <string>Id Client</string>
      </property>
@@ -109,6 +114,11 @@ QPushButton#btnEquipement:checked {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_2{
+color: #000000;
+}</string>
+     </property>
      <property name="text">
       <string>Nom de l'association</string>
      </property>
@@ -121,6 +131,11 @@ QPushButton#btnEquipement:checked {
        <width>131</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_3{
+color: #000000;
+}</string>
      </property>
      <property name="text">
       <string>Nom Représentant</string>
@@ -135,6 +150,11 @@ QPushButton#btnEquipement:checked {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_5{
+color: #000000;
+}</string>
+     </property>
      <property name="text">
       <string>Adresse</string>
      </property>
@@ -148,11 +168,16 @@ QPushButton#btnEquipement:checked {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_7{
+color: #000000;
+}</string>
+     </property>
      <property name="text">
       <string>Email</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_9">
+    <widget class="QLabel" name="ajout">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -163,9 +188,120 @@ QPushButton#btnEquipement:checked {
      </property>
      <property name="palette">
       <palette>
-       <active/>
-       <inactive/>
-       <disabled/>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="128">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="128">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="128">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
       </palette>
      </property>
      <property name="font">
@@ -177,7 +313,9 @@ QPushButton#btnEquipement:checked {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QLabel#ajout{
+color: #000000;
+}</string>
      </property>
      <property name="text">
       <string> Ajout </string>
@@ -201,6 +339,11 @@ QPushButton#btnEquipement:checked {
        <width>151</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_4{
+color: #000000;
+}</string>
      </property>
      <property name="text">
       <string>Type</string>
@@ -281,8 +424,8 @@ QPushButton#btnEquipement:checked {
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true">Qlabel{
-text-color:#080808;
+      <string notr="true">QLabel#label_12{
+color:#000000;
 }</string>
      </property>
      <property name="text">
@@ -553,6 +696,11 @@ QPushButton#pushButton_8::before {
        <height>24</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QRadioButton#radioButton_Ajouter{
+color:#000000;
+}</string>
+     </property>
      <property name="text">
       <string>Ajouter</string>
      </property>
@@ -565,6 +713,11 @@ QPushButton#pushButton_8::before {
        <width>110</width>
        <height>24</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QRadioButton#radioButton_Modifier{
+color:#000000;
+}</string>
      </property>
      <property name="text">
       <string>Modifier</string>
@@ -784,6 +937,11 @@ QGroupBox {
        <height>20</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_8{
+color:#000000;
+}</string>
+     </property>
      <property name="text">
       <string>rechercher :</string>
      </property>
@@ -846,6 +1004,11 @@ QGroupBox {
        <width>63</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel#label_11{
+color:#000000;
+}</string>
      </property>
      <property name="text">
       <string>Tri par :</string>
@@ -989,6 +1152,11 @@ QGroupBox {
         <underline>true</underline>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_10{
+color:#000000;
+}</string>
+      </property>
       <property name="text">
        <string>  Listes </string>
       </property>
@@ -1032,31 +1200,6 @@ QPushButton {
        </size>
       </property>
      </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>500</x>
-        <y>20</y>
-        <width>251</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">label_12
-(rgb(0, 0, 100)
-font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
-      </property>
-      <property name="text">
-       <string> supprimer un équipement :</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="LineEdit_supp">
       <property name="geometry">
        <rect>
@@ -1077,24 +1220,25 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
        </rect>
       </property>
      </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>20</y>
+        <width>121</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel#label_6{
+color:#000000;
+}</string>
+      </property>
+      <property name="text">
+       <string>Supprimer Client:</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QLabel" name="bg">
-     <property name="geometry">
-      <rect>
-       <x>-350</x>
-       <y>-10</y>
-       <width>1381</width>
-       <height>621</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../application/bg.jpg</pixmap>
-     </property>
-    </widget>
-    <zorder>bg</zorder>
     <zorder>groupBox_4</zorder>
     <zorder>label_8</zorder>
     <zorder>comboBox_5</zorder>
@@ -1106,8 +1250,25 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <zorder>checkBox</zorder>
     <zorder>checkBox_2</zorder>
    </widget>
-   <zorder>groupBox_2</zorder>
+   <widget class="QLabel" name="bg">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>50</y>
+      <width>1381</width>
+      <height>571</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../application/bg.jpg</pixmap>
+    </property>
+   </widget>
+   <zorder>bg</zorder>
    <zorder>groupBox</zorder>
+   <zorder>groupBox_2</zorder>
    <zorder>sidebare</zorder>
    <zorder>groupBox_3</zorder>
    <zorder>frame</zorder>
