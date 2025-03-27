@@ -5,6 +5,10 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
+#include <QtCharts>
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

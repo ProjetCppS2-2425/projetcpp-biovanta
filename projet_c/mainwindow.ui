@@ -1047,7 +1047,7 @@ color:#000000;
     <widget class="QPushButton" name="stat">
      <property name="geometry">
       <rect>
-       <x>660</x>
+       <x>700</x>
        <y>80</y>
        <width>81</width>
        <height>31</height>

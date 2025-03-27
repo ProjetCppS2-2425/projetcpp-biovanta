@@ -1,7 +1,7 @@
-QT       += core gui sql printsupport charts qml quick
+QT       += core gui sql printsupport charts
 
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets charts
 
 CONFIG += c++17 console
 
@@ -13,16 +13,18 @@ SOURCES += \
     Client.cpp \
     connection.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qtstat.cpp
 
 HEADERS += \
     Client.h \
     connection.h \
-    mainwindow.h
+    mainwindow.h \
+    qtstat.h
 
 FORMS += \
     mainwindow.ui \
-    stat.ui
+    qtstat.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

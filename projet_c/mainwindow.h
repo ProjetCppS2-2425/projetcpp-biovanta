@@ -8,6 +8,8 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
+#include <QtCharts>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,6 +31,10 @@ public slots:
     void on_pushButton_supp_clicked();
     void on_radioButton_Modifier_toggled(bool checked);
     void onPdfButtonClicked();
+    void on_stat_clicked();
+private slots:
+
+
 private:
     Ui::MainWindow *ui;
     Client C;

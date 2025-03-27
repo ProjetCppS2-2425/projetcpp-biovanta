@@ -17,6 +17,11 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
+#include <QtCharts>
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
+#include "qtstat.h"
 
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
@@ -41,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     Client C;
     ui->tableView->setModel(C.afficher());
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
+    connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -255,5 +261,14 @@ void MainWindow::on_pushButton_supp_clicked(){
             QString saveas = QFileDialog::getSaveFileName(this, "Save PDF", "", "PDF Files (*.pdf)");
             printer.setOutputFileName(saveas);
             doc.print(&printer);
+        }
+
+
+
+        void MainWindow::on_stat_clicked()
+        {
+            Qtstat s;
+            s.setModal(true);
+            s.exec();
         }
 
