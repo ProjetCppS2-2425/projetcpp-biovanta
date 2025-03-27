@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableView->setModel(C.afficher());
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
+
 }
 
 MainWindow::~MainWindow()
@@ -269,5 +270,6 @@ void MainWindow::on_pushButton_supp_clicked(){
         {
             s = new Qtstat(this);
             s->show();
+
         }
 
