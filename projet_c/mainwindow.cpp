@@ -267,8 +267,7 @@ void MainWindow::on_pushButton_supp_clicked(){
 
         void MainWindow::on_stat_clicked()
         {
-            Qtstat s;
-            s.setModal(true);
-            s.exec();
+            s = new Qtstat(this);
+            s->show();
         }
 

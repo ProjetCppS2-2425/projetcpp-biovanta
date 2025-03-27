@@ -9,7 +9,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QLineSeries>
 #include <QtCharts>
-
+#include "qtstat.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -38,6 +38,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Client C;
+    Qtstat *s;
 
 };
 #endif // MAINWINDOW_H
