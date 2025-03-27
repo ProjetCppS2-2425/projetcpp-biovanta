@@ -5,6 +5,9 @@
 
 #include <QMainWindow>
 #include "Client.h"
+#include <QtCharts/QChartView>
+#include <QtCharts/QChart>
+#include <QtCharts/QLineSeries>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
