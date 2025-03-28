@@ -230,8 +230,17 @@ void MainWindow::on_pushButton_supp_clicked(){
 
         void MainWindow::onPdfButtonClicked() {
             QTextDocument doc;
-            QSqlQueryModel *model = C.afficher(); //data fetched
-            QString head = "<div><tr><th>ID</th><th>NOM ASSOCIATION</th><th>ADRESSE</th><th>TYPE ASSOCIATION</th><th>NOM RESPONSABLE</th><th>EMAIL</th><th>ID CONTRAT</th></tr></div>";
+            QSqlQueryModel *model = C.afficher();
+            QString head = R"(<table >
+                <tr>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ID</th>
+                <th  width="90px"  style="background-color: #2C3E50; color: white;" >NOM ASSOCIATION</th>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ADRESSE</th>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >TYPE ASSOCIATION</th>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >NOM RESPONSABLE</th>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >EMAIL</th>
+                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ID CONTRAT</th>
+                </tr>)";
             //data stuff
             int count;
             QString data=""; //second html
@@ -245,17 +254,17 @@ void MainWindow::on_pushButton_supp_clicked(){
                 int id_contrat = model->data(model->index(count, 6)).toInt();
                 //all data taken
                 //build html:
-                data = data + "<td>"+ QString::number(id_c) +"</td>";
-                data = data + "<td>"+ nomA +"</td>";
-                data = data + "<td>"+ adresse +"</td>";
-                data = data + "<td>"+ typeA +"</td>";
-                data = data + "<td>"+ nomR +"</td>";
-                data = data + "<td>"+ email +"</td>";
-                data = data + "<td>"+ QString::number(id_contrat) +"</td>";
+                data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
+                data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomA +"</td>";
+                data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ adresse +"</td>";
+                data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ typeA +"</td>";
+                data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomR +"</td>";
+                data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ email +"</td>";
+                data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_contrat) +"</td>";
 
             }
             //setting html to the doc
-            doc.setHtml(head + "<tr>" + data + "</tr>");
+            doc.setHtml(head + "<tr>" + data + "</tr>" + "</table>");
             //printing
             QPrinter printer(QPrinter::PrinterResolution);
             printer.setOutputFormat(QPrinter::PdfFormat);
