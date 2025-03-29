@@ -22,7 +22,7 @@
 #include <QtGui>
 #include <QtWidgets>
 #include "qtstat.h"
-
+#include "connection.h"
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,9 +45,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->radioButton_Modifier, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Modifier_toggled);
     Client C;
     ui->tableView->setModel(C.afficher());
+    Connection c;
+    c.createconnect();
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
-    ui->debug->setText(QString::number(C.getNbClients()));
+    ui->debug->setText(QString::number(C.countClients()));
+    //ui->debug->setText( c.check_data_base() ? "true" : "false");
+    if (c.check_data_base()) {
+         ui->tableView->setModel(C.afficher());
+    } else {
+        qDebug() << "database is not open";
+    }
 }
 
 MainWindow::~MainWindow()

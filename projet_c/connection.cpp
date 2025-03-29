@@ -17,6 +17,13 @@ bool Connection::createconnect()
 
     return  test;
 }
+bool Connection::check_data_base(){
+    if (db.isValid() && db.isOpen()) {
+        return true;
+    } else {
+        return false;
+    }
+}
  void Connection::closeConnection()
 {
     db.close();

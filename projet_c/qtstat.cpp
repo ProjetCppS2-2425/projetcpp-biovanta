@@ -4,11 +4,13 @@
 #include <QtWidgets>
 #include <QtGui>
 #include <QtCore>
+#include "Client.h"
 Qtstat::Qtstat(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Qtstat)
 {
     ui->setupUi(this);
+    Client C;
 
     //series is a container to bars
     QBarSeries *series = new QBarSeries();
@@ -46,7 +48,7 @@ Qtstat::Qtstat(QWidget *parent)
 
     //basic: the y axis stuff
     QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0,50);
+    axisY->setRange(0,C.countClients());
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 

@@ -184,13 +184,17 @@ bool Client::modifier()
 
     return query.exec();
 }
-int Client::getNbClients(){
+
+int Client::countClients()
+{
     QSqlQuery query;
-    int count=0;
-    query.prepare("SELECT ID_CLIENT FROM CLIENT where (ID_CLIENT not null)");
-    query.bindValue(":ID_CLIENT", id_c);
-    while (!(id_c==NULL)){
-        count++;
+    query.prepare("SELECT ID_CLIENT FROM CLIENT");
+    int count = 0;
+    if (query.exec()) {
+        while (query.next()) {
+            count++;
+        }
     }
     return count;
 }
+
