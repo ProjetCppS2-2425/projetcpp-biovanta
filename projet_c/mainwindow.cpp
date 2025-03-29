@@ -231,20 +231,69 @@ void MainWindow::on_pushButton_supp_clicked(){
         void MainWindow::onPdfButtonClicked() {
             QTextDocument doc;
             QSqlQueryModel *model = C.afficher();
-            QString head = R"(<table >
-                <tr>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ID</th>
-                <th  width="90px"  style="background-color: #2C3E50; color: white;" >NOM ASSOCIATION</th>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ADRESSE</th>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >TYPE ASSOCIATION</th>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >NOM RESPONSABLE</th>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >EMAIL</th>
-                <th  width="90px"  style="background-color: #2C3E50;  color: white;" >ID CONTRAT</th>
-                </tr>)";
+           // QString head = R"(<table style="width: 90px; background-color: #2C3E50; color: white;">
+             //   <tr>
+               /* <th   style="background-color: #2C3E50;  color: white;" >ID</th>
+                <th   style="background-color: #2C3E50; color: white;" >NOM ASSOCIATION</th>
+                <th   style="background-color: #2C3E50;  color: white;" >ADRESSE</th>
+                <th   style="background-color: #2C3E50;  color: white;" >TYPE ASSOCIATION</th>
+                <th   style="background-color: #2C3E50;  color: white;" >NOM RESPONSABLE</th>
+                <th   style="background-color: #2C3E50;  color: white;" >EMAIL</th>
+                <th   style="background-color: #2C3E50;  color: white;" >ID CONTRAT</th>
+                </tr>)";*/
+                            QString head = R"(
+                <table style="border-spacing: 5px; width: 630px; table-layout: fixed; text-align: left;">
+                    <colgroup>
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                    </colgroup>
+                    <tr>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">ID</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">NOM ASSOCIATION</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">ADRESSE</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">TYPE ASSOCIATION</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">NOM RESPONSABLE</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">EMAIL</th>
+                        <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">ID CONTRAT</th>
+                    </tr>)";
+           /* QString col= R"(                    <colgroup>
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                        <col style="width: 90px;">
+                    </colgroup>)";*/
             //data stuff
             int count;
-            QString data=""; //second html
-            for (count =0; count<model->rowCount();count++){
+            QString data="<tr>"; //second html
+            for (count =1; count<=model->rowCount();count++){
+                if (count==model->rowCount()){
+                    int id_c = model->data(model->index(count, 0)).toInt();
+                    QString nomA = model->data(model->index(count, 1)).toString();
+                    QString adresse = model->data(model->index(count, 2)).toString();
+                    QString typeA = model->data(model->index(count, 3)).toString();
+                    QString nomR = model->data(model->index(count, 4)).toString();
+                    QString email = model->data(model->index(count, 5)).toString();
+                    int id_contrat = model->data(model->index(count, 6)).toInt();
+                    //all data taken
+                    //build html:
+                    data += R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
+                    data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomA +"</td>";
+                    data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ adresse +"</td>";
+                    data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ typeA +"</td>";
+                    data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomR +"</td>";
+                    data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ email +"</td>";
+                    data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_contrat) +"</td>";
+                    data = data + "</tr>";
+                    break;
+                }
                 int id_c = model->data(model->index(count, 0)).toInt();
                 QString nomA = model->data(model->index(count, 1)).toString();
                 QString adresse = model->data(model->index(count, 2)).toString();
@@ -254,13 +303,14 @@ void MainWindow::on_pushButton_supp_clicked(){
                 int id_contrat = model->data(model->index(count, 6)).toInt();
                 //all data taken
                 //build html:
-                data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
+                data += R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
                 data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomA +"</td>";
                 data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ adresse +"</td>";
                 data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ typeA +"</td>";
                 data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomR +"</td>";
                 data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ email +"</td>";
                 data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_contrat) +"</td>";
+                data = data + "</tr>" +"<tr>";
 
             }
             //setting html to the doc
