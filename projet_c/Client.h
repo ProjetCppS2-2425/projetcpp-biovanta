@@ -25,6 +25,7 @@ public:
     QString getNomR() ;
     QString getEmail() ;
     int getIdContrat() ;
+    int getNbClients();
 
 
 
