@@ -198,3 +198,62 @@ int Client::countClients()
     return count;
 }
 
+int Client::CalculMinister(){
+    QSqlQuery query;
+    query.prepare("SELECT ID_CLIENT, NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT  FROM CLIENT");
+    int countM=0;
+    if (query.exec()) {
+        while (query.next()) {
+          //  int id = query.value(0).toInt();
+            //QString NomA = query.value(1).toString();
+           // QString Adresse = query.value(2).toString();
+            QString typeA = query.value(3).toString();
+           /* QString NomR = query.value(4).toString();
+            QString Email = query.value(5).toString();
+            int contrat = query.value(6).toInt();*/
+            if (typeA=="Ministère de Santé"){
+                countM++;
+                qDebug()<<"fi wost loop minister";
+            }
+        }
+    }
+    qDebug()<<countM<<" error:"<<query.lastError().text();
+    QMessageBox::information(nullptr, QObject::tr("Minister:%1").arg(countM),
+                             QObject::tr("connection successful.\n"
+                                         "Click Cancel to exit."), QMessageBox::Cancel);
+    return countM;
+}
+int Client::CalculCentre(){
+    QSqlQuery query;
+    query.prepare("SELECT ID_CLIENT, NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT  FROM CLIENT");
+    int countC=0;
+    if (query.exec()) {
+        while (query.next()) {
+             QString typeA = query.value(3).toString();
+            if(typeA=="Centre pharmaceutique"){
+                countC++;
+            }
+        }
+    }
+    qDebug()<<countC<<" error:"<<query.lastError().text();
+    return countC;
+}
+int Client::CalculLabo(){
+    QSqlQuery query;
+    query.prepare("SELECT ID_CLIENT, NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT  FROM CLIENT");
+    int countL=0;
+    if (query.exec()) {
+        while (query.next()) {
+            QString typeA = query.value(3).toString();
+            if(typeA=="Laboratoire d'analyse"){
+                countL++;
+            }
+        }
+    }
+   // qDebug()<<countL<<" error:"<<query.lastError().text();
+   /* QMessageBox::information(nullptr, QObject::tr("Labo:%1").arg(countL),
+                             QObject::tr("connection successful.\n"
+                                         "Click Cancel to exit."), QMessageBox::Cancel);*/
+    return countL;
+}
+

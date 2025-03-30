@@ -13,23 +13,21 @@ Qtstat::Qtstat(QWidget *parent)
     Client C;
 
     //series is a container to bars
-    QBarSeries *series = new QBarSeries();
+    auto *series = new QBarSeries();
 
     //setting the bars
-    QBarSet *set_1 = new QBarSet("first"); //bar data name
-    set_1->append(10);
-    QBarSet *set_2 = new QBarSet("first");
-    set_2->append(10);
-    QBarSet *set_3 = new QBarSet("first");
-    set_3->append(10);
-    QBarSet *set_4 = new QBarSet("first");
-    set_4->append(10);
+    QBarSet *set1 = new QBarSet("Ministère de santé"); //bar data name
+    QBarSet *set2 = new QBarSet("Centre Pharmaceutique");
+    QBarSet *set3 = new QBarSet("Laboratoire d'analyses");
+    //set4->append(10);
+    *set1 << 5 << 0 << 0 << 4 << 0 << 7;
+    *set2 << 3 << 5 << 8 << 13 << 8 << 5;
+    *set3 << 5 << 6 << 7 << 3 << 4 << 5;
 
     //putting bars inside series
-    series->append(set_1);
-    series->append(set_2);
-    series->append(set_3);
-    series->append(set_4);
+    series->append(set1);
+    series->append(set2);
+    series->append(set3);
 
     //the chart holding it all together
     QChart *chart = new QChart();
@@ -39,7 +37,7 @@ Qtstat::Qtstat(QWidget *parent)
 
     //setting the names of bars horizontally
     QStringList Subjectname;
-    Subjectname.append("stuff");
+    Subjectname.append("stuff"); //one name set
 
     QBarCategoryAxis *axisX = new QBarCategoryAxis();
     axisX->append(Subjectname);

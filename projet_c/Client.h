@@ -27,7 +27,9 @@ public:
     int getIdContrat() ;
     bool getNbClients();
     int countClients();
-
+    int CalculMinister();
+    int CalculCentre();
+    int CalculLabo();
 
 
     void setIdClient(int id_c);

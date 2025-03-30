@@ -9,12 +9,16 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include "Client.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
     Connection c;
-
+    Client E;
+    E.CalculCentre();
+    E.CalculLabo();
+    E.CalculMinister();
     bool test=c.createconnect();
     if(test)
     {

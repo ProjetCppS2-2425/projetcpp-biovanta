@@ -332,4 +332,7 @@ void MainWindow::on_pushButton_supp_clicked(){
             s->show();
 
         }
+        void MainWindow::filtereddisplay(){
+
+        }
 

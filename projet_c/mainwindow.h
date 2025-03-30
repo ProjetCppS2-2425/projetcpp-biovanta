@@ -33,6 +33,7 @@ public slots:
     void onPdfButtonClicked();
     void on_stat_clicked();
     void display();
+    void filtereddisplay();
 private slots:
 
 
