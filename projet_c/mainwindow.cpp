@@ -43,26 +43,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ok->setIcon(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\search.png"));
     connect(ui->radioButton_Ajouter, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Ajouter_toggled);
     connect(ui->radioButton_Modifier, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Modifier_toggled);
-    Client C;
-    ui->tableView->setModel(C.afficher());
-    Connection c;
-    c.createconnect();
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
-    ui->debug->setText(QString::number(C.countClients()));
+    //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
-    if (c.check_data_base()) {
-         ui->tableView->setModel(C.afficher());
-    } else {
-        qDebug() << "database is not open";
-    }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+void MainWindow::display(){
+      ui->tableView->setModel(C.afficher());
+}
 void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
 {
     if (checked) {
