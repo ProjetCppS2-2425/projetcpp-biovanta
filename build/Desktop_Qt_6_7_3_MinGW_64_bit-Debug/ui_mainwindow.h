@@ -556,7 +556,7 @@ public:
         checkBox_2->setGeometry(QRect(590, 90, 91, 24));
         groupBox_4 = new QGroupBox(groupBox_2);
         groupBox_4->setObjectName("groupBox_4");
-        groupBox_4->setGeometry(QRect(50, 130, 861, 391));
+        groupBox_4->setGeometry(QRect(50, 130, 841, 391));
         label_10 = new QLabel(groupBox_4);
         label_10->setObjectName("label_10");
         label_10->setGeometry(QRect(20, 10, 161, 31));
@@ -584,7 +584,7 @@ public:
         supp->setIconSize(QSize(25, 25));
         label_13 = new QLabel(groupBox_4);
         label_13->setObjectName("label_13");
-        label_13->setGeometry(QRect(520, 20, 251, 20));
+        label_13->setGeometry(QRect(530, 20, 251, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -599,6 +599,7 @@ public:
         lineEdit_2 = new QLineEdit(groupBox_2);
         lineEdit_2->setObjectName("lineEdit_2");
         lineEdit_2->setGeometry(QRect(340, 30, 291, 31));
+        labelImage->raise();
         groupBox_4->raise();
         tableWidget->raise();
         label_8->raise();
@@ -610,7 +611,6 @@ public:
         ok->raise();
         checkBox->raise();
         checkBox_2->raise();
-        labelImage->raise();
         lineEdit_2->raise();
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName("groupBox_3");

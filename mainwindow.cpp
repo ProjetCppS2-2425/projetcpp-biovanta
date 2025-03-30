@@ -7,6 +7,11 @@
 #include <QFileDialog>
 #include <QPushButton>
 #include <QRegularExpression>
+#include <QTextDocument>
+#include <QPrinter>
+#include <QTextStream>
+#include <QFileDialog>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -31,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stat->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
     afficherEquipements();
-    // Appliquer le stylesheet à tableWidget
+
     ui->tableWidget->setStyleSheet(
         "QTableWidget {"
         "   background-color: #f8f9fa;"
@@ -68,32 +73,26 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_2_clicked() {
     QString id = ui->lineEdit->text();
 
-    // Contrôle de saisie pour l'ID : Ne dépasse pas 5 entiers
     if (id.isEmpty() || id.length() > 5 || !id.toInt()) {
         QMessageBox::warning(this, "Erreur", "L'ID de l'équipement doit être un nombre entier de maximum 5 chiffres.");
         return;
     }
 
-    if (ui->radioButton_2->isChecked()) { // Mode modification
+    if (ui->radioButton_2->isChecked()) {
         if (!isModifying) {
-            // Phase 1 : Charger les informations de l'équipement
             if (!equip.existe(id)) {
                 QMessageBox::warning(this, "Erreur", "L'équipement avec cet ID n'existe pas.");
                 return;
             }
 
-            chargerEquipement(); // Charge les données de l'équipement dans les champs du formulaire
-            isModifying = true; // Passer en mode modification
+            chargerEquipement();
+            isModifying = true;
         } else {
-            // Phase 2 : Appliquer le contrôle de saisie lors de la modification
             QString nom = ui->lineEdit_3->text();
             QString type = ui->comboBox_4->currentText();
-            QString img = selectedImagePath;
             QString etat = ui->comboBox_2->currentText();
             QString dispo = ui->comboBox_3->currentText();
             int nbre = ui->spinBox->value();
-
-            // Validation du nom : Accepte uniquement les lettres et les espaces
             QRegularExpression nomRegex("^[A-Za-z\\s]+$");
             if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
                 QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
@@ -124,13 +123,13 @@ void MainWindow::on_pushButton_2_clicked() {
                 return;
             }
 
-            // Enregistrer les modifications
-            Equipement equip(id, nom, etat, img, type, dispo, nbre);
+            // Enregistrer les modifications (utilisation de selectedImageData au lieu de selectedImagePath)
+            Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
-                reinitialiserFormulaire(); // Réinitialiser le formulaire
-                isModifying = false; // Quitter le mode modification
+                reinitialiserFormulaire();
+                isModifying = false;
             } else {
                 QMessageBox::critical(this, "Erreur", "La modification a échoué.");
             }
@@ -144,7 +143,6 @@ void MainWindow::on_pushButton_2_clicked() {
 
         QString nom = ui->lineEdit_3->text();
         QString type = ui->comboBox_4->currentText();
-        QString img = selectedImagePath;
         QString etat = ui->comboBox_2->currentText();
         QString dispo = ui->comboBox_3->currentText();
         int nbre = ui->spinBox->value();
@@ -180,11 +178,12 @@ void MainWindow::on_pushButton_2_clicked() {
             return;
         }
 
-        Equipement equip(id, nom, etat, img, type, dispo, nbre);
+        // Ajout avec les données binaires de l'image (utilisation de selectedImageData)
+        Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
         if (equip.ajouter()) {
             QMessageBox::information(this, "Succès", "Équipement ajouté avec succès.");
             actualiserTableau();
-            reinitialiserFormulaire(); // Réinitialiser le formulaire
+            reinitialiserFormulaire();
         } else {
             QMessageBox::critical(this, "Erreur", "L'ajout a échoué.");
         }
@@ -193,48 +192,69 @@ void MainWindow::on_pushButton_2_clicked() {
     }
 }
 void MainWindow::on_pushButton_clicked() {
-    // Ouvre une boîte de dialogue pour sélectionner une image
     QString filePath = QFileDialog::getOpenFileName(this, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)");
 
-    // Vérifie si un fichier a été sélectionné
     if (!filePath.isEmpty()) {
         QFile file(filePath);
-
-        // Vérifie si le fichier existe et est lisible
-        if (!file.exists() || !file.open(QIODevice::ReadOnly)) {
+        if (!file.open(QIODevice::ReadOnly)) {
             QMessageBox::warning(this, "Erreur", "Impossible d'ouvrir l'image sélectionnée.");
             return;
         }
 
+        // Lire l'image en tant que données binaires
+        QByteArray imageData = file.readAll();
         file.close();
+        selectedImageData = imageData;
 
-        // Extraire uniquement le nom du fichier (sans le chemin)
-        QFileInfo fileInfo(filePath);
-        QString fileName = fileInfo.fileName();
-
-        // Stocker le nom du fichier dans selectedImagePath
-        selectedImagePath = fileName;
-
-        // Afficher un message indiquant que l'image a été sélectionnée
         ui->pushButton->setText("Image sélectionnée");
     }
 }
 
 void MainWindow::afficherEquipements() {
     QList<Equipement> liste = Equipement::afficher();
-    ui->tableWidget->setRowCount(liste.size()); // Définir le nombre de lignes
+    ui->tableWidget->setRowCount(liste.size());
+
+    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
+    ui->tableWidget->setHorizontalHeaderLabels(headers);
+
+    ui->tableWidget->setUpdatesEnabled(false);
 
     for (int i = 0; i < liste.size(); ++i) {
-        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
-        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
-        ui->tableWidget->setItem(i, 2, new QTableWidgetItem(liste[i].getImage()));
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(liste[i].getType()));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
-        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
-        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
-    }
-}
+        const Equipement& e = liste[i];
 
+        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(e.getId()));
+
+        // Colonne Nom
+        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(e.getNom()));
+
+        // Colonne Image (affichage de l'image depuis les données BLOB)
+        QByteArray imageData = e.getImageData();
+        if (!imageData.isEmpty()) {
+            QPixmap pixmap;
+            if (pixmap.loadFromData(imageData)) {
+                QLabel *imageLabel = new QLabel();
+                imageLabel->setPixmap(pixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                imageLabel->setAlignment(Qt::AlignCenter);
+                ui->tableWidget->setCellWidget(i, 2, imageLabel);
+            } else {
+                ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Image invalide"));
+            }
+        } else {
+            ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Aucune image"));
+        }
+
+        // Autres colonnes
+        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(e.getType()));
+        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(e.getEtat()));
+        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(e.getDispo()));
+        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(e.getNombre())));
+    }
+
+    // Réactiver les mises à jour et ajuster la taille des colonnes
+    ui->tableWidget->setUpdatesEnabled(true);
+    ui->tableWidget->resizeColumnsToContents();
+    ui->tableWidget->resizeRowsToContents();
+}
 void MainWindow::actualiserTableau() {
     ui->tableWidget->clear();  // Efface le tableau avant mise à jour
 
@@ -252,24 +272,16 @@ void MainWindow::actualiserTableau() {
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
 
-        // Afficher l'image dans la colonne "Image"
-        QString imageName = liste[i].getImage();
-        if (!imageName.isEmpty()) {
-            QString imagePath = "C:/Users/manel/Desktop/projet_c/images/" + imageName;
-            QPixmap pixmap(imagePath);
+        QByteArray imageData = liste[i].getImageData(); // Supposons que vous avez cette méthode
+        if (!imageData.isEmpty()) {
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
             if (!pixmap.isNull()) {
                 QLabel *imageLabel = new QLabel();
-                imageLabel->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
+                imageLabel->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatio));
                 ui->tableWidget->setCellWidget(i, 2, imageLabel);
-            } else {
-                // Si l'image ne peut pas être chargée, afficher un message d'erreur
-                ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Image non trouvée"));
             }
-        } else {
-            // Si aucune image n'est associée, afficher un message
-            ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Aucune image"));
         }
-
         ui->tableWidget->setItem(i, 3, new QTableWidgetItem(liste[i].getType()));
         ui->tableWidget->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
         ui->tableWidget->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
@@ -285,98 +297,217 @@ void MainWindow::supp_clicked() {
     }
 
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Confirmation", "Voulez-vous vraiment supprimer cet équipement ?",
+    reply = QMessageBox::question(this, "Confirmation",
+                                  "Voulez-vous vraiment supprimer cet équipement ?",
                                   QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
         Equipement e;
-        qDebug() << "ID sélectionné: " << selectedId;  // Vérification de l'ID sélectionné
         if (e.supprimer(selectedId)) {
             QMessageBox::information(this, "Succès", "Équipement supprimé avec succès.");
-            actualiserTableau();  // Assurez-vous que cette méthode met à jour la table
-            QApplication::processEvents();  // Force la mise à jour de l'interface
-            selectedId.clear();
+            actualiserTableau(); // Actualiser l'affichage après suppression
+            selectedId.clear(); // Réinitialiser l'ID sélectionné
         } else {
-            QMessageBox::critical(this, "Erreur", "La suppression a échoué.");
+            QMessageBox::critical(this, "Erreur", "La suppression a échoué ou l'équipement n'existe pas.");
         }
     }
 }
-
 void MainWindow::on_tableWidget_itemClicked(QTableWidgetItem *item) {
+    if (!item) return; // Protection contre les pointeurs nuls
+
     int row = item->row();
+
+    // Vérifier que la ligne est valide
+    if (row < 0 || row >= ui->tableWidget->rowCount()) return;
+
+    // Configurer la sélection par ligne
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    selectedId = ui->tableWidget->item(row, 0)->text();  // Stocke l'ID de l'équipement sélectionné
-}
+    ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 
+    // Stocker l'ID de l'équipement sélectionné
+    QTableWidgetItem *idItem = ui->tableWidget->item(row, 0);
+    if (idItem) {
+        selectedId = idItem->text();
 
-void MainWindow::on_pushButton_3_clicked() {
-    // Vider tous les champs du formulaire
-    ui->lineEdit->clear();  // id
-    ui->lineEdit_3->clear();  // nom
-    ui->comboBox_4->setCurrentIndex(0);  // type
-    ui->comboBox_2->setCurrentIndex(0);  // etat
-    ui->comboBox_3->setCurrentIndex(0);  // dispo
-    ui->spinBox->setValue(0);  // nbre
-    selectedImagePath.clear();  // image
-    ui->radioButton->setChecked(false);  // "Ajouter"
-    ui->radioButton_2->setChecked(false);  // "Modifier"
+        // Mettre en surbrillance toute la ligne
+        ui->tableWidget->selectRow(row);
+    }
 }
 void MainWindow::chargerEquipement() {
-    QString id = ui->lineEdit->text(); // Récupérer l'ID entré dans le formulaire
+    QString id = ui->lineEdit->text();
 
-    // Contrôle de saisie pour l'ID
     if (id.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez entrer un ID d'équipement.");
         return;
     }
 
-    // Récupérer l'équipement par son ID
     Equipement equip = Equipement::getEquipementById(id);
 
-    // Vérifier si l'équipement existe
     if (equip.getId().isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Aucun équipement trouvé avec cet ID.");
         return;
     }
 
-    // Remplir le formulaire avec les informations de l'équipement
+    // Remplir les champs du formulaire
     ui->lineEdit_3->setText(equip.getNom());
     ui->comboBox_4->setCurrentText(equip.getType());
     ui->comboBox_2->setCurrentText(equip.getEtat());
     ui->comboBox_3->setCurrentText(equip.getDispo());
     ui->spinBox->setValue(equip.getNombre());
 
-    // Récupérer le chemin de l'image
-    QString imageName = equip.getImage();
-    if (!imageName.isEmpty()) {
-        // Reconstruire le chemin complet de l'image
-        selectedImagePath = "C:/Users/manel/Desktop/projet_c/images/" + imageName; // Chemin absolu
+    QByteArray imageData = equip.getImageData();
+    if (!imageData.isEmpty()) {
+        selectedImageData = imageData; // Stocker les données binaires
 
-        // Afficher un message indiquant que l'image a été chargée
-        ui->pushButton->setText("Image chargée");
-
-        // Afficher le chemin de l'image pour débogage
-        qDebug() << "Chemin de l'image : " << selectedImagePath;
+        // Afficher un aperçu de l'image
+        QPixmap pixmap;
+        if (pixmap.loadFromData(imageData)) {
+            // Si vous avez un QLabel pour l'aperçu (remplacez 'ui->labelImage' par votre widget)
+            ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui->pushButton->setText("Image chargée");
+        } else {
+            ui->labelImage->clear();
+            ui->pushButton->setText("Image corrompue");
+            selectedImageData.clear();
+        }
     } else {
-        selectedImagePath.clear(); // Effacer le chemin de l'image si aucune image n'est associée
-        ui->pushButton->setText("Choisir image"); // Réinitialiser le texte du bouton
+        ui->labelImage->clear();
+        ui->pushButton->setText("Choisir image");
+        selectedImageData.clear();
     }
 
-    isModifying = true; // Passer en mode modification
+    isModifying = true;
 }
+void MainWindow::on_pushButton_3_clicked() {
+    ui->lineEdit->clear();  // id
+    ui->lineEdit_3->clear();  // nom
+    ui->comboBox_4->setCurrentIndex(0);  // type
+    ui->comboBox_2->setCurrentIndex(0);  // etat
+    ui->comboBox_3->setCurrentIndex(0);  // dispo
+    ui->spinBox->setValue(0);  // nbre
+    selectedImageData.clear();  // image
+    ui->radioButton->setChecked(false);  // "Ajouter"
+    ui->radioButton_2->setChecked(false);  // "Modifier"
+}
+
 void MainWindow::reinitialiserFormulaire() {
-    ui->lineEdit->clear();          // ID
-    ui->lineEdit_3->clear();        // Nom
-    ui->comboBox_4->setCurrentIndex(0); // Type
-    ui->comboBox_2->setCurrentIndex(0); // État
-    ui->comboBox_3->setCurrentIndex(0); // Disponibilité
-    ui->spinBox->setValue(0);       // Nombre
-    selectedImagePath.clear();      // Chemin de l'image
-    ui->pushButton->setText("Choisir image"); // Réinitialiser le texte du bouton image
-    ui->labelImage->clear();        // Effacer l'image affichée
-    ui->radioButton->setChecked(false); // Désélectionner "Ajouter"
-    ui->radioButton_2->setChecked(false); // Désélectionner "Modifier"
-    isModifying = false;            // Réinitialiser le mode modification
+    ui->lineEdit->clear();
+    ui->lineEdit_3->clear();
+    ui->comboBox_4->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+    ui->comboBox_3->setCurrentIndex(0);
+    ui->spinBox->setValue(1);
+    selectedImageData.clear();
+    if (ui->labelImage) {
+        ui->labelImage->clear();
+    }
+    ui->pushButton->setText("Choisir image");
+    ui->pushButton->setIcon(QIcon());
+    ui->radioButton->setAutoExclusive(false);
+    ui->radioButton->setChecked(false);
+    ui->radioButton_2->setChecked(false);
+    ui->radioButton->setAutoExclusive(true);
+    isModifying = false;
+    ui->tableWidget->clearSelection();
+    selectedId.clear();
+    ui->lineEdit->setFocus();
 }
 
+void MainWindow::on_pdf_clicked()
+{
+    QString strStream;
+    QTextStream out(&strStream);
 
+    const int rowCount = ui->tableWidget->rowCount();
+    const int columnCount = ui->tableWidget->columnCount();
+
+    out << "<html>\n"
+           "<head>\n"
+           "<meta Content=\"Text/html; charset=UTF-8\">\n"
+        << QString("<title>%1</title>\n").arg("Liste des Equipements")
+        << "<style>\n"
+           "body { font-family: Arial, sans-serif; font-size: 200px; margin: 250px; }\n"
+           ".grand-titre { font-size: 200px !important; font-weight: bold; text-align: center; text-decoration: underline; margin: 200px 0; }\n"
+           "table { border-collapse: collapse; width: 100%; border: 20px solid #ddd; }\n"
+           "th, td { text-align: left; padding: 100px; border: 20px solid #ddd; }\n"
+           "th { background-color: #2980B9; color: white; font-size: 200px; }\n"
+           "tr:nth-child(even) { background-color: #f9f9f9; }\n"
+           "tr:hover { background-color: #f1f1f1; }\n"
+           "img { max-width: 300px; max-height: 300px; }\n"
+           "</style>\n"
+           "</head>\n"
+           "<body>\n"
+
+           "<div class='grand-titre'>Liste des Equipements</div>\n"
+           "<br><br>\n"
+           "<table>\n";
+
+    // headers
+    out << "<thead><tr> <th>Numero</th>";
+    for (int column = 0; column < columnCount; column++)
+    {
+        QString header = ui->tableWidget->horizontalHeaderItem(column)->text();
+        out << QString("<th>%1</th>").arg(header);
+    }
+    out << "</tr></thead>\n";
+
+    // data table
+    for (int row = 0; row < rowCount; row++)
+    {
+        out << "<tr> <td>" << row + 1 << "</td>";
+        for (int column = 0; column < columnCount; column++)
+        {
+            QString data;
+
+            if (column == 2) { // Colonne image
+                // Récupérer le widget de la cellule (qui devrait être un QLabel avec l'image)
+                QLabel* imageLabel = qobject_cast<QLabel*>(ui->tableWidget->cellWidget(row, column));
+                if (imageLabel) {
+                    QPixmap pixmap = imageLabel->pixmap(Qt::ReturnByValue);
+                    if (!pixmap.isNull()) {
+                        // Sauvegarder temporairement l'image et utiliser son chemin
+                        QString tempImagePath = QDir::tempPath() + QString("/temp_image_%1_%2.png").arg(row).arg(column);
+                        if (pixmap.save(tempImagePath)) {
+                            data = QString("<img src='%1' width='500' height='500' />").arg(tempImagePath);
+
+                        }
+                    }
+                }
+                if (data.isEmpty()) {
+                    data = "Aucune image";
+                }
+            } else {
+                QTableWidgetItem* item = ui->tableWidget->item(row, column);
+                data = item ? item->text() : QString();
+            }
+
+            out << QString("<td>%1</td>").arg((!data.isEmpty()) ? data : QString("&nbsp;"));
+        }
+        out << "</tr>\n";
+    }
+
+    // Pied de page
+    out << "</tbody></table>"
+           "<div class=\"footer\">"
+           "<br><br>\n  Généré le " << QDateTime::currentDateTime().toString("dd/MM/yyyy à HH:mm") <<
+        "</div>"
+        "</body></html>";
+
+    QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder en PDF", QString(), "*.pdf");
+    if (QFileInfo(fileName).suffix().isEmpty())
+    {
+        fileName.append(".pdf");
+    }
+
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setOutputFileName(fileName);
+
+    QTextDocument doc;
+    doc.setHtml(strStream);
+    doc.setPageSize(printer.pageLayout().paintRectPixels(printer.resolution()).size());
+    doc.print(&printer);
+
+    QMessageBox::information(this, "PDF généré", QString("Le fichier PDF a été généré avec succès dans %1.").arg(fileName));
+}

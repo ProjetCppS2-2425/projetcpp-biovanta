@@ -1,9 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QPixmap>
 #include <QIcon>
 #include <QMainWindow>
 #include <QTableWidgetItem>
+#include <QByteArray>  // Ajout pour la gestion des données binaires
 #include "equipement.h"
 
 QT_BEGIN_NAMESPACE
@@ -16,38 +18,35 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-public:
+
+    // Méthode statique pour récupérer un équipement par son ID
     static Equipement getEquipementById(const QString &id);
-private:
-    QString selectedImagePath;
-private:
-    QString selectedId; // Stocke l'ID de l'équipement sélectionné
-    bool isModifying;
-    void reinitialiserFormulaire();
-private slots:
-    void on_tableWidget_itemClicked(QTableWidgetItem *item); // Sélection de ligne
-    void supp_clicked(); // Suppression
-    void on_pushButton_2_clicked();
-    void on_pushButton_3_clicked();
-
-private slots:
-    void actualiserTableau();
-    void chargerEquipement();
 
 private:
-    void remplirTableWidget();
+    // Variables membres
+    QByteArray selectedImageData;  // Remplace QString selectedImagePath pour stocker les données binaires de l'image
+    QString selectedId;            // Stocke l'ID de l'équipement sélectionné
+    bool isModifying;              // Indicateur de mode modification
+    Equipement equip;              // Instance de la classe Equipement
+    Ui::MainWindow *ui;            // Interface utilisateur
 
+    // Méthodes privées
+    void reinitialiserFormulaire(); // Réinitialise le formulaire
+    void remplirTableWidget();     // Remplit le tableau avec les données
 
 private slots:
-    void on_pushButton_clicked();
+    // Gestion des interactions
+    void on_tableWidget_itemClicked(QTableWidgetItem *item); // Gère le clic sur une ligne du tableau
+    void supp_clicked();            // Gère la suppression d'un équipement
+    void on_pushButton_clicked();   // Gère la sélection d'image
+    void on_pushButton_2_clicked(); // Gère l'ajout/modification
+    void on_pushButton_3_clicked(); // Gère la réinitialisation
+    void on_pdf_clicked();
 
-private slots:
-    void afficherEquipements();    // Fonction pour mettre à jour le tableau
-
-private:
-    Ui::MainWindow *ui;
-    Equipement equip;
-
+    // Gestion des données
+    void actualiserTableau();       // Met à jour l'affichage du tableau
+    void chargerEquipement();       // Charge les données d'un équipement
+    void afficherEquipements();     // Affiche la liste des équipements
 };
 
 #endif // MAINWINDOW_H

@@ -1,7 +1,7 @@
 #ifndef EQUIPEMENT_H
 #define EQUIPEMENT_H
-#include <QPixmap>
-#include <QIcon>
+
+#include <QByteArray>
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
@@ -11,41 +11,43 @@ private:
     QString id_equipement;
     QString nom_eq;
     QString etat;
-    QString image;
+    QByteArray imageData;  // Stockage des données binaires de l'image
     QString type;
     QString disponibilite;
     int nbre_eq;
 
 public:
+    // Constructeurs
     Equipement();
-    Equipement(QString id, QString nom, QString etat, QString image, QString type, QString dispo, int nombre);
+    Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre);
 
-
-
+    // Méthodes CRUD
     bool ajouter();
     static QList<Equipement> afficher();
     bool modifier();
     bool supprimer(const QString &id);
+
+    // Méthodes utilitaires
     bool existe(const QString &id);
-    // Ajoutez cette déclaration
     static Equipement getEquipementById(const QString &id);
+
+    // Getters
     QString getId() const { return id_equipement; }
     QString getNom() const { return nom_eq; }
     QString getEtat() const { return etat; }
-    QString getImage() const { return image; }
+    QByteArray getImageData() const { return imageData; }  // Retourne les données binaires
     QString getType() const { return type; }
     QString getDispo() const { return disponibilite; }
     int getNombre() const { return nbre_eq; }
 
-
+    // Setters
     void setId(const QString &id) { id_equipement = id; }
     void setNom(const QString &nom) { nom_eq = nom; }
     void setEtat(const QString &etat) { this->etat = etat; }
-    void setImage(const QString &img) { image = img; }
+    void setImageData(const QByteArray &data) { imageData = data; }  // Pour les données binaires
     void setType(const QString &type) { this->type = type; }
     void setDispo(const QString &dispo) { disponibilite = dispo; }
     void setNombre(int nombre) { nbre_eq = nombre; }
-
 };
 
 #endif // EQUIPEMENT_H
