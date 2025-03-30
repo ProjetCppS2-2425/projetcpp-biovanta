@@ -475,7 +475,7 @@ public:
         QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
         tableWidget->setItem(1, 6, __qtablewidgetitem16);
         tableWidget->setObjectName("tableWidget");
-        tableWidget->setGeometry(QRect(100, 190, 751, 281));
+        tableWidget->setGeometry(QRect(110, 190, 741, 281));
         tableWidget->setStyleSheet(QString::fromUtf8("tableWidget->setStyleSheet(\n"
 "    \"QTableWidget {\"\n"
 "    \"   background-color: #f8f9fa;\"\n"
@@ -584,7 +584,7 @@ public:
         supp->setIconSize(QSize(25, 25));
         label_13 = new QLabel(groupBox_4);
         label_13->setObjectName("label_13");
-        label_13->setGeometry(QRect(530, 20, 251, 20));
+        label_13->setGeometry(QRect(550, 20, 251, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);

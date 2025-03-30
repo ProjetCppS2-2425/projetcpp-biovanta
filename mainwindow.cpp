@@ -12,6 +12,10 @@
 #include <QTextStream>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+#include <QGridLayout>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -510,4 +514,83 @@ void MainWindow::on_pdf_clicked()
     doc.print(&printer);
 
     QMessageBox::information(this, "PDF généré", QString("Le fichier PDF a été généré avec succès dans %1.").arg(fileName));
+}
+
+
+void MainWindow::on_stat_clicked()
+{
+    // Requêtes SQL pour compter les équipements par état et disponibilité
+    QSqlQuery query;
+
+    // Compter les équipements par état
+    query.exec("SELECT etat, COUNT(*) FROM EQUIPEMENT GROUP BY etat");
+    QPieSeries *etatSeries = new QPieSeries();
+
+    while (query.next()) {
+        QString etat = query.value(0).toString();
+        int count = query.value(1).toInt();
+        etatSeries->append(etat + " (" + QString::number(count) + ")", count);
+    }
+
+    // Compter les équipements par disponibilité
+    query.exec("SELECT disponibilite, COUNT(*) FROM EQUIPEMENT GROUP BY disponibilite");
+    QPieSeries *dispoSeries = new QPieSeries();
+
+    while (query.next()) {
+        QString dispo = query.value(0).toString();
+        int count = query.value(1).toInt();
+        dispoSeries->append(dispo + " (" + QString::number(count) + ")", count);
+    }
+
+    // Compter les équipements par type
+    query.exec("SELECT type, COUNT(*) FROM EQUIPEMENT GROUP BY type");
+    QPieSeries *typeSeries = new QPieSeries();
+
+    while (query.next()) {
+        QString type = query.value(0).toString();
+        int count = query.value(1).toInt();
+        typeSeries->append(type + " (" + QString::number(count) + ")", count);
+    }
+
+    // Création des graphiques
+    QChart *etatChart = new QChart();
+    etatChart->addSeries(etatSeries);
+    etatChart->setTitle("Répartition par état");
+    etatChart->legend()->setVisible(true);
+    etatChart->legend()->setAlignment(Qt::AlignBottom);
+
+    QChart *dispoChart = new QChart();
+    dispoChart->addSeries(dispoSeries);
+    dispoChart->setTitle("Répartition par disponibilité");
+    dispoChart->legend()->setVisible(true);
+    dispoChart->legend()->setAlignment(Qt::AlignBottom);
+
+    QChart *typeChart = new QChart();
+    typeChart->addSeries(typeSeries);
+    typeChart->setTitle("Répartition par type");
+    typeChart->legend()->setVisible(true);
+    typeChart->legend()->setAlignment(Qt::AlignBottom);
+
+    // Configuration des vues
+    QChartView *etatView = new QChartView(etatChart);
+    etatView->setRenderHint(QPainter::Antialiasing);
+
+    QChartView *dispoView = new QChartView(dispoChart);
+    dispoView->setRenderHint(QPainter::Antialiasing);
+
+    QChartView *typeView = new QChartView(typeChart);
+    typeView->setRenderHint(QPainter::Antialiasing);
+
+    // Création d'une fenêtre pour afficher tous les graphiques
+    QWidget *statsWindow = new QWidget();
+    statsWindow->setWindowTitle("Statistiques des équipements");
+    statsWindow->resize(1200, 600);
+
+    QGridLayout *layout = new QGridLayout(statsWindow);
+    layout->addWidget(etatView, 0, 0);
+    layout->addWidget(dispoView, 0, 1);
+    layout->addWidget(typeView, 1, 0, 1, 2);
+
+    statsWindow->setLayout(layout);
+    statsWindow->show();
 }
