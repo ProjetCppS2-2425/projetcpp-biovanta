@@ -46,7 +46,8 @@ Qtstat::Qtstat(QWidget *parent)
 
     //basic: the y axis stuff
     QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0,C.countClients());
+   // axisY->setRange(0,C.countClients());
+    axisY->setRange(0,C.CalculLabo());
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 

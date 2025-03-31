@@ -217,10 +217,10 @@ int Client::CalculMinister(){
             }
         }
     }
-    qDebug()<<countM<<" error:"<<query.lastError().text();
+   /* qDebug()<<countM<<" error:"<<query.lastError().text();
     QMessageBox::information(nullptr, QObject::tr("Minister:%1").arg(countM),
                              QObject::tr("connection successful.\n"
-                                         "Click Cancel to exit."), QMessageBox::Cancel);
+                                         "Click Cancel to exit."), QMessageBox::Cancel);*/
     return countM;
 }
 int Client::CalculCentre(){
