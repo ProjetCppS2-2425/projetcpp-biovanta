@@ -16,10 +16,15 @@ Qtstat::Qtstat(QWidget *parent)
     auto *series = new QBarSeries();
 
     //setting the bars
-    QBarSet *set1 = new QBarSet("Ministère de santé"); //bar data name
-    QBarSet *set2 = new QBarSet("Centre Pharmaceutique");
-    QBarSet *set3 = new QBarSet("Laboratoire d'analyses");
-    //set4->append(10);
+    QBarSet *set1 = new QBarSet("TOP ADRESS"); //bar data name
+    QBarSet *set2 = new QBarSet("SECOND ADRESS");
+    QBarSet *set3 = new QBarSet("other");
+    QBarSet *set4 = new QBarSet("TOTALM");
+    QBarSet *set5 = new QBarSet("TOTALC");
+    QBarSet *set6 = new QBarSet("TOTALL");
+    set4->append(C.CalculMinister());
+    set5->append(C.CalculCentre());
+    set6->append(C.CalculLabo());
     *set1 << 5 << 0 << 0 << 4 << 0 << 7;
     *set2 << 3 << 5 << 8 << 13 << 8 << 5;
     *set3 << 5 << 6 << 7 << 3 << 4 << 5;
@@ -28,6 +33,9 @@ Qtstat::Qtstat(QWidget *parent)
     series->append(set1);
     series->append(set2);
     series->append(set3);
+    series->append(set4);
+    series->append(set5);
+    series->append(set6);
 
     //the chart holding it all together
     QChart *chart = new QChart();
@@ -36,18 +44,26 @@ Qtstat::Qtstat(QWidget *parent)
     chart->setAnimationDuration(QChart::SeriesAnimations);
 
     //setting the names of bars horizontally
-    QStringList Subjectname;
-    Subjectname.append("stuff"); //one name set
+    QStringList Subjectname1;
+    Subjectname1.append("Ministère de santé"); //one name set
+    QStringList Subjectname2;
+    Subjectname2.append("Centre Pharmaceutique"); //one name set
+    QStringList Subjectname3;
+    Subjectname3.append("Laboratoire d'analyses"); //one name set
+    QStringList Subjectname4;
+    Subjectname4.append("Total");
 
     QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(Subjectname);
+    axisX->append(Subjectname4);
+    axisX->append(Subjectname1);
+    axisX->append(Subjectname2);
+    axisX->append(Subjectname3);
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
     //basic: the y axis stuff
     QValueAxis *axisY = new QValueAxis();
-   // axisY->setRange(0,C.countClients());
-    axisY->setRange(0,C.CalculLabo());
+    axisY->setRange(0,C.countClients());
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
