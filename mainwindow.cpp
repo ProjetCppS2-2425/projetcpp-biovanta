@@ -16,7 +16,10 @@
 #include <QtCharts/QPieSeries>
 #include <QtCharts/QPieSlice>
 #include <QGridLayout>
-
+#include <QSqlQueryModel>
+#include <QSqlRecord>
+#include <QSqlError>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -24,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
     isModifying = false; // Initialiser à false (mode ajout par défaut)
-
-
+    connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_ok_clicked);
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
     ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
@@ -39,6 +42,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->client->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\client.png"));
     ui->stat->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
+    ui->pushButton_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
+
     afficherEquipements();
 
     ui->tableWidget->setStyleSheet(
@@ -593,4 +598,98 @@ void MainWindow::on_stat_clicked()
 
     statsWindow->setLayout(layout);
     statsWindow->show();
+}
+void MainWindow::on_ok_clicked() {
+    if (!ui) {
+        qDebug() << "Erreur: ui n'est pas initialisé!";
+        return;
+    }
+
+    QString critere = ui->comboBox_5->currentText().trimmed(); // Éviter les espaces invisibles
+    QString valeur = ui->lineEdit_2->text().trimmed();
+
+    if (valeur.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer une valeur de recherche.");
+        return;
+    }
+
+    // Déclaration de la requête SQL
+    QString queryStr;
+
+    if (critere == "type") {
+        queryStr = "SELECT * FROM EQUIPEMENT WHERE type LIKE :valeur";
+    }
+    else if (critere == "id équipement") {
+        queryStr = "SELECT * FROM EQUIPEMENT WHERE TRIM(id_equipement) LIKE :valeur";
+    }
+    else if (critere == "disponibilité") {
+        queryStr = "SELECT * FROM EQUIPEMENT WHERE disponibilite = :valeur";
+    }
+    else {
+        QMessageBox::warning(this, "Erreur", "Critère de recherche invalide.");
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare(queryStr);
+
+    if (critere == "type" || critere == "id équipement") {
+        query.bindValue(":valeur", "%" + valeur + "%");
+    } else {
+        query.bindValue(":valeur", valeur);
+    }
+
+    // Affichage de la requête pour debug
+    qDebug() << "Requête exécutée : " << queryStr << " avec valeur = " << valeur;
+
+    if (!query.exec()) {
+        QMessageBox::critical(this, "Erreur", "Erreur de recherche: " + query.lastError().text());
+        return;
+    }
+
+    // Affichage des résultats
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
+
+    int row = 0;
+    while (query.next()) {
+        ui->tableWidget->insertRow(row);
+        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(query.value("id_equipement").toString()));
+        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(query.value("nom_eq").toString()));
+
+        QByteArray imageData = query.value("image").toByteArray();
+        if (!imageData.isEmpty()) {
+            QPixmap pixmap;
+            if (pixmap.loadFromData(imageData)) {
+                QLabel *imageLabel = new QLabel(this);
+                imageLabel->setPixmap(pixmap.scaled(80, 80, Qt::KeepAspectRatio));
+                ui->tableWidget->setCellWidget(row, 2, imageLabel);
+            } else {
+                ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Image invalide"));
+            }
+        } else {
+            ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Aucune image"));
+        }
+
+        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(query.value("type").toString()));
+        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(query.value("etat").toString()));
+        ui->tableWidget->setItem(row, 5, new QTableWidgetItem(query.value("disponibilite").toString()));
+        ui->tableWidget->setItem(row, 6, new QTableWidgetItem(query.value("nbre_eq").toString()));
+
+        row++;
+    }
+
+    if (row == 0) {
+        QMessageBox::information(this, "Information", "Aucun résultat trouvé.");
+    }
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    // Réaffiche tous les équipements
+    afficherEquipements();
+
+    // Réinitialise les champs de recherche si nécessaire
+    ui->lineEdit_2->clear();
+    ui->comboBox_5->setCurrentIndex(0);
 }

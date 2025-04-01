@@ -43,6 +43,8 @@ private slots:
     void on_pushButton_3_clicked(); // Gère la réinitialisation
     void on_pdf_clicked();
     void on_stat_clicked();
+    void on_ok_clicked();
+    void on_pushButton_4_clicked();
 
     // Gestion des données
     void actualiserTableau();       // Met à jour l'affichage du tableau

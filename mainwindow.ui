@@ -1088,7 +1088,7 @@ QPushButton {
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>520</x>
         <y>20</y>
         <width>251</width>
         <height>20</height>
@@ -1134,6 +1134,29 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       </rect>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>30</y>
+       <width>51</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>loading-arrow.png</normaloff>loading-arrow.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>30</width>
+       <height>30</height>
+      </size>
+     </property>
+    </widget>
     <zorder>labelImage</zorder>
     <zorder>groupBox_4</zorder>
     <zorder>tableWidget</zorder>
@@ -1147,6 +1170,7 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <zorder>checkBox</zorder>
     <zorder>checkBox_2</zorder>
     <zorder>lineEdit_2</zorder>
+    <zorder>pushButton_4</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">

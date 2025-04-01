@@ -30,6 +30,7 @@ public:
     // Méthodes utilitaires
     bool existe(const QString &id);
     static Equipement getEquipementById(const QString &id);
+    static QSqlQueryModel* rechercher(const QString& critere, const QString& valeur);
 
     // Getters
     QString getId() const { return id_equipement; }

@@ -79,6 +79,7 @@ public:
     QLabel *label_13;
     QLabel *labelImage;
     QLineEdit *lineEdit_2;
+    QPushButton *pushButton_4;
     QGroupBox *groupBox_3;
     QRadioButton *radioButton;
     QRadioButton *radioButton_2;
@@ -584,7 +585,7 @@ public:
         supp->setIconSize(QSize(25, 25));
         label_13 = new QLabel(groupBox_4);
         label_13->setObjectName("label_13");
-        label_13->setGeometry(QRect(550, 20, 251, 20));
+        label_13->setGeometry(QRect(520, 20, 251, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -599,6 +600,13 @@ public:
         lineEdit_2 = new QLineEdit(groupBox_2);
         lineEdit_2->setObjectName("lineEdit_2");
         lineEdit_2->setGeometry(QRect(340, 30, 291, 31));
+        pushButton_4 = new QPushButton(groupBox_2);
+        pushButton_4->setObjectName("pushButton_4");
+        pushButton_4->setGeometry(QRect(740, 30, 51, 41));
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8("loading-arrow.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_4->setIcon(icon10);
+        pushButton_4->setIconSize(QSize(30, 30));
         labelImage->raise();
         groupBox_4->raise();
         tableWidget->raise();
@@ -612,6 +620,7 @@ public:
         checkBox->raise();
         checkBox_2->raise();
         lineEdit_2->raise();
+        pushButton_4->raise();
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName("groupBox_3");
         groupBox_3->setGeometry(QRect(160, 530, 311, 91));
@@ -785,6 +794,7 @@ public:
         supp->setText(QString());
         label_13->setText(QCoreApplication::translate("MainWindow", " supprimer un \303\251quipement :", nullptr));
         labelImage->setText(QString());
+        pushButton_4->setText(QString());
         groupBox_3->setTitle(QString());
         radioButton->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         radioButton_2->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));

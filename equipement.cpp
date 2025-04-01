@@ -125,3 +125,32 @@ bool Equipement::existe(const QString &id) {
 
     return false; // Retourne false en cas d'erreur ou si l'équipement n'existe pas
 }
+
+QSqlQueryModel* Equipement::rechercher(const QString& critere, const QString& valeur) {
+    QSqlQueryModel* model = new QSqlQueryModel();
+    QString queryStr = "SELECT * FROM EQUIPEMENT WHERE ";
+
+    if (critere == "type") {
+        queryStr += "type LIKE :valeur";
+    }
+    else if (critere == "id équipement") {
+        queryStr += "id_equipement = :valeur";
+    }
+    else if (critere == "disponibilité") {
+        queryStr += "disponibilite = :valeur";
+    }
+
+    QSqlQuery query;
+    query.prepare(queryStr);
+    query.bindValue(":valeur", (critere == "type") ? "%" + valeur + "%" : valeur);
+
+    if (query.exec()) {
+        model->setQuery(query);
+    } else {
+        qDebug() << "Erreur de recherche:" << query.lastError().text();
+        delete model;
+        return nullptr;
+    }
+
+    return model;
+}
