@@ -45,11 +45,14 @@ private slots:
     void on_stat_clicked();
     void on_ok_clicked();
     void on_pushButton_4_clicked();
+    void onTriDeclenche();
+
 
     // Gestion des données
     void actualiserTableau();       // Met à jour l'affichage du tableau
     void chargerEquipement();       // Charge les données d'un équipement
-    void afficherEquipements();     // Affiche la liste des équipements
+    void afficherEquipements(const QList<Equipement>& liste);
+        // Affiche la liste des équipements
 };
 
 #endif // MAINWINDOW_H

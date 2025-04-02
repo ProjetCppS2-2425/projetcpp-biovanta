@@ -28,7 +28,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
     isModifying = false; // Initialiser à false (mode ajout par défaut)
     connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_ok_clicked);
-    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
+    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
+    connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+    connect(ui->radioButton_4, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+
+    // (Optionnel) Si vous voulez aussi que le critère (combobox) déclenche le tri SEULEMENT si un radioButton est coché :
+    connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
+        if (ui->radioButton_3->isChecked() || ui->radioButton_4->isChecked()) {
+            onTriDeclenche();
+        }
+    });
     ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
@@ -44,7 +53,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
     ui->pushButton_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
 
-    afficherEquipements();
+    // Récupérer la liste des équipements et l'afficher
+    QList<Equipement> liste = Equipement::afficher();
+    afficherEquipements(liste); // Appeler avec l'argument liste
+
 
     ui->tableWidget->setStyleSheet(
         "QTableWidget {"
@@ -219,8 +231,8 @@ void MainWindow::on_pushButton_clicked() {
     }
 }
 
-void MainWindow::afficherEquipements() {
-    QList<Equipement> liste = Equipement::afficher();
+// Dans mainwindow.cpp
+void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
     ui->tableWidget->setRowCount(liste.size());
 
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
@@ -264,6 +276,8 @@ void MainWindow::afficherEquipements() {
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
 }
+
+
 void MainWindow::actualiserTableau() {
     ui->tableWidget->clear();  // Efface le tableau avant mise à jour
 
@@ -686,10 +700,54 @@ void MainWindow::on_ok_clicked() {
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    // Réaffiche tous les équipements
-    afficherEquipements();
+    // Récupère la liste des équipements
+    QList<Equipement> liste = Equipement::afficher();
+
+    // Réaffiche tous les équipements avec la liste obtenue
+    afficherEquipements(liste);
 
     // Réinitialise les champs de recherche si nécessaire
     ui->lineEdit_2->clear();
     ui->comboBox_5->setCurrentIndex(0);
+}
+
+
+void MainWindow::onTriDeclenche() {
+    if (!ui->radioButton_3->isChecked() && !ui->radioButton_4->isChecked()) {
+        return;
+    }
+
+    QString critere = ui->comboBox->currentText();
+    bool ascendant = ui->radioButton_3->isChecked();
+
+    QList<Equipement> liste = Equipement::afficher();
+    if (liste.isEmpty()) return;
+
+    // Définition de l'ordre des états avec priorité
+    auto getEtatPriority = [](const QString& etat) {
+        QString etatLower = etat.toLower();
+        if (etatLower.contains("fonctionnel") && !etatLower.contains("pas")) return 1;
+        if (etatLower.contains("maintenance")) return 2;
+        if (etatLower.contains("pas fonctionnel")) return 3;
+        return 4; // Pour les autres états non prévus
+    };
+
+    auto comparer = [critere, ascendant, getEtatPriority](const Equipement& a, const Equipement& b) {
+        if (critere == "état") {
+            int prioriteA = getEtatPriority(a.getEtat());
+            int prioriteB = getEtatPriority(b.getEtat());
+            return ascendant ? (prioriteA < prioriteB) : (prioriteA > prioriteB);
+        }
+        else if (critere == "nbre d'équipement") {
+            return ascendant ? (a.getNombre() < b.getNombre())
+                            : (a.getNombre() > b.getNombre());
+        }
+        else { // "nom d'équipement"
+            return ascendant ? (a.getNom().compare(b.getNom(), Qt::CaseInsensitive) < 0)
+                            : (a.getNom().compare(b.getNom(), Qt::CaseInsensitive) > 0);
+        }
+    };
+
+    std::sort(liste.begin(), liste.end(), comparer);
+    afficherEquipements(liste);
 }

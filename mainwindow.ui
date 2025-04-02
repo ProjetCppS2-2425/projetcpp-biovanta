@@ -987,32 +987,6 @@ QGroupBox {
       </size>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox">
-     <property name="geometry">
-      <rect>
-       <x>530</x>
-       <y>90</y>
-       <width>91</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ASC</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_2">
-     <property name="geometry">
-      <rect>
-       <x>590</x>
-       <y>90</y>
-       <width>91</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>DSC</string>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="geometry">
       <rect>
@@ -1157,6 +1131,32 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       </size>
      </property>
     </widget>
+    <widget class="QRadioButton" name="radioButton_3">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>90</y>
+       <width>110</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ASC</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_4">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>90</y>
+       <width>110</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DSC</string>
+     </property>
+    </widget>
     <zorder>labelImage</zorder>
     <zorder>groupBox_4</zorder>
     <zorder>tableWidget</zorder>
@@ -1167,10 +1167,10 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <zorder>pdf</zorder>
     <zorder>stat</zorder>
     <zorder>ok</zorder>
-    <zorder>checkBox</zorder>
-    <zorder>checkBox_2</zorder>
     <zorder>lineEdit_2</zorder>
     <zorder>pushButton_4</zorder>
+    <zorder>radioButton_3</zorder>
+    <zorder>radioButton_4</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
