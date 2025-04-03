@@ -36,6 +36,7 @@ private:
     // Méthodes privées
     void reinitialiserFormulaire(); // Réinitialise le formulaire
     void remplirTableWidget();     // Remplit le tableau avec les données
+    void refreshAlertCount();
 
 
 private:

@@ -675,7 +675,7 @@ public:
         frame->setFrameShadow(QFrame::Shadow::Raised);
         noti = new QPushButton(frame);
         noti->setObjectName("noti");
-        noti->setGeometry(QRect(70, 10, 71, 41));
+        noti->setGeometry(QRect(70, 10, 61, 41));
         noti->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
@@ -691,7 +691,7 @@ public:
         QIcon icon11;
         icon11.addFile(QString::fromUtf8("notif.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         noti->setIcon(icon11);
-        noti->setIconSize(QSize(45, 45));
+        noti->setIconSize(QSize(42, 42));
         notificationBadge = new QLabel(frame);
         notificationBadge->setObjectName("notificationBadge");
         notificationBadge->setGeometry(QRect(90, 10, 41, 20));

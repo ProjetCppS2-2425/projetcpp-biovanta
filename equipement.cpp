@@ -193,9 +193,18 @@ int Equipement::countEquipementsNonFonctionnels() {
     }
     return 0;
 }
-int Equipement::countEquipementsParEtat(const QString &etat) {
+int Equipement::countEquipementsParEtat(const QString &etatRecherche) {
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM EQUIPEMENT WHERE etat = ?");
-    query.addBindValue(etat);
-    return query.exec() && query.next() ? query.value(0).toInt() : 0;
+    query.prepare("SELECT COUNT(*) FROM EQUIPEMENT WHERE LOWER(TRIM(etat)) LIKE LOWER(TRIM(?))");
+    query.addBindValue("%" + etatRecherche + "%"); // Recherche partielle
+
+    if (!query.exec()) {
+        qDebug() << "Erreur SQL (countEquipementsParEtat):" << query.lastError().text();
+        return 0;
+    }
+
+    if (query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
 }

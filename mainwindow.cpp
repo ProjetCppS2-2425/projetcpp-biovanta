@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
         "padding: 0px 3px;"
         );
     notificationBadge->setAlignment(Qt::AlignCenter);
-    notificationBadge->move(ui->noti->width() - 15, 5);
+    notificationBadge->move(ui->noti->width() - 27, 5);
     notificationBadge->hide();
 
     // Style du bouton de notification
@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Timer pour vérifier les équipements non fonctionnels
     notificationTimer = new QTimer(this);
     connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
-    notificationTimer->start(5 * 60 * 1000); // Toutes les 5 minutes
+    notificationTimer->start(6000); // Toutes les 5 minutes
 
     // Vérification initiale
     checkEquipmentStatus();
@@ -200,6 +200,7 @@ void MainWindow::on_pushButton_2_clicked() {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
                 reinitialiserFormulaire();
+                refreshAlertCount();
                 isModifying = false;
             } else {
                 QMessageBox::critical(this, "Erreur", "La modification a échoué.");
@@ -802,10 +803,17 @@ void MainWindow::onTriDeclenche() {
     afficherEquipements(liste);
 }
 
-void MainWindow::checkEquipmentStatus()
-{
-    int count = Equipement::countEquipementsNonFonctionnels();
-    updateNotificationBadge(count);
+void MainWindow::checkEquipmentStatus() {
+    // Recherche flexible
+    int nonFonctionnel = Equipement::countEquipementsParEtat("pas fonctionnel");
+    int maintenance = Equipement::countEquipementsParEtat("maintenance");
+    int total = nonFonctionnel + maintenance;
+
+    qDebug() << "[DEBUG] Non fonctionnels:" << nonFonctionnel
+             << "| En maintenance:" << maintenance
+             << "| Total:" << total;
+
+    updateNotificationBadge(total); // Met à jour le badge
 }
 
 void MainWindow::updateNotificationBadge(int count)
@@ -953,4 +961,8 @@ void MainWindow::showEquipmentAlerts()
 
     alertDialog->exec();
     delete alertDialog;
+}
+void MainWindow::refreshAlertCount()
+{
+    checkEquipmentStatus(); // Force la vérification immédiate
 }
