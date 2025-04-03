@@ -4,6 +4,9 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QMainWindow>
+#include <QLabel>  // Ajoutez cette ligne
+#include <QTimer>
+#include <QMainWindow>
 #include <QTableWidgetItem>
 #include <QByteArray>  // Ajout pour la gestion des données binaires
 #include "equipement.h"
@@ -34,6 +37,14 @@ private:
     void reinitialiserFormulaire(); // Réinitialise le formulaire
     void remplirTableWidget();     // Remplit le tableau avec les données
 
+
+private:
+    bool wasInAlertState = false;  // Pour suivre l'état précédent
+    QLabel *notificationBadge;     // Le badge de notification
+    QTimer *notificationTimer;     // Pour vérifier périodiquement // Pour vérifier périodiquement
+    void updateNotificationBadge(int count);  // Méthode pour mettre à jour le badge
+
+
 private slots:
     // Gestion des interactions
     void on_tableWidget_itemClicked(QTableWidgetItem *item); // Gère le clic sur une ligne du tableau
@@ -46,7 +57,8 @@ private slots:
     void on_ok_clicked();
     void on_pushButton_4_clicked();
     void onTriDeclenche();
-
+    void checkEquipmentStatus();
+    void showEquipmentAlerts();
 
     // Gestion des données
     void actualiserTableau();       // Met à jour l'affichage du tableau

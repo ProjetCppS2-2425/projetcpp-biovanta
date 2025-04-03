@@ -1242,7 +1242,7 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       <x>150</x>
       <y>0</y>
       <width>1391</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1280,13 +1280,13 @@ QPushButton#btnEquipement:checked {
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="noti">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>70</x>
        <y>10</y>
-       <width>131</width>
-       <height>31</height>
+       <width>71</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -1304,7 +1304,30 @@ QPushButton:hover {
 }</string>
      </property>
      <property name="text">
-      <string>fonctionnalité</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>notif.png</normaloff>notif.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>45</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QLabel" name="notificationBadge">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>10</y>
+       <width>41</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>

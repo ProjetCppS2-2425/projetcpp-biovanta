@@ -20,6 +20,12 @@
 #include <QSqlRecord>
 #include <QSqlError>
 #include <QDebug>
+#include <QSystemTrayIcon>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDialog>
+#include <QTimer>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -31,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
     connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
     connect(ui->radioButton_4, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+
 
     // (Optionnel) Si vous voulez aussi que le critère (combobox) déclenche le tri SEULEMENT si un radioButton est coché :
     connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
@@ -52,11 +59,53 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stat->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
     ui->pushButton_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
+    ui->noti->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\notif.png"));
 
     // Récupérer la liste des équipements et l'afficher
     QList<Equipement> liste = Equipement::afficher();
     afficherEquipements(liste); // Appeler avec l'argument liste
+    // Création du badge de notification
+    notificationBadge = new QLabel(ui->noti);
+    notificationBadge->setObjectName("notificationBadge");
+    notificationBadge->setStyleSheet(
+        "background-color: red;"
+        "color: white;"
+        "border-radius: 9px;"
+        "min-width: 18px;"
+        "min-height: 18px;"
+        "font-size: 10px;"
+        "padding: 0px 3px;"
+        );
+    notificationBadge->setAlignment(Qt::AlignCenter);
+    notificationBadge->move(ui->noti->width() - 15, 5);
+    notificationBadge->hide();
 
+    // Style du bouton de notification
+    ui->noti->setStyleSheet(
+        "QPushButton {"
+        "    background-color: #02767F;"
+        "    border-radius: 5px;"
+        "    padding: 10px;"
+        "    border: none;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #247361;"
+        "}"
+        "QPushButton[alert='true'] {"
+        "    background-color: #ff6b6b;"
+        "}"
+        );
+
+    // Timer pour vérifier les équipements non fonctionnels
+    notificationTimer = new QTimer(this);
+    connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
+    notificationTimer->start(5 * 60 * 1000); // Toutes les 5 minutes
+
+    // Vérification initiale
+    checkEquipmentStatus();
+
+    // Connecter le clic sur le bouton de notification
+    connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showEquipmentAlerts);
 
     ui->tableWidget->setStyleSheet(
         "QTableWidget {"
@@ -84,6 +133,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -750,4 +800,157 @@ void MainWindow::onTriDeclenche() {
 
     std::sort(liste.begin(), liste.end(), comparer);
     afficherEquipements(liste);
+}
+
+void MainWindow::checkEquipmentStatus()
+{
+    int count = Equipement::countEquipementsNonFonctionnels();
+    updateNotificationBadge(count);
+}
+
+void MainWindow::updateNotificationBadge(int count)
+{
+    if (count > 0) {
+        // Activer le mode alerte
+        ui->noti->setProperty("alert", true);
+        ui->noti->style()->unpolish(ui->noti);
+        ui->noti->style()->polish(ui->noti);
+
+        // Mettre à jour le badge
+        notificationBadge->setText(QString::number(count));
+        notificationBadge->adjustSize();
+        notificationBadge->show();
+
+        // Afficher une notification système
+        if (QSystemTrayIcon::isSystemTrayAvailable()) {
+            QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
+            trayIcon->setIcon(QIcon(":/icons/app_icon.png")); // Remplacez par votre icône
+
+            // Calcul des différents états
+            int nonFonctionnel = Equipement::countEquipementsParEtat("Pas fonctionnel");
+            int maintenance = Equipement::countEquipementsParEtat("Maintenance");
+
+            QString message;
+            if (nonFonctionnel > 0 && maintenance > 0) {
+                message = QString("%1 équipement(s) non fonctionnel(s) + %2 en maintenance")
+                              .arg(nonFonctionnel).arg(maintenance);
+            }
+            else if (nonFonctionnel > 0) {
+                message = QString("%1 équipement(s) non fonctionnel(s)").arg(nonFonctionnel);
+            }
+            else {
+                message = QString("%1 équipement(s) en maintenance").arg(maintenance);
+            }
+
+            trayIcon->showMessage("Alertes Équipements",
+                                  message,
+                                  QSystemTrayIcon::Warning,
+                                  10000); // 10 secondes
+
+            // Nettoyage automatique
+            QTimer::singleShot(11000, trayIcon, &QObject::deleteLater);
+        }
+    } else {
+        // Désactiver le mode alerte
+        ui->noti->setProperty("alert", false);
+        ui->noti->style()->unpolish(ui->noti);
+        ui->noti->style()->polish(ui->noti);
+
+        // Cacher le badge
+        notificationBadge->hide();
+
+        // Notification de retour à la normale
+        if (QSystemTrayIcon::isSystemTrayAvailable() && wasInAlertState) {
+            QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
+            trayIcon->setIcon(QIcon(":/icons/app_icon.png"));
+            trayIcon->showMessage("Statut Équipement",
+                                  "Tous les équipements sont opérationnels",
+                                  QSystemTrayIcon::Information,
+                                  5000);
+            QTimer::singleShot(6000, trayIcon, &QObject::deleteLater);
+        }
+    }
+    wasInAlertState = (count > 0);
+}
+void MainWindow::showEquipmentAlerts()
+{
+    QList<Equipement> alertes = Equipement::getEquipementsNonFonctionnels();
+
+    if (alertes.isEmpty()) {
+        QMessageBox::information(this, "Aucune alerte", "Tous les équipements sont opérationnels");
+        return;
+    }
+
+    QDialog *alertDialog = new QDialog(this);
+    alertDialog->setWindowTitle("Alertes Équipements");
+    alertDialog->setMinimumSize(600, 400);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(alertDialog);
+
+    // Titre
+    QLabel *titleLabel = new QLabel(QString("%1 Équipement(s) nécessitant attention").arg(alertes.count()));
+    titleLabel->setStyleSheet("font-weight: bold; font-size: 16px; margin-bottom: 15px;");
+    mainLayout->addWidget(titleLabel);
+
+    // Zone scrollable
+    QScrollArea *scrollArea = new QScrollArea();
+    QWidget *scrollContent = new QWidget();
+    QVBoxLayout *alertsLayout = new QVBoxLayout(scrollContent);
+
+    foreach (const Equipement &e, alertes) {
+        QFrame *alertFrame = new QFrame();
+
+        // Déterminez la couleur en fonction de l'état
+        QString frameStyle = "padding: 10px; margin: 5px; border-left: 4px solid ";
+        QString etat = e.getEtat().toLower();
+
+        if (etat.contains("maintenance")) {
+            frameStyle += "#ffc107; background-color: #fff8e6;"; // Jaune pour maintenance
+        } else {
+            frameStyle += "#dc3545; background-color: #fff5f5;"; // Rouge pour non fonctionnel
+        }
+
+        alertFrame->setStyleSheet(frameStyle);
+
+        QHBoxLayout *frameLayout = new QHBoxLayout(alertFrame);
+
+        // Icône
+        QLabel *iconLabel = new QLabel();
+        QPixmap pixmap;
+        if (!e.getImageData().isEmpty() && pixmap.loadFromData(e.getImageData())) {
+            iconLabel->setPixmap(pixmap.scaled(40, 40, Qt::KeepAspectRatio));
+        } else {
+            iconLabel->setPixmap(QPixmap(etat.contains("maintenance")
+                                         ? ":/icons/warning.png"
+                                         : ":/icons/error.png").scaled(40, 40));
+        }
+        frameLayout->addWidget(iconLabel);
+
+        // Informations
+        QLabel *infoLabel = new QLabel(
+            QString("<b>%1</b><br>"
+                    "ID: %2<br>"
+                    "Type: %3<br>"
+                    "État: <span style='color: %4'>%5</span>")
+                .arg(e.getNom())
+                .arg(e.getId())
+                .arg(e.getType())
+                .arg(etat.contains("maintenance") ? "#ff9900" : "#dc3545")
+                .arg(e.getEtat()));
+
+        infoLabel->setStyleSheet("font-size: 12px;");
+        frameLayout->addWidget(infoLabel, 1);
+        alertsLayout->addWidget(alertFrame);
+    }
+
+    scrollArea->setWidget(scrollContent);
+    mainLayout->addWidget(scrollArea);
+
+    // Bouton Fermer
+    QPushButton *closeButton = new QPushButton("Fermer");
+    connect(closeButton, &QPushButton::clicked, alertDialog, &QDialog::accept);
+    mainLayout->addWidget(closeButton, 0, Qt::AlignRight);
+
+    alertDialog->exec();
+    delete alertDialog;
 }

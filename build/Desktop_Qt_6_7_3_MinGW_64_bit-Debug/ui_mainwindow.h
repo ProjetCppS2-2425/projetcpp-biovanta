@@ -84,7 +84,8 @@ public:
     QRadioButton *radioButton_2;
     QLabel *bg;
     QFrame *frame;
-    QPushButton *pushButton_5;
+    QPushButton *noti;
+    QLabel *notificationBadge;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -642,7 +643,7 @@ public:
         bg->setPixmap(QPixmap(QString::fromUtf8("../application/bg.jpg")));
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
-        frame->setGeometry(QRect(150, 0, 1391, 51));
+        frame->setGeometry(QRect(150, 0, 1391, 61));
         frame->setStyleSheet(QString::fromUtf8("#frame {\n"
 "    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #dee2e6;;\n"
@@ -672,10 +673,10 @@ public:
 ""));
         frame->setFrameShape(QFrame::Shape::StyledPanel);
         frame->setFrameShadow(QFrame::Shadow::Raised);
-        pushButton_5 = new QPushButton(frame);
-        pushButton_5->setObjectName("pushButton_5");
-        pushButton_5->setGeometry(QRect(60, 10, 131, 31));
-        pushButton_5->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+        noti = new QPushButton(frame);
+        noti->setObjectName("noti");
+        noti->setGeometry(QRect(70, 10, 71, 41));
+        noti->setStyleSheet(QString::fromUtf8("QPushButton {\n"
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
 "    border-radius: 5px;         /* Bords arrondis */\n"
@@ -687,6 +688,13 @@ public:
 "QPushButton:hover {\n"
 "    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
 "}"));
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8("notif.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        noti->setIcon(icon11);
+        noti->setIconSize(QSize(45, 45));
+        notificationBadge = new QLabel(frame);
+        notificationBadge->setObjectName("notificationBadge");
+        notificationBadge->setGeometry(QRect(90, 10, 41, 20));
         MainWindow->setCentralWidget(centralwidget);
         bg->raise();
         groupBox->raise();
@@ -798,7 +806,8 @@ public:
         radioButton->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         radioButton_2->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
         bg->setText(QString());
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "fonctionnalit\303\251", nullptr));
+        noti->setText(QString());
+        notificationBadge->setText(QString());
     } // retranslateUi
 
 };

@@ -31,7 +31,9 @@ public:
     bool existe(const QString &id);
     static Equipement getEquipementById(const QString &id);
     static QSqlQueryModel* rechercher(const QString& critere, const QString& valeur);
-
+    static QList<Equipement> getEquipementsNonFonctionnels();
+    static int countEquipementsNonFonctionnels();
+    static int countEquipementsParEtat(const QString &etat);
     // Getters
     QString getId() const { return id_equipement; }
     QString getNom() const { return nom_eq; }

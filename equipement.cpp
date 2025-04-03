@@ -154,3 +154,48 @@ QSqlQueryModel* Equipement::rechercher(const QString& critere, const QString& va
 
     return model;
 }
+
+QList<Equipement> Equipement::getEquipementsNonFonctionnels()
+{
+    QList<Equipement> liste;
+    QSqlQuery query;
+    query.prepare("SELECT * FROM EQUIPEMENT WHERE "
+                  "(LOWER(etat) LIKE '%pas fonctionnel%' OR "
+                  "LOWER(etat) LIKE '%non fonctionnel%' OR "
+                  "LOWER(etat) LIKE '%maintenance%')");
+
+    if (query.exec()) {
+        while (query.next()) {
+            liste.append(Equipement(
+                query.value("id_equipement").toString(),
+                query.value("nom_eq").toString(),
+                query.value("etat").toString(),
+                query.value("image").toByteArray(),
+                query.value("type").toString(),
+                query.value("disponibilite").toString(),
+                query.value("nbre_eq").toInt()
+                ));
+        }
+    } else {
+        qDebug() << "Erreur lors de la récupération des équipements non fonctionnels:"
+                 << query.lastError().text();
+    }
+    return liste;
+}
+
+int Equipement::countEquipementsNonFonctionnels() {
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM EQUIPEMENT WHERE LOWER(etat) LIKE '%pas fonctionnel%' OR LOWER(etat) LIKE '%maintenance%'");
+    if (query.exec() && query.next()) {
+        return query.value(0).toInt();
+    } else {
+        qDebug() << "Erreur lors du comptage:" << query.lastError().text();
+    }
+    return 0;
+}
+int Equipement::countEquipementsParEtat(const QString &etat) {
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM EQUIPEMENT WHERE etat = ?");
+    query.addBindValue(etat);
+    return query.exec() && query.next() ? query.value(0).toInt() : 0;
+}
