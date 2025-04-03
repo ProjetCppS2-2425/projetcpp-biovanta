@@ -21,38 +21,33 @@ class MainWindow : public QMainWindow {
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-    // Méthode statique pour récupérer un équipement par son ID
     static Equipement getEquipementById(const QString &id);
 
 private:
     // Variables membres
-    QByteArray selectedImageData;  // Remplace QString selectedImagePath pour stocker les données binaires de l'image
-    QString selectedId;            // Stocke l'ID de l'équipement sélectionné
-    bool isModifying;              // Indicateur de mode modification
-    Equipement equip;              // Instance de la classe Equipement
-    Ui::MainWindow *ui;            // Interface utilisateur
-
-    // Méthodes privées
-    void reinitialiserFormulaire(); // Réinitialise le formulaire
-    void remplirTableWidget();     // Remplit le tableau avec les données
+    QByteArray selectedImageData;
+    QString selectedId;
+    bool isModifying;
+    Equipement equip;
+    Ui::MainWindow *ui;
+    void reinitialiserFormulaire();
+    void remplirTableWidget();
     void refreshAlertCount();
 
 
 private:
-    bool wasInAlertState = false;  // Pour suivre l'état précédent
-    QLabel *notificationBadge;     // Le badge de notification
-    QTimer *notificationTimer;     // Pour vérifier périodiquement // Pour vérifier périodiquement
-    void updateNotificationBadge(int count);  // Méthode pour mettre à jour le badge
+    bool wasInAlertState = false;
+    QLabel *notificationBadge;
+    QTimer *notificationTimer;
+    void updateNotificationBadge(int count);
 
 
 private slots:
-    // Gestion des interactions
-    void on_tableWidget_itemClicked(QTableWidgetItem *item); // Gère le clic sur une ligne du tableau
-    void supp_clicked();            // Gère la suppression d'un équipement
-    void on_pushButton_clicked();   // Gère la sélection d'image
-    void on_pushButton_2_clicked(); // Gère l'ajout/modification
-    void on_pushButton_3_clicked(); // Gère la réinitialisation
+    void on_tableWidget_itemClicked(QTableWidgetItem *item);
+    void supp_clicked();
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
     void on_pdf_clicked();
     void on_stat_clicked();
     void on_ok_clicked();
@@ -60,12 +55,10 @@ private slots:
     void onTriDeclenche();
     void checkEquipmentStatus();
     void showEquipmentAlerts();
-
-    // Gestion des données
-    void actualiserTableau();       // Met à jour l'affichage du tableau
-    void chargerEquipement();       // Charge les données d'un équipement
+    void actualiserTableau();
+    void chargerEquipement();
     void afficherEquipements(const QList<Equipement>& liste);
-        // Affiche la liste des équipements
+
 };
 
 #endif // MAINWINDOW_H

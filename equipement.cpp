@@ -120,10 +120,10 @@ bool Equipement::existe(const QString &id) {
     query.bindValue(":id", id);
 
     if (query.exec() && query.next()) {
-        return query.value(0).toInt() > 0; // Retourne true si l'équipement existe
+        return query.value(0).toInt() > 0;
     }
 
-    return false; // Retourne false en cas d'erreur ou si l'équipement n'existe pas
+    return false;
 }
 
 QSqlQueryModel* Equipement::rechercher(const QString& critere, const QString& valeur) {
