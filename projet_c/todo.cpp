@@ -4,12 +4,13 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QTextStream>
-QTextStream out(stdout);
+
 Todo::Todo(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Todo)
 {
     ui->setupUi(this);
+    path =  QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt";
     QFile file(path);
     if (!file.open(QIODevice::ReadWrite)){
         QMessageBox::information(0,"error",file.errorString());
@@ -25,16 +26,16 @@ Todo::Todo(QWidget *parent)
 
 Todo::~Todo()
 {
-    delete ui;
     QFile file(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt");
     if (!file.open(QIODevice::ReadWrite)){
-        QMessageBox::information(0,"error",file.errorString());
+        QMessageBox::information(nullptr,"error",file.errorString());
     }
-    QTextStream in(&file);
+    QTextStream out(&file);
     for (int i=0; i<ui->listWidget->count();i++){
         out<<ui->listWidget->item(i)->text()<<"\n";
     }
     file.close();
+     delete ui;
 }
 
 

@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::Todo *ui;
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt";
+    QString path ;
 };
 
 #endif // TODO_H

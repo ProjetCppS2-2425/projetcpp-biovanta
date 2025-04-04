@@ -342,6 +342,7 @@ void MainWindow::on_pushButton_supp_clicked(){
         void MainWindow::on_todo_clicked()
         {
             auto todo = new Todo(this);
+            todo->setAttribute(Qt::WA_DeleteOnClose);
             todo->show();
         }
 
