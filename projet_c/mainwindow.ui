@@ -768,12 +768,12 @@ QPushButton#btnEquipement:checked {
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="todo">
      <property name="geometry">
       <rect>
        <x>60</x>
        <y>10</y>
-       <width>131</width>
+       <width>61</width>
        <height>31</height>
       </rect>
      </property>
@@ -792,7 +792,7 @@ QPushButton:hover {
 }</string>
      </property>
      <property name="text">
-      <string>fonctionnalité</string>
+      <string>ToDo</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_debug">
@@ -819,6 +819,33 @@ QPushButton:hover {
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>10</y>
+       <width>131</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}</string>
+     </property>
+     <property name="text">
+      <string>fonctionnalité</string>
      </property>
     </widget>
    </widget>

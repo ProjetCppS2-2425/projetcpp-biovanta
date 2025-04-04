@@ -23,6 +23,7 @@
 #include <QtWidgets>
 #include "qtstat.h"
 #include "connection.h"
+#include "todo.h"
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->radioButton_Modifier, &QRadioButton::toggled, this, &MainWindow::on_radioButton_Modifier_toggled);
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
+    connect(ui->todo, &QPushButton::clicked, this, &MainWindow::on_todo_clicked);
     //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
 }
@@ -334,5 +336,12 @@ void MainWindow::on_pushButton_supp_clicked(){
         }
         void MainWindow::filtereddisplay(){
 
+        }
+
+
+        void MainWindow::on_todo_clicked()
+        {
+            auto todo = new Todo(this);
+            todo->show();
         }
 

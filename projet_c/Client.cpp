@@ -9,8 +9,11 @@
 #include <QSqlQueryModel>
 #include "ui_mainwindow.h"
 #include  <QSqlTableModel>
-
-
+#include <vector>
+#include <map>
+#include <string>
+#include <unordered_map>
+using namespace std;
 Client::Client(){}
 Client::Client(int id_c, QString nomA, QString adresse, QString typeA,
                QString nomR, QString email, int id_contrat)
@@ -250,10 +253,66 @@ int Client::CalculLabo(){
             }
         }
     }
-   // qDebug()<<countL<<" error:"<<query.lastError().text();
-   /* QMessageBox::information(nullptr, QObject::tr("Labo:%1").arg(countL),
-                             QObject::tr("connection successful.\n"
-                                         "Click Cancel to exit."), QMessageBox::Cancel);*/
+
     return countL;
 }
+
+/*  int Client::SupAdress(){
+        QSqlQuery query;
+        query.prepare("SELECT ADRESSE FROM CLIENT");
+        vector<string> tab;
+        int total=0;
+        if (query.exec()) {
+            while (query.next()) {
+                tab.push_back(query.value(0).toString().toStdString()); // Add addresses to vector
+                total++;
+            }
+        }
+        // 2. Count occurrences using a frequency map
+        multimap<string, int> freqMap;
+        int mapcount=0;
+        for (int i = 0; i < total; i++) {
+            freqMap[tab[i]]++;
+        }
+
+        //count sup adress
+        for (int i = 0; i < freqMap.size() ; i++) {
+            int max= freqMap[tab[i]];
+            for (int j = 0; j < total; j++) {
+                if (freqMap[tab[j]]>max){
+                    max=freqMap[tab[j]];
+                }
+            }
+        }
+
+        return max ; // Or whatever return value makes sense
+}
+  string Client::SupAdressname(){
+      QSqlQuery query;
+      query.prepare("SELECT ADRESSE FROM CLIENT");
+      vector<string> tab;
+      int total=0;
+      if (query.exec()) {
+          while (query.next()) {
+              tab.push_back(query.value(0).toString().toStdString()); // Add addresses to vector
+              total++;
+          }
+      }
+      // 2. Count occurrences using a frequency map
+      multimap<string, int> freqMap;
+      for (int i = 0; i < total; i++) {
+          freqMap[tab[i]]++;
+      }
+      //count sup adress
+      string maxAddr;
+      int maxCount = 0;
+      for (map<string, int>::iterator it = freqMap.begin(); it != freqMap.end(); ++it) {
+          if (it->second > maxCount) {
+              maxCount = it->second;
+              maxAddr = it->first;
+          }
+      }
+
+      return maxAddr;
+  }*/
 

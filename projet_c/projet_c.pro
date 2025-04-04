@@ -14,17 +14,20 @@ SOURCES += \
     connection.cpp \
     main.cpp \
     mainwindow.cpp \
-    qtstat.cpp
+    qtstat.cpp \
+    todo.cpp
 
 HEADERS += \
     Client.h \
     connection.h \
     mainwindow.h \
-    qtstat.h
+    qtstat.h \
+    todo.h
 
 FORMS += \
     mainwindow.ui \
-    qtstat.ui
+    qtstat.ui \
+    todo.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

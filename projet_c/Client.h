@@ -2,6 +2,8 @@
 #define CLIENT_H
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <map>
+using namespace std;
 class Client
 {
 private:
@@ -41,7 +43,10 @@ public:
     void setIdContrat(int id_contrat);
 
 
-
+    int SupAdress();
+    string SupAdressname();
+    int SecondSupAdress();
+    int OtherAdress();
 
     bool ajouter();
     bool supprimer(int);

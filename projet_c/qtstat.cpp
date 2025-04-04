@@ -14,6 +14,7 @@ Qtstat::Qtstat(QWidget *parent)
 
     //series is a container to bars
     auto *series = new QBarSeries();
+   // auto *seriestot = new QBarSeries();
 
     //setting the bars
     QBarSet *set1 = new QBarSet("TOP ADRESS"); //bar data name
@@ -25,9 +26,9 @@ Qtstat::Qtstat(QWidget *parent)
     set4->append(C.CalculMinister());
     set5->append(C.CalculCentre());
     set6->append(C.CalculLabo());
-    *set1 << 5 << 0 << 0 << 4 << 0 << 7;
-    *set2 << 3 << 5 << 8 << 13 << 8 << 5;
-    *set3 << 5 << 6 << 7 << 3 << 4 << 5;
+    *set1 << 0 << 3 << 6 << 4 << 8;
+    *set2 << 0 << 3 << 8 << 13 << 8 << 5;
+    *set3 << 0 << 3 << 7 << 3 << 4 << 5;
 
     //putting bars inside series
     series->append(set1);
@@ -40,6 +41,7 @@ Qtstat::Qtstat(QWidget *parent)
     //the chart holding it all together
     QChart *chart = new QChart();
     chart->addSeries(series);
+    //chart->addSeries(seriestot);
     chart->setTitle("Client stats");
     chart->setAnimationDuration(QChart::SeriesAnimations);
 
@@ -60,12 +62,14 @@ Qtstat::Qtstat(QWidget *parent)
     axisX->append(Subjectname3);
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
+    //seriestot->attachAxis(axisX);
 
     //basic: the y axis stuff
     QValueAxis *axisY = new QValueAxis();
     axisY->setRange(0,C.countClients());
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
+    //seriestot->attachAxis(axisY);
 
     //setting a legend: beautifying stats
     chart->legend()->setVisible(true);

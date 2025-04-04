@@ -37,6 +37,8 @@ public slots:
 private slots:
 
 
+    void on_todo_clicked();
+
 private:
     Ui::MainWindow *ui;
     Client C;
