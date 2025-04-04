@@ -821,7 +821,7 @@ QPushButton:hover {
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="History">
      <property name="geometry">
       <rect>
        <x>140</x>
@@ -845,7 +845,7 @@ QPushButton:hover {
 }</string>
      </property>
      <property name="text">
-      <string>fonctionnalité</string>
+      <string>Historique</string>
      </property>
     </widget>
    </widget>

@@ -12,6 +12,7 @@ CONFIG += c++17 console
 SOURCES += \
     Client.cpp \
     connection.cpp \
+    history.cpp \
     main.cpp \
     mainwindow.cpp \
     qtstat.cpp \
@@ -20,11 +21,13 @@ SOURCES += \
 HEADERS += \
     Client.h \
     connection.h \
+    history.h \
     mainwindow.h \
     qtstat.h \
     todo.h
 
 FORMS += \
+    history.ui \
     mainwindow.ui \
     qtstat.ui \
     todo.ui

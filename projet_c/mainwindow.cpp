@@ -24,6 +24,7 @@
 #include "qtstat.h"
 #include "connection.h"
 #include "todo.h"
+#include "history.h"
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
     connect(ui->todo, &QPushButton::clicked, this, &MainWindow::on_todo_clicked);
+     connect(ui->History, &QPushButton::clicked, this, &MainWindow::on_History_clicked);
     //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
 }
@@ -344,5 +346,14 @@ void MainWindow::on_pushButton_supp_clicked(){
             auto todo = new Todo(this);
             todo->setAttribute(Qt::WA_DeleteOnClose);
             todo->show();
+        }
+
+
+
+        void MainWindow::on_History_clicked()
+        {
+            auto h = new History(this);
+            h->setAttribute(Qt::WA_DeleteOnClose);
+            h->show();
         }
 

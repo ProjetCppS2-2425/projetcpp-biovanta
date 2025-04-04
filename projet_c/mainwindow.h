@@ -39,6 +39,8 @@ private slots:
 
     void on_todo_clicked();
 
+    void on_History_clicked();
+
 private:
     Ui::MainWindow *ui;
     Client C;

@@ -10,18 +10,40 @@ Todo::Todo(QWidget *parent)
     , ui(new Ui::Todo)
 {
     ui->setupUi(this);
+    ui->listWidget->setDragDropMode(QAbstractItemView::DragDrop);
+    ui->listWidget_2->setDragDropMode(QAbstractItemView::DragDrop);
     path =  QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt";
     QFile file(path);
     if (!file.open(QIODevice::ReadWrite)){
         QMessageBox::information(0,"error",file.errorString());
     }
+
     QTextStream in(&file);
     while(!in.atEnd()){
         QListWidgetItem* item = new QListWidgetItem(in.readLine(),ui->listWidget);
         ui->listWidget->addItem(item);
-        item->setFlags(item->flags()|Qt::ItemIsEditable);
+        item->setFlags(item->flags()|Qt::ItemIsEditable|Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     }
-    file.close();
+
+    QFile file_2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile2.txt");
+    if (!file_2.open(QIODevice::ReadWrite)){
+        QMessageBox::information(0,"error",file_2.errorString());
+    }
+
+    QTextStream kin(&file_2);
+    while(!kin.atEnd()){
+        QListWidgetItem* item = new QListWidgetItem(kin.readLine(),ui->listWidget_2);
+        ui->listWidget_2->addItem(item);
+        item->setFlags(item->flags()|Qt::ItemIsEditable|Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    }
+
+    file_2.close();
+
+    /*int tot=ui->listWidget->count();
+    if (ui->listWidget->count()<tot){
+        tot = ui->listWidget->count();
+    }*/
+
 }
 
 Todo::~Todo()
@@ -35,11 +57,18 @@ Todo::~Todo()
         out<<ui->listWidget->item(i)->text()<<"\n";
     }
     file.close();
+
+    QFile file_2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile2.txt");
+    if (!file_2.open(QIODevice::ReadWrite)){
+        QMessageBox::information(nullptr,"error",file_2.errorString());
+    }
+    QTextStream outt(&file_2);
+    for (int i=0; i<ui->listWidget_2->count();i++){
+        outt<<ui->listWidget_2->item(i)->text()<<"\n";
+    }
+    file_2.close();
      delete ui;
 }
-
-
-
 
 void Todo::on_btnAdd_clicked()
 {
