@@ -25,6 +25,7 @@
 #include "connection.h"
 #include "todo.h"
 #include "history.h"
+
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -58,12 +59,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 void MainWindow::display(){
-      ui->tableView->setModel(C.afficher());
+     proxy = new QSortFilterProxyModel(this);
+    proxy->setSourceModel(C.afficher());
+     proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy->setFilterKeyColumn(-1);
+      ui->tableView->setModel(proxy);
 }
 void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
 {
-    if (checked) {
 
+    if (checked) {
+        AjouterResult A;
         int id = ui->lineEdit_ID->text().toInt();
         QString nomA = ui->lineEdit_nomA->text();
         QString type = ui->typeCombo->currentText();
@@ -128,10 +134,15 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
             ui->radioButton_Ajouter->setAutoExclusive(false);
             ui->radioButton_Ajouter->setChecked(false);
             ui->radioButton_Ajouter->setAutoExclusive(true);
+            A.Cajt=C;
+            A.success=true;
         }
+
         else {
             QMessageBox::critical(this, "Erreur", "Ajout non effectué.");
+            A.success=false;
         }
+        emit ajouterResultReady(A);
     }
 }
 
@@ -211,7 +222,7 @@ void MainWindow::on_pushButton_supp_clicked(){
                     bool test = C.modifier();
                     if (test) {
                         ui->tableView->setModel(C.afficher());
-                        QMessageBox::information(this, "Succès", "Ajout effectué avec succès !");
+                        QMessageBox::information(this, "Succès", "Modification effectué avec succès !");
 
 
                         ui->lineEdit_ID->clear();
@@ -227,7 +238,7 @@ void MainWindow::on_pushButton_supp_clicked(){
                         ui->radioButton_Modifier->setAutoExclusive(true);*/
                     }
                     else {
-                        QMessageBox::critical(this, "Erreur", "Ajout non effectué.");
+                        QMessageBox::critical(this, "Erreur", "Modification non effectué.");
                     }
                 }
             }
@@ -355,5 +366,20 @@ void MainWindow::on_pushButton_supp_clicked(){
             auto h = new History(this);
             h->setAttribute(Qt::WA_DeleteOnClose);
             h->show();
+        }
+
+
+        void MainWindow::on_Rbar_textChanged(const QString &arg1)
+        {
+            proxy->setFilterFixedString(arg1);
+        }
+
+
+        void MainWindow::on_CBbar_currentIndexChanged(int index)
+        {
+            if (index==0){
+                index=-1;
+            }
+            proxy->setFilterKeyColumn(index);
         }
 

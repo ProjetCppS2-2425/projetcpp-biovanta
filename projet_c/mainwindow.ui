@@ -971,9 +971,9 @@ QGroupBox {
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>120</x>
        <y>30</y>
-       <width>101</width>
+       <width>81</width>
        <height>20</height>
       </rect>
      </property>
@@ -986,32 +986,32 @@ color:#000000;
       <string>rechercher :</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_5">
+    <widget class="QComboBox" name="CBbar">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>570</x>
        <y>30</y>
-       <width>351</width>
+       <width>161</width>
        <height>31</height>
       </rect>
      </property>
      <item>
       <property name="text">
-       <string>type</string>
+       <string>ID</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>id équipement </string>
+       <string>Nom Association</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>disponibilité</string>
+       <string>Type Association</string>
       </property>
      </item>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="CBtri">
      <property name="geometry">
       <rect>
        <x>370</x>
@@ -1022,17 +1022,17 @@ color:#000000;
      </property>
      <item>
       <property name="text">
-       <string>état</string>
+       <string>ID</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>nbre d'équipement</string>
+       <string>Nom Association</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>nom d'équipement</string>
+       <string>Type Association</string>
       </property>
      </item>
     </widget>
@@ -1117,7 +1117,7 @@ color:#000000;
     <widget class="QPushButton" name="ok">
      <property name="geometry">
       <rect>
-       <x>650</x>
+       <x>750</x>
        <y>20</y>
        <width>61</width>
        <height>51</height>
@@ -1279,16 +1279,27 @@ color:#000000;
       </property>
      </widget>
     </widget>
+    <widget class="QLineEdit" name="Rbar">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>30</y>
+       <width>341</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
     <zorder>groupBox_4</zorder>
     <zorder>label_8</zorder>
-    <zorder>comboBox_5</zorder>
-    <zorder>comboBox</zorder>
+    <zorder>CBbar</zorder>
+    <zorder>CBtri</zorder>
     <zorder>label_11</zorder>
     <zorder>pdf</zorder>
     <zorder>stat</zorder>
     <zorder>ok</zorder>
     <zorder>checkBox</zorder>
     <zorder>checkBox_2</zorder>
+    <zorder>Rbar</zorder>
    </widget>
    <widget class="QLabel" name="bg">
     <property name="geometry">

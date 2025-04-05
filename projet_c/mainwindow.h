@@ -10,7 +10,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts>
 #include "qtstat.h"
-
+#include <QSortFilterProxyModel>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -26,6 +26,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    struct AjouterResult {
+        Client Cajt;
+        bool success;
+    };
+    struct ModifierResult {
+         Client Cmod;
+        bool success;
+    };
+    struct SupprimerResult {
+         Client Csupp;
+        bool success;
+    };
+    QSortFilterProxyModel * proxy;
+
 public slots:
     void on_radioButton_Ajouter_toggled(bool checked);
     void on_pushButton_supp_clicked();
@@ -40,6 +54,12 @@ private slots:
     void on_todo_clicked();
 
     void on_History_clicked();
+    void on_Rbar_textChanged(const QString &arg1);
+
+    void on_CBbar_currentIndexChanged(int index);
+
+signals:
+     void ajouterResultReady( AjouterResult &A);
 
 private:
     Ui::MainWindow *ui;

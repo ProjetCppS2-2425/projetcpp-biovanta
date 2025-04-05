@@ -10,20 +10,23 @@
 #include <QtGui>
 #include <QtWidgets>
 #include "Client.h"
+#include "history.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    MainWindow *w = new  MainWindow();
     Connection c;
     Client E;
+    History *h = new History();
     E.CalculCentre();
     E.CalculLabo();
     E.CalculMinister();
     bool test=c.createconnect();
     if(test)
     {
-        w.show();
-        w.display();
+        w->show();
+        w->display();
+        QObject::connect(w,&MainWindow::ajouterResultReady,h,&History::on_ajouter_performed);
         QMessageBox::information(nullptr, QObject::tr("database is open"),
                                  QObject::tr("connection successful.\n"
                                              "Click Cancel to exit."), QMessageBox::Cancel);
