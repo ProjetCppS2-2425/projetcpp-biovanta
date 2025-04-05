@@ -997,6 +997,11 @@ color:#000000;
      </property>
      <item>
       <property name="text">
+       <string>Aucune</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>ID</string>
       </property>
      </item>
@@ -1137,7 +1142,7 @@ color:#000000;
       </size>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="ASC">
      <property name="geometry">
       <rect>
        <x>530</x>
@@ -1150,7 +1155,7 @@ color:#000000;
       <string>ASC</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="DSC">
      <property name="geometry">
       <rect>
        <x>590</x>
@@ -1297,8 +1302,8 @@ color:#000000;
     <zorder>pdf</zorder>
     <zorder>stat</zorder>
     <zorder>ok</zorder>
-    <zorder>checkBox</zorder>
-    <zorder>checkBox_2</zorder>
+    <zorder>ASC</zorder>
+    <zorder>DSC</zorder>
     <zorder>Rbar</zorder>
    </widget>
    <widget class="QLabel" name="bg">

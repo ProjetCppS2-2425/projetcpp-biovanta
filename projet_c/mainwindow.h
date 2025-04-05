@@ -58,6 +58,8 @@ private slots:
 
     void on_CBbar_currentIndexChanged(int index);
 
+    void on_CBtri_currentIndexChanged(int index);
+
 signals:
      void ajouterResultReady( AjouterResult &A);
 

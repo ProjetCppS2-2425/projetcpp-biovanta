@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
     connect(ui->todo, &QPushButton::clicked, this, &MainWindow::on_todo_clicked);
      connect(ui->History, &QPushButton::clicked, this, &MainWindow::on_History_clicked);
+     connect(ui->ASC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
+      connect(ui->DSC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
     //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
 }
@@ -61,6 +63,7 @@ MainWindow::~MainWindow()
 void MainWindow::display(){
      proxy = new QSortFilterProxyModel(this);
     proxy->setSourceModel(C.afficher());
+     proxy->setSortCaseSensitivity(Qt::CaseInsensitive);
      proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
     proxy->setFilterKeyColumn(-1);
       ui->tableView->setModel(proxy);
@@ -381,5 +384,16 @@ void MainWindow::on_pushButton_supp_clicked(){
                 index=-1;
             }
             proxy->setFilterKeyColumn(index);
+        }
+
+
+        void MainWindow::on_CBtri_currentIndexChanged(int index)
+        {
+            if (ui->ASC->checkState()==Qt::Checked){
+                proxy->sort(index,Qt::AscendingOrder);
+            }
+            else if (ui->DSC->checkState()==Qt::Checked){
+                proxy->sort(index,Qt::DescendingOrder);
+            }
         }
 
