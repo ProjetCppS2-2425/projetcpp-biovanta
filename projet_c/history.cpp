@@ -6,6 +6,8 @@ History::History(QWidget *parent)
     , ui(new Ui::History)
 {
     ui->setupUi(this);
+    ui->logo->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\logo1.png"));
+    ui->bg->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\bgbg.jpg"));
 }
 
 History::~History()
