@@ -43,13 +43,12 @@ QList<Equipement> Equipement::afficher() {
     QSqlQuery query("SELECT * FROM EQUIPEMENT");
 
     while (query.next()) {
-        // Changement : Récupération des données binaires au lieu du chemin
         QByteArray imageData = query.value("image").toByteArray();
         liste.append(Equipement(
             query.value("id_equipement").toString(),
             query.value("nom_eq").toString(),
             query.value("etat").toString(),
-            imageData,  // Changement : Passage des données binaires
+            imageData,
             query.value("type").toString(),
             query.value("disponibilite").toString(),
             query.value("nbre_eq").toInt()
@@ -99,7 +98,6 @@ Equipement Equipement::getEquipementById(const QString &id) {
     query.bindValue(":id", id);
 
     if (query.exec() && query.next()) {
-        // Changement : Récupération des données binaires
         QByteArray imageData = query.value("image").toByteArray();
         return Equipement(
             query.value("id_equipement").toString(),

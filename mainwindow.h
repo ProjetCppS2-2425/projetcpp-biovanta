@@ -24,7 +24,6 @@ public:
     static Equipement getEquipementById(const QString &id);
 
 private:
-    // Variables membres
     QByteArray selectedImageData;
     QString selectedId;
     bool isModifying;
@@ -33,6 +32,7 @@ private:
     void reinitialiserFormulaire();
     void remplirTableWidget();
     void refreshAlertCount();
+
 
 
 private:

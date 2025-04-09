@@ -27,19 +27,18 @@
 #include <QTimer>
 #include <QPainter>
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
-    isModifying = false; // Initialiser à false (mode ajout par défaut)
+    isModifying = false;
     connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_ok_clicked);
     connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
     connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
     connect(ui->radioButton_4, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
-
-
-    // (Optionnel) Si vous voulez aussi que le critère (combobox) déclenche le tri SEULEMENT si un radioButton est coché :
     connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
         if (ui->radioButton_3->isChecked() || ui->radioButton_4->isChecked()) {
             onTriDeclenche();
@@ -61,10 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
     ui->noti->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\notif.png"));
 
-    // Récupérer la liste des équipements et l'afficher
+
     QList<Equipement> liste = Equipement::afficher();
     afficherEquipements(liste); // Appeler avec l'argument liste
-    // Création du badge de notification
     notificationBadge = new QLabel(ui->noti);
     notificationBadge->setObjectName("notificationBadge");
     notificationBadge->setStyleSheet(
@@ -79,8 +77,6 @@ MainWindow::MainWindow(QWidget *parent)
     notificationBadge->setAlignment(Qt::AlignCenter);
     notificationBadge->move(ui->noti->width() - 27, 5);
     notificationBadge->hide();
-
-    // Style du bouton de notification
     ui->noti->setStyleSheet(
         "QPushButton {"
         "    background-color: #02767F;"
@@ -96,15 +92,10 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
 
-    // Timer pour vérifier les équipements non fonctionnels
     notificationTimer = new QTimer(this);
     connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
     notificationTimer->start(6000); // Toutes les 5 minutes
-
-    // Vérification initiale
     checkEquipmentStatus();
-
-    // Connecter le clic sur le bouton de notification
     connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showEquipmentAlerts);
 
     ui->tableWidget->setStyleSheet(
@@ -170,31 +161,24 @@ void MainWindow::on_pushButton_2_clicked() {
                 return;
             }
 
-            // Contrôle de saisie pour le type
             if (type.isEmpty()) {
                 QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un type d'équipement.");
                 return;
             }
 
-            // Contrôle de saisie pour l'état
             if (etat.isEmpty()) {
                 QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un état pour l'équipement.");
                 return;
             }
 
-            // Contrôle de saisie pour la disponibilité
             if (dispo.isEmpty()) {
                 QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une disponibilité pour l'équipement.");
                 return;
             }
-
-            // Contrôle de saisie pour le nombre
             if (nbre <= 0) {
                 QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
                 return;
             }
-
-            // Enregistrer les modifications (utilisation de selectedImageData au lieu de selectedImagePath)
             Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
@@ -207,7 +191,6 @@ void MainWindow::on_pushButton_2_clicked() {
             }
         }
     } else if (ui->radioButton->isChecked()) { // Mode ajout
-        // Vérifier si l'équipement existe déjà
         if (equip.existe(id)) {
             QMessageBox::warning(this, "Erreur", "Un équipement avec cet ID existe déjà.");
             return;
@@ -218,39 +201,27 @@ void MainWindow::on_pushButton_2_clicked() {
         QString etat = ui->comboBox_2->currentText();
         QString dispo = ui->comboBox_3->currentText();
         int nbre = ui->spinBox->value();
-
-        // Validation du nom : Accepte uniquement les lettres et les espaces
         QRegularExpression nomRegex("^[A-Za-z\\s]+$");
         if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
             QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
             return;
         }
-
-        // Contrôle de saisie pour le type
         if (type.isEmpty()) {
             QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un type d'équipement.");
             return;
         }
-
-        // Contrôle de saisie pour l'état
         if (etat.isEmpty()) {
             QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un état pour l'équipement.");
             return;
         }
-
-        // Contrôle de saisie pour la disponibilité
         if (dispo.isEmpty()) {
             QMessageBox::warning(this, "Erreur", "Veuillez sélectionner une disponibilité pour l'équipement.");
             return;
         }
-
-        // Contrôle de saisie pour le nombre
         if (nbre <= 0) {
             QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
             return;
         }
-
-        // Ajout avec les données binaires de l'image (utilisation de selectedImageData)
         Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
         if (equip.ajouter()) {
             QMessageBox::information(this, "Succès", "Équipement ajouté avec succès.");
@@ -272,8 +243,6 @@ void MainWindow::on_pushButton_clicked() {
             QMessageBox::warning(this, "Erreur", "Impossible d'ouvrir l'image sélectionnée.");
             return;
         }
-
-        // Lire l'image en tant que données binaires
         QByteArray imageData = file.readAll();
         file.close();
         selectedImageData = imageData;
@@ -282,7 +251,6 @@ void MainWindow::on_pushButton_clicked() {
     }
 }
 
-// Dans mainwindow.cpp
 void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
     ui->tableWidget->setRowCount(liste.size());
 
@@ -295,11 +263,9 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
         const Equipement& e = liste[i];
 
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(e.getId()));
-
-        // Colonne Nom
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(e.getNom()));
 
-        // Colonne Image (affichage de l'image depuis les données BLOB)
+
         QByteArray imageData = e.getImageData();
         if (!imageData.isEmpty()) {
             QPixmap pixmap;
@@ -314,15 +280,11 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
         } else {
             ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Aucune image"));
         }
-
-        // Autres colonnes
         ui->tableWidget->setItem(i, 3, new QTableWidgetItem(e.getType()));
         ui->tableWidget->setItem(i, 4, new QTableWidgetItem(e.getEtat()));
         ui->tableWidget->setItem(i, 5, new QTableWidgetItem(e.getDispo()));
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(e.getNombre())));
     }
-
-    // Réactiver les mises à jour et ajuster la taille des colonnes
     ui->tableWidget->setUpdatesEnabled(true);
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
@@ -330,23 +292,17 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
 
 
 void MainWindow::actualiserTableau() {
-    ui->tableWidget->clear();  // Efface le tableau avant mise à jour
-
-    // Redéfinir les en-têtes (si nécessaire)
+    ui->tableWidget->clear();
     ui->tableWidget->setColumnCount(7);
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
-
-    // Récupérer la liste des équipements
     QList<Equipement> liste = Equipement::afficher();
     ui->tableWidget->setRowCount(liste.size());
-
-    // Remplir le tableau avec les données
     for (int i = 0; i < liste.size(); ++i) {
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
 
-        QByteArray imageData = liste[i].getImageData(); // Supposons que vous avez cette méthode
+        QByteArray imageData = liste[i].getImageData();
         if (!imageData.isEmpty()) {
             QPixmap pixmap;
             pixmap.loadFromData(imageData);
@@ -362,7 +318,6 @@ void MainWindow::actualiserTableau() {
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
     }
 }
-//supprimer
 
 void MainWindow::supp_clicked() {
     if (selectedId.isEmpty()) {
@@ -379,31 +334,23 @@ void MainWindow::supp_clicked() {
         Equipement e;
         if (e.supprimer(selectedId)) {
             QMessageBox::information(this, "Succès", "Équipement supprimé avec succès.");
-            actualiserTableau(); // Actualiser l'affichage après suppression
-            selectedId.clear(); // Réinitialiser l'ID sélectionné
+            actualiserTableau();
+            selectedId.clear();
         } else {
             QMessageBox::critical(this, "Erreur", "La suppression a échoué ou l'équipement n'existe pas.");
         }
     }
 }
 void MainWindow::on_tableWidget_itemClicked(QTableWidgetItem *item) {
-    if (!item) return; // Protection contre les pointeurs nuls
+    if (!item) return;
 
     int row = item->row();
-
-    // Vérifier que la ligne est valide
     if (row < 0 || row >= ui->tableWidget->rowCount()) return;
-
-    // Configurer la sélection par ligne
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-
-    // Stocker l'ID de l'équipement sélectionné
     QTableWidgetItem *idItem = ui->tableWidget->item(row, 0);
     if (idItem) {
         selectedId = idItem->text();
-
-        // Mettre en surbrillance toute la ligne
         ui->tableWidget->selectRow(row);
     }
 }
@@ -431,9 +378,7 @@ void MainWindow::chargerEquipement() {
 
     QByteArray imageData = equip.getImageData();
     if (!imageData.isEmpty()) {
-        selectedImageData = imageData; // Stocker les données binaires
-
-        // Afficher un aperçu de l'image
+        selectedImageData = imageData;
         QPixmap pixmap;
         if (pixmap.loadFromData(imageData)) {
             // Si vous avez un QLabel pour l'aperçu (remplacez 'ui->labelImage' par votre widget)
@@ -453,15 +398,15 @@ void MainWindow::chargerEquipement() {
     isModifying = true;
 }
 void MainWindow::on_pushButton_3_clicked() {
-    ui->lineEdit->clear();  // id
-    ui->lineEdit_3->clear();  // nom
-    ui->comboBox_4->setCurrentIndex(0);  // type
-    ui->comboBox_2->setCurrentIndex(0);  // etat
-    ui->comboBox_3->setCurrentIndex(0);  // dispo
-    ui->spinBox->setValue(0);  // nbre
-    selectedImageData.clear();  // image
-    ui->radioButton->setChecked(false);  // "Ajouter"
-    ui->radioButton_2->setChecked(false);  // "Modifier"
+    ui->lineEdit->clear();
+    ui->lineEdit_3->clear();
+    ui->comboBox_4->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+    ui->comboBox_3->setCurrentIndex(0);
+    ui->spinBox->setValue(0);
+    selectedImageData.clear();
+    ui->radioButton->setChecked(false);
+    ui->radioButton_2->setChecked(false);
 }
 
 void MainWindow::reinitialiserFormulaire() {
@@ -589,10 +534,7 @@ void MainWindow::on_pdf_clicked()
 
 void MainWindow::on_stat_clicked()
 {
-    // Requêtes SQL pour compter les équipements par état et disponibilité
     QSqlQuery query;
-
-    // Compter les équipements par état
     query.exec("SELECT etat, COUNT(*) FROM EQUIPEMENT GROUP BY etat");
     QPieSeries *etatSeries = new QPieSeries();
 
@@ -602,7 +544,6 @@ void MainWindow::on_stat_clicked()
         etatSeries->append(etat + " (" + QString::number(count) + ")", count);
     }
 
-    // Compter les équipements par disponibilité
     query.exec("SELECT disponibilite, COUNT(*) FROM EQUIPEMENT GROUP BY disponibilite");
     QPieSeries *dispoSeries = new QPieSeries();
 
@@ -611,8 +552,6 @@ void MainWindow::on_stat_clicked()
         int count = query.value(1).toInt();
         dispoSeries->append(dispo + " (" + QString::number(count) + ")", count);
     }
-
-    // Compter les équipements par type
     query.exec("SELECT type, COUNT(*) FROM EQUIPEMENT GROUP BY type");
     QPieSeries *typeSeries = new QPieSeries();
 
@@ -678,7 +617,6 @@ void MainWindow::on_ok_clicked() {
         return;
     }
 
-    // Déclaration de la requête SQL
     QString queryStr;
 
     if (critere == "type") {
@@ -703,8 +641,6 @@ void MainWindow::on_ok_clicked() {
     } else {
         query.bindValue(":valeur", valeur);
     }
-
-    // Affichage de la requête pour debug
     qDebug() << "Requête exécutée : " << queryStr << " avec valeur = " << valeur;
 
     if (!query.exec()) {
@@ -712,7 +648,6 @@ void MainWindow::on_ok_clicked() {
         return;
     }
 
-    // Affichage des résultats
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
 
@@ -964,5 +899,6 @@ void MainWindow::showEquipmentAlerts()
 }
 void MainWindow::refreshAlertCount()
 {
-    checkEquipmentStatus(); // Force la vérification immédiate
+    checkEquipmentStatus();
 }
+
