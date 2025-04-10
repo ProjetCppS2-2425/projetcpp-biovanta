@@ -26,6 +26,20 @@
 #include <QDialog>
 #include <QTimer>
 #include <QPainter>
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+#include <QPieSeries>
+#include <QChart>
+#include <QChartView>
+#include <QWidget>
+#include <QtCharts>
+#include <QSqlQuery>
+#include <QLabel>
+#include <QGroupBox>
+#include <QFont>
+
+
 
 
 
@@ -535,72 +549,81 @@ void MainWindow::on_pdf_clicked()
 void MainWindow::on_stat_clicked()
 {
     QSqlQuery query;
-    query.exec("SELECT etat, COUNT(*) FROM EQUIPEMENT GROUP BY etat");
-    QPieSeries *etatSeries = new QPieSeries();
 
+    // --- Série pour état ---
+    QPieSeries *etatSeries = new QPieSeries();
+    query.exec("SELECT etat, COUNT(*) FROM EQUIPEMENT GROUP BY etat");
     while (query.next()) {
         QString etat = query.value(0).toString();
         int count = query.value(1).toInt();
-        etatSeries->append(etat + " (" + QString::number(count) + ")", count);
+        QPieSlice *slice = etatSeries->append(etat + " (" + QString::number(count) + ")", count);
+        slice->setLabelVisible(true);
     }
 
-    query.exec("SELECT disponibilite, COUNT(*) FROM EQUIPEMENT GROUP BY disponibilite");
+    // --- Série pour disponibilité ---
     QPieSeries *dispoSeries = new QPieSeries();
-
+    query.exec("SELECT disponibilite, COUNT(*) FROM EQUIPEMENT GROUP BY disponibilite");
     while (query.next()) {
         QString dispo = query.value(0).toString();
         int count = query.value(1).toInt();
-        dispoSeries->append(dispo + " (" + QString::number(count) + ")", count);
+        QPieSlice *slice = dispoSeries->append(dispo + " (" + QString::number(count) + ")", count);
+        slice->setLabelVisible(true);
     }
-    query.exec("SELECT type, COUNT(*) FROM EQUIPEMENT GROUP BY type");
-    QPieSeries *typeSeries = new QPieSeries();
 
+    // --- Série pour type ---
+    QPieSeries *typeSeries = new QPieSeries();
+    query.exec("SELECT type, COUNT(*) FROM EQUIPEMENT GROUP BY type");
     while (query.next()) {
         QString type = query.value(0).toString();
         int count = query.value(1).toInt();
-        typeSeries->append(type + " (" + QString::number(count) + ")", count);
+        QPieSlice *slice = typeSeries->append(type + " (" + QString::number(count) + ")", count);
+        slice->setLabelVisible(true);
     }
 
-    // Création des graphiques
-    QChart *etatChart = new QChart();
-    etatChart->addSeries(etatSeries);
-    etatChart->setTitle("Répartition par état");
-    etatChart->legend()->setVisible(true);
-    etatChart->legend()->setAlignment(Qt::AlignBottom);
+    // --- Création des graphiques ---
+    auto createChart = [](QPieSeries *series, const QString &title) -> QChartView* {
+        QChart *chart = new QChart();
+        chart->addSeries(series);
+        chart->setTitle(title);
+        chart->legend()->setVisible(true);
+        chart->legend()->setAlignment(Qt::AlignBottom);
+        chart->setAnimationOptions(QChart::SeriesAnimations);
+        chart->setBackgroundBrush(QColor(245, 245, 245));
+        chart->setBackgroundRoundness(10);
 
-    QChart *dispoChart = new QChart();
-    dispoChart->addSeries(dispoSeries);
-    dispoChart->setTitle("Répartition par disponibilité");
-    dispoChart->legend()->setVisible(true);
-    dispoChart->legend()->setAlignment(Qt::AlignBottom);
+        QChartView *view = new QChartView(chart);
+        view->setRenderHint(QPainter::Antialiasing);
+        view->setMinimumSize(400, 300);
+        view->setStyleSheet("QChartView { border: 1px solid lightgray; border-radius: 10px; }");
+        return view;
+    };
 
-    QChart *typeChart = new QChart();
-    typeChart->addSeries(typeSeries);
-    typeChart->setTitle("Répartition par type");
-    typeChart->legend()->setVisible(true);
-    typeChart->legend()->setAlignment(Qt::AlignBottom);
+    QChartView *etatView = createChart(etatSeries, "Répartition par état");
+    QChartView *dispoView = createChart(dispoSeries, "Répartition par disponibilité");
+    QChartView *typeView = createChart(typeSeries, "Répartition par type");
 
-    // Configuration des vues
-    QChartView *etatView = new QChartView(etatChart);
-    etatView->setRenderHint(QPainter::Antialiasing);
-
-    QChartView *dispoView = new QChartView(dispoChart);
-    dispoView->setRenderHint(QPainter::Antialiasing);
-
-    QChartView *typeView = new QChartView(typeChart);
-    typeView->setRenderHint(QPainter::Antialiasing);
-
-    // Création d'une fenêtre pour afficher tous les graphiques
+    // --- Fenêtre des statistiques ---
     QWidget *statsWindow = new QWidget();
     statsWindow->setWindowTitle("Statistiques des équipements");
-    statsWindow->resize(1200, 600);
+    statsWindow->resize(1200, 700);
 
-    QGridLayout *layout = new QGridLayout(statsWindow);
-    layout->addWidget(etatView, 0, 0);
-    layout->addWidget(dispoView, 0, 1);
-    layout->addWidget(typeView, 1, 0, 1, 2);
+    QLabel *mainTitle = new QLabel("Statistiques Générales des Équipements");
+    QFont titleFont("Arial", 16, QFont::Bold);
+    mainTitle->setFont(titleFont);
+    mainTitle->setAlignment(Qt::AlignCenter);
 
-    statsWindow->setLayout(layout);
+    QGridLayout *gridLayout = new QGridLayout();
+    gridLayout->addWidget(etatView, 0, 0);
+    gridLayout->addWidget(dispoView, 0, 1);
+    gridLayout->addWidget(typeView, 1, 0, 1, 2);
+    gridLayout->setContentsMargins(10, 10, 10, 10);
+    gridLayout->setSpacing(20);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(statsWindow);
+    mainLayout->addWidget(mainTitle);
+    mainLayout->addLayout(gridLayout);
+
+    statsWindow->setLayout(mainLayout);
     statsWindow->show();
 }
 void MainWindow::on_ok_clicked() {
@@ -739,7 +762,6 @@ void MainWindow::onTriDeclenche() {
 }
 
 void MainWindow::checkEquipmentStatus() {
-    // Recherche flexible
     int nonFonctionnel = Equipement::countEquipementsParEtat("pas fonctionnel");
     int maintenance = Equipement::countEquipementsParEtat("maintenance");
     int total = nonFonctionnel + maintenance;
@@ -748,28 +770,24 @@ void MainWindow::checkEquipmentStatus() {
              << "| En maintenance:" << maintenance
              << "| Total:" << total;
 
-    updateNotificationBadge(total); // Met à jour le badge
+    updateNotificationBadge(total);
 }
 
 void MainWindow::updateNotificationBadge(int count)
 {
     if (count > 0) {
-        // Activer le mode alerte
         ui->noti->setProperty("alert", true);
         ui->noti->style()->unpolish(ui->noti);
         ui->noti->style()->polish(ui->noti);
 
-        // Mettre à jour le badge
+
         notificationBadge->setText(QString::number(count));
         notificationBadge->adjustSize();
         notificationBadge->show();
 
-        // Afficher une notification système
         if (QSystemTrayIcon::isSystemTrayAvailable()) {
             QSystemTrayIcon *trayIcon = new QSystemTrayIcon(this);
-            trayIcon->setIcon(QIcon(":/icons/app_icon.png")); // Remplacez par votre icône
-
-            // Calcul des différents états
+            trayIcon->setIcon(QIcon(":/icons/app_icon.png"));
             int nonFonctionnel = Equipement::countEquipementsParEtat("Pas fonctionnel");
             int maintenance = Equipement::countEquipementsParEtat("Maintenance");
 
@@ -889,7 +907,6 @@ void MainWindow::showEquipmentAlerts()
     scrollArea->setWidget(scrollContent);
     mainLayout->addWidget(scrollArea);
 
-    // Bouton Fermer
     QPushButton *closeButton = new QPushButton("Fermer");
     connect(closeButton, &QPushButton::clicked, alertDialog, &QDialog::accept);
     mainLayout->addWidget(closeButton, 0, Qt::AlignRight);
