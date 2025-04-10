@@ -24,18 +24,6 @@ public:
 
     void loadTableView();
 
-private slots:
-    void on_pushButton_7_clicked();
-
-    void on_comboBox_10_currentTextChanged(const QString &arg1);
-
-    void on_comboBox_11_currentTextChanged(const QString &arg1);
-
-    void on_tableView_vaccin_doubleClicked(const QModelIndex &index);
-
-    void on_tableView_vaccin_clicked(const QModelIndex &index);
-
-    void on_pushButton_9_clicked();
 
 private:
     Ui::vaccin_ui *ui;
