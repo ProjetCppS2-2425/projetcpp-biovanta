@@ -591,9 +591,7 @@ void Chercheur::displayResults(const QList<Chercheur> &results, QTableWidget *ta
 
     }
 }
-// Add project to database history
-// Add to history database table
-// Add to history database table
+//howwwwwwwww
 // Initialize the static member
 QHash<int, QList<QPair<QString, QDateTime>>> Chercheur::projectHistory;
 
@@ -670,10 +668,6 @@ QList<QPair<QString, QDateTime>> Chercheur::getHistory(int id) {
     }
     return projectHistory.value(id);
 }
-#include "chercheur.h"
-#include <QSqlQuery>
-#include <QTableWidgetItem>
-#include <QDebug>
 
 void Chercheur::applySort(QComboBox *tri, QCheckBox *ASC, QCheckBox *DSC, QTableWidget *tableWidget)
 {
