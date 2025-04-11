@@ -484,7 +484,7 @@ void MainWindow::on_pdf_clicked()
     }
     out << "</tr></thead>\n";
 
-    // data table
+
     for (int row = 0; row < rowCount; row++)
     {
         out << "<tr> <td>" << row + 1 << "</td>";
@@ -492,13 +492,13 @@ void MainWindow::on_pdf_clicked()
         {
             QString data;
 
-            if (column == 2) { // Colonne image
-                // Récupérer le widget de la cellule (qui devrait être un QLabel avec l'image)
+            if (column == 2) {
+
                 QLabel* imageLabel = qobject_cast<QLabel*>(ui->tableWidget->cellWidget(row, column));
                 if (imageLabel) {
                     QPixmap pixmap = imageLabel->pixmap(Qt::ReturnByValue);
                     if (!pixmap.isNull()) {
-                        // Sauvegarder temporairement l'image et utiliser son chemin
+
                         QString tempImagePath = QDir::tempPath() + QString("/temp_image_%1_%2.png").arg(row).arg(column);
                         if (pixmap.save(tempImagePath)) {
                             data = QString("<img src='%1' width='500' height='500' />").arg(tempImagePath);
@@ -602,7 +602,7 @@ void MainWindow::on_stat_clicked()
     QChartView *dispoView = createChart(dispoSeries, "Répartition par disponibilité");
     QChartView *typeView = createChart(typeSeries, "Répartition par type");
 
-    // --- Fenêtre des statistiques ---
+
     QWidget *statsWindow = new QWidget();
     statsWindow->setWindowTitle("Statistiques des équipements");
     statsWindow->resize(1200, 700);
@@ -632,7 +632,7 @@ void MainWindow::on_ok_clicked() {
         return;
     }
 
-    QString critere = ui->comboBox_5->currentText().trimmed(); // Éviter les espaces invisibles
+    QString critere = ui->comboBox_5->currentText().trimmed();
     QString valeur = ui->lineEdit_2->text().trimmed();
 
     if (valeur.isEmpty()) {
@@ -709,13 +709,8 @@ void MainWindow::on_ok_clicked() {
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    // Récupère la liste des équipements
     QList<Equipement> liste = Equipement::afficher();
-
-    // Réaffiche tous les équipements avec la liste obtenue
     afficherEquipements(liste);
-
-    // Réinitialise les champs de recherche si nécessaire
     ui->lineEdit_2->clear();
     ui->comboBox_5->setCurrentIndex(0);
 }
@@ -731,8 +726,6 @@ void MainWindow::onTriDeclenche() {
 
     QList<Equipement> liste = Equipement::afficher();
     if (liste.isEmpty()) return;
-
-    // Définition de l'ordre des états avec priorité
     auto getEtatPriority = [](const QString& etat) {
         QString etatLower = etat.toLower();
         if (etatLower.contains("fonctionnel") && !etatLower.contains("pas")) return 1;
@@ -848,7 +841,7 @@ void MainWindow::showEquipmentAlerts()
 
     QVBoxLayout *mainLayout = new QVBoxLayout(alertDialog);
 
-    // Titre
+
     QLabel *titleLabel = new QLabel(QString("%1 Équipement(s) nécessitant attention").arg(alertes.count()));
     titleLabel->setStyleSheet("font-weight: bold; font-size: 16px; margin-bottom: 15px;");
     mainLayout->addWidget(titleLabel);
