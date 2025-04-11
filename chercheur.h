@@ -1,10 +1,56 @@
 #ifndef CHERCHEUR_H
 #define CHERCHEUR_H
-
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QList>
+#include <QStringList>
+#include <QLabel>
+#include <QString>
+#include <QSqlQuery>
+#include <QTableWidget>
+#include <QtDebug>
+//
+#include <QString>
+#include <QMap>
+#include <QStringList>
+#include <QMessageBox>
+#include <QSqlQuery>
+#include <QFile>
+#include <QPrinter>
+#include <QTextTableCell>
+#include <QTextDocument>
+#include <QTextCursor>
+#include <QFileDialog>
+#include <QPushButton>
+#include <QSqlError>
+#include <QDebug>
+#include <QDesktopServices>  // Add this include at the top
+#include <QUrl>
+#include <QPrinter>
+#include <QTextDocument>
+#include <QTextTable>
+#include <QTextCursor>
+#include <QTextTableCell>
+#include <QFileDialog>
+#include <QStandardPaths>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QMessageBox>
+#include <QFont>
+#include <QColor>
+#include <QDate>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QLabel>
+#include <QMessageBox>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QPushButton>
+class QLineEdit;
+class QLabel;
 
 class Chercheur {
 private:
@@ -15,6 +61,7 @@ private:
     int num_tlp;
     QString domaine_recherche;
     QString projet_en_cours;
+    static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
 
 public:
     // Constructors
@@ -41,12 +88,29 @@ public:
 
     // Database Methods
     bool ajouter(); // To add a new chercheur
-    static QList<Chercheur> afficher(); // Static method to display all chercheurs
+    static QList<Chercheur> afficher();  // Static method to display all chercheurs
     bool supprimer(int id); // To remove a chercheur by ID
     bool modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours);
+    static void generatePDF(const QString &filePath, QWidget *parent);
+    void afficherStatistiques(QWidget *parent);
+    bool fetchDataById(int id);
+    static QList<Chercheur> searchByIdNameEmail(const QString &searchTerm,
+                                                const QString &filterField);
 
-    // Additional method to fetch data by ID (for deletion purposes)
-    bool fetchDataById(int id); // To fetch the chercheur data from the database by ID
+    // Display results in table
+
+    static void displayResults(const QList<Chercheur> &results, QTableWidget *table);
+    static void addToHistory(int id, const QString& project);
+    static QList<QPair<QString, QDateTime>> getHistory(int id);
+    static void loadHistory();
+    static void saveHistory();
+    static void applySort(QComboBox *tri, QCheckBox *ASC, QCheckBox *DSC, QTableWidget *tableWidget);
+
+
+
+
+
+
 };
 
 #endif // CHERCHEUR_H

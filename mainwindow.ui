@@ -100,27 +100,14 @@ QPushButton#btnEquipement:checked {
       <string>Modifier</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="radioButton_3">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>20</y>
-       <width>110</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>supprimer</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
       <x>470</x>
       <y>59</y>
-      <width>991</width>
-      <height>541</height>
+      <width>1061</width>
+      <height>571</height>
      </rect>
     </property>
     <property name="font">
@@ -233,122 +220,10 @@ QGroupBox {
     <property name="title">
      <string/>
     </property>
-    <widget class="QTableWidget" name="tableWidget">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>190</y>
-       <width>751</width>
-       <height>281</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">tableWidget-&gt;setStyleSheet(
-    &quot;QTableWidget {&quot;
-    &quot;   background-color: #f8f9fa;&quot;
-    &quot;   gridline-color: #dee2e6;&quot;
-    &quot;   font-size: 14px;&quot;
-    &quot;}&quot;
-    &quot;QHeaderView::section {&quot;
-    &quot;   background-color: #007bff;&quot;
-    &quot;   color: white;&quot;
-    &quot;   padding: 5px;&quot;
-    &quot;   border: 1px solid #0056b3;&quot;
-    &quot;}&quot;
-    &quot;QTableWidget::item {&quot;
-    &quot;   padding: 5px;&quot;
-    &quot;}&quot;
-    &quot;QTableWidget::item:selected {&quot;
-    &quot;   background-color: #ffc107;&quot;
-    &quot;   color: black;&quot;
-    &quot;}&quot;
-);
-</string>
-     </property>
-     <property name="rowCount">
-      <number>8</number>
-     </property>
-     <property name="columnCount">
-      <number>7</number>
-     </property>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <column>
-      <property name="text">
-       <string>Id chercheur</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Nom </string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>prenom</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>telephone</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>email</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>domaine de rechecher</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>project en cours</string>
-      </property>
-     </column>
-     <item row="0" column="0">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="0" column="1">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="0" column="4">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="1" column="0">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="1" column="1">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item row="1" column="4">
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-    </widget>
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
-       <x>190</x>
+       <x>100</x>
        <y>30</y>
        <width>101</width>
        <height>20</height>
@@ -358,32 +233,32 @@ QGroupBox {
       <string>rechercher :</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_5">
+    <widget class="QComboBox" name="filtrage">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>560</x>
        <y>30</y>
-       <width>351</width>
-       <height>31</height>
+       <width>71</width>
+       <height>21</height>
       </rect>
      </property>
      <item>
       <property name="text">
-       <string>type</string>
+       <string>nom</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>id équipement </string>
+       <string>id chercheur </string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>disponibilité</string>
+       <string>email</string>
       </property>
      </item>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="tri">
      <property name="geometry">
       <rect>
        <x>370</x>
@@ -394,17 +269,17 @@ QGroupBox {
      </property>
      <item>
       <property name="text">
-       <string>état</string>
+       <string>nom</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>nbre d'équipement</string>
+       <string>id</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>nom d'équipement</string>
+       <string>projet en cours</string>
       </property>
      </item>
     </widget>
@@ -504,7 +379,7 @@ QGroupBox {
       </size>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox">
+    <widget class="QCheckBox" name="ASC">
      <property name="geometry">
       <rect>
        <x>530</x>
@@ -517,7 +392,7 @@ QGroupBox {
       <string>ASC</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_2">
+    <widget class="QCheckBox" name="DSC">
      <property name="geometry">
       <rect>
        <x>590</x>
@@ -535,7 +410,7 @@ QGroupBox {
       <rect>
        <x>50</x>
        <y>130</y>
-       <width>861</width>
+       <width>981</width>
        <height>391</height>
       </rect>
      </property>
@@ -566,7 +441,7 @@ QGroupBox {
      <widget class="QPushButton" name="supp">
       <property name="geometry">
        <rect>
-        <x>750</x>
+        <x>850</x>
         <y>10</y>
         <width>41</width>
         <height>41</height>
@@ -627,18 +502,85 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
        <string> supprimer un  chercheur</string>
       </property>
      </widget>
+     <widget class="QTableWidget" name="tableWidget">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>60</y>
+        <width>911</width>
+        <height>301</height>
+       </rect>
+      </property>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <row/>
+      <column>
+       <property name="text">
+        <string>id</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>nom</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>prenom</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>telepone</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>email</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>domaine de recherche</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>project en cours</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Historique</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QLineEdit" name="S1">
+     <property name="geometry">
+      <rect>
+       <x>192</x>
+       <y>30</y>
+       <width>361</width>
+       <height>26</height>
+      </rect>
+     </property>
     </widget>
     <zorder>groupBox_4</zorder>
-    <zorder>tableWidget</zorder>
     <zorder>label_8</zorder>
-    <zorder>comboBox_5</zorder>
-    <zorder>comboBox</zorder>
+    <zorder>filtrage</zorder>
+    <zorder>tri</zorder>
     <zorder>label_11</zorder>
     <zorder>pdf</zorder>
     <zorder>stat</zorder>
     <zorder>ok</zorder>
-    <zorder>checkBox</zorder>
-    <zorder>checkBox_2</zorder>
+    <zorder>ASC</zorder>
+    <zorder>DSC</zorder>
+    <zorder>S1</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
@@ -680,9 +622,9 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <widget class="QLineEdit" name="lineEdit">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>140</x>
        <y>50</y>
-       <width>91</width>
+       <width>131</width>
        <height>26</height>
       </rect>
      </property>
@@ -760,9 +702,9 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <widget class="QLineEdit" name="lineEdit_3">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>140</x>
        <y>90</y>
-       <width>91</width>
+       <width>131</width>
        <height>26</height>
       </rect>
      </property>
@@ -801,16 +743,16 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
      </item>
      <item>
       <property name="text">
-       <string>Biotechnologie médicale</string>
+       <string>Biotechnologie </string>
       </property>
      </item>
     </widget>
     <widget class="QLineEdit" name="lineEdit_4">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>140</x>
        <y>130</y>
-       <width>91</width>
+       <width>131</width>
        <height>26</height>
       </rect>
      </property>
@@ -831,9 +773,9 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <widget class="QLineEdit" name="lineEdit_5">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>140</x>
        <y>180</y>
-       <width>91</width>
+       <width>131</width>
        <height>26</height>
       </rect>
      </property>
@@ -854,9 +796,9 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <widget class="QLineEdit" name="lineEdit_7">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>140</x>
        <y>240</y>
-       <width>91</width>
+       <width>131</width>
        <height>26</height>
       </rect>
      </property>
@@ -1175,7 +1117,7 @@ QPushButton#pushButton_8::before {
      <rect>
       <x>142</x>
       <y>0</y>
-      <width>1311</width>
+      <width>1691</width>
       <height>621</height>
      </rect>
     </property>
@@ -1191,7 +1133,7 @@ QPushButton#pushButton_8::before {
      <rect>
       <x>140</x>
       <y>0</y>
-      <width>1321</width>
+      <width>1391</width>
       <height>51</height>
      </rect>
     </property>
@@ -1199,34 +1141,6 @@ QPushButton#pushButton_8::before {
      <string notr="true"> background-color: #2C3E50; /* Couleur bleu foncé */
     border-right: 2px solid #1A252F;</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>131</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-    background-color: #02767F;  /* Vert foncé */
-    color: white;               /* Texte en blanc */
-    border-radius: 5px;         /* Bords arrondis */
-    padding: 10px;              /* Espacement interne */
-    font-weight: bold;          /* Texte en gras */
-    border: none;               /* Supprimer la bordure */
-}
-
-QPushButton:hover {
-    background-color: #247361;  /* Vert plus foncé au survol */
-}
-</string>
-     </property>
-     <property name="text">
-      <string>fonctionnalité</string>
-     </property>
-    </widget>
    </widget>
    <zorder>label_5</zorder>
    <zorder>groupBox_3</zorder>
