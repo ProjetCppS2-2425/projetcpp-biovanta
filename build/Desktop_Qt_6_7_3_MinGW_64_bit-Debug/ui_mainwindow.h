@@ -51,6 +51,9 @@ public:
     QLabel *label_16;
     QTableWidget *tableWidget;
     QLineEdit *S1;
+    QGroupBox *groupBox_5;
+    QLabel *label_12;
+    QPushButton *supp_2;
     QGroupBox *groupBox;
     QLabel *label;
     QLineEdit *lineEdit;
@@ -81,7 +84,6 @@ public:
     QLabel *logout;
     QLabel *label_3;
     QLabel *label_6;
-    QLabel *label_5;
     QWidget *widget;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -148,7 +150,7 @@ public:
         radioButton_2->setGeometry(QRect(210, 20, 110, 24));
         groupBox_2 = new QGroupBox(centralwidget);
         groupBox_2->setObjectName("groupBox_2");
-        groupBox_2->setGeometry(QRect(470, 59, 1061, 571));
+        groupBox_2->setGeometry(QRect(490, 70, 1061, 571));
         QFont font;
         font.setPointSize(12);
         font.setBold(true);
@@ -311,7 +313,7 @@ public:
         DSC->setGeometry(QRect(590, 90, 91, 24));
         groupBox_4 = new QGroupBox(groupBox_2);
         groupBox_4->setObjectName("groupBox_4");
-        groupBox_4->setGeometry(QRect(50, 130, 981, 391));
+        groupBox_4->setGeometry(QRect(30, 130, 611, 391));
         label_10 = new QLabel(groupBox_4);
         label_10->setObjectName("label_10");
         label_10->setGeometry(QRect(20, 10, 161, 31));
@@ -344,7 +346,7 @@ public:
         supp->setIconSize(QSize(25, 25));
         label_16 = new QLabel(groupBox_4);
         label_16->setObjectName("label_16");
-        label_16->setGeometry(QRect(510, 20, 251, 20));
+        label_16->setGeometry(QRect(150, 30, 251, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -375,10 +377,37 @@ public:
         if (tableWidget->rowCount() < 7)
             tableWidget->setRowCount(7);
         tableWidget->setObjectName("tableWidget");
-        tableWidget->setGeometry(QRect(50, 60, 911, 301));
+        tableWidget->setGeometry(QRect(20, 70, 571, 271));
         S1 = new QLineEdit(groupBox_2);
         S1->setObjectName("S1");
         S1->setGeometry(QRect(192, 30, 361, 26));
+        groupBox_5 = new QGroupBox(groupBox_2);
+        groupBox_5->setObjectName("groupBox_5");
+        groupBox_5->setGeometry(QRect(660, 130, 371, 391));
+        groupBox_5->setMinimumSize(QSize(371, 0));
+        label_12 = new QLabel(groupBox_5);
+        label_12->setObjectName("label_12");
+        label_12->setGeometry(QRect(20, 10, 161, 31));
+        label_12->setFont(font1);
+        supp_2 = new QPushButton(groupBox_5);
+        supp_2->setObjectName("supp_2");
+        supp_2->setGeometry(QRect(850, 10, 41, 41));
+        supp_2->setStyleSheet(QString::fromUtf8("\n"
+"QPushButton {\n"
+"        background-color: #cbddf5; /* Rouge */\n"
+"        color: white;\n"
+"        border-radius: 5px;\n"
+"        padding: 5px;\n"
+"        font-weight: bold;\n"
+"    }\n"
+"    QPushButton:hover {\n"
+"        background-color: #ff1a1a;  /* Rouge plus fonc\303\251 au survol */\n"
+"    }\n"
+"    QPushButton:pressed {\n"
+"        background-color: #cc0000;  /* Rouge fonc\303\251 au clic */\n"
+"    }"));
+        supp_2->setIcon(icon3);
+        supp_2->setIconSize(QSize(25, 25));
         groupBox_4->raise();
         label_8->raise();
         filtrage->raise();
@@ -390,6 +419,7 @@ public:
         ASC->raise();
         DSC->raise();
         S1->raise();
+        groupBox_5->raise();
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName("groupBox");
         groupBox->setGeometry(QRect(150, 60, 311, 461));
@@ -585,19 +615,14 @@ public:
         label_6->setObjectName("label_6");
         label_6->setGeometry(QRect(20, 40, 111, 91));
         label_6->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logo1.png")));
-        label_5 = new QLabel(centralwidget);
-        label_5->setObjectName("label_5");
-        label_5->setGeometry(QRect(142, 0, 1691, 621));
-        label_5->setPixmap(QPixmap(QString::fromUtf8("bg.jpg")));
         widget = new QWidget(centralwidget);
         widget->setObjectName("widget");
         widget->setGeometry(QRect(140, 0, 1391, 51));
         widget->setStyleSheet(QString::fromUtf8(" background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #1A252F;"));
         MainWindow->setCentralWidget(centralwidget);
-        label_5->raise();
-        groupBox_3->raise();
         groupBox_2->raise();
+        groupBox_3->raise();
         groupBox->raise();
         sidebare->raise();
         widget->raise();
@@ -622,9 +647,9 @@ public:
         radioButton_2->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
         groupBox_2->setTitle(QString());
         label_8->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
-        filtrage->setItemText(0, QCoreApplication::translate("MainWindow", "nom", nullptr));
-        filtrage->setItemText(1, QCoreApplication::translate("MainWindow", "id chercheur ", nullptr));
-        filtrage->setItemText(2, QCoreApplication::translate("MainWindow", "email", nullptr));
+        filtrage->setItemText(0, QCoreApplication::translate("MainWindow", "NOM", nullptr));
+        filtrage->setItemText(1, QCoreApplication::translate("MainWindow", "EMAIL", nullptr));
+        filtrage->setItemText(2, QCoreApplication::translate("MainWindow", "projet en cours", nullptr));
 
         tri->setItemText(0, QCoreApplication::translate("MainWindow", "nom", nullptr));
         tri->setItemText(1, QCoreApplication::translate("MainWindow", "id", nullptr));
@@ -656,6 +681,9 @@ public:
         ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "project en cours", nullptr));
         QTableWidgetItem *___qtablewidgetitem7 = tableWidget->horizontalHeaderItem(7);
         ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "Historique", nullptr));
+        groupBox_5->setTitle(QString());
+        label_12->setText(QCoreApplication::translate("MainWindow", "assitance ai", nullptr));
+        supp_2->setText(QString());
         groupBox->setTitle(QString());
         label->setText(QCoreApplication::translate("MainWindow", "Id chercheurs", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "nom", nullptr));
@@ -682,7 +710,6 @@ public:
         logout->setText(QString());
         label_3->setText(QString());
         label_6->setText(QString());
-        label_5->setText(QString());
     } // retranslateUi
 
 };

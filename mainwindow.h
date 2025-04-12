@@ -41,7 +41,7 @@ private slots:
 
 
 private:
-    bool isDataFetched; //
+    bool isDataFetched;
 
 private:
     QString selectedId;  // Add this variable to track the selected ID for modification
@@ -54,36 +54,23 @@ private:
 public:
     bool modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours);
     bool validateInput(int id, const QString& nom, const QString& prenom, const QString& email, int num_tlp, const QString& projet_en_cours);
-
-
-private slots:
-    void on_stat_clicked();
-    void onPdfButtonClicked();
+    void addHistoryIcon(int row, int researcherId);  // Add this declaration
+    const int HISTORY_COLUMN = 7;
 
 
 
-    // Add this in the MainWindow class declaration:
-  // Add this line
-
-private:
-    // ... existing members ...
-
-    // Add helper function:
-    int getResearcherIdFromRow(int row);  // Add this line
-
-
+ // Update slot name to match signal
 
 private slots:
-    // Add this slot for search functionality
-    void onSearchButtonClicked();
-    void applySort();
+    void on_searchButton_clicked();
+void onTriClicked();
+ void on_stat_clicked();
+void onPdfButtonClicked();
 
-private slots:
-    void showHistory(int researcherId);  // Add this declaration
 
 private:
     Ui::MainWindow *ui;
-    QString getSearchField(int index) const;
+
 
     QTableWidget *tableWidget;
         // Declare the table widget

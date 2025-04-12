@@ -10,7 +10,7 @@
 #include <QSqlQuery>
 #include <QTableWidget>
 #include <QtDebug>
-//
+#include <QSqlQueryModel>
 #include <QString>
 #include <QMap>
 #include <QStringList>
@@ -92,19 +92,14 @@ public:
     bool supprimer(int id); // To remove a chercheur by ID
     bool modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours);
     static void generatePDF(const QString &filePath, QWidget *parent);
-    void afficherStatistiques(QWidget *parent);
+    static void afficherStatistiques(QWidget *parent);
     bool fetchDataById(int id);
-    static QList<Chercheur> searchByIdNameEmail(const QString &searchTerm,
-                                                const QString &filterField);
+    static QList<Chercheur> searchChercheur(const QString &searchTerm, const QString &filter);
+    static QList<Chercheur> getChercheursSorted(const QString& sortBy, bool ascending);
 
-    // Display results in table
+    // Function to display search results in a QTableWidget
 
-    static void displayResults(const QList<Chercheur> &results, QTableWidget *table);
-    static void addToHistory(int id, const QString& project);
-    static QList<QPair<QString, QDateTime>> getHistory(int id);
-    static void loadHistory();
-    static void saveHistory();
-    static void applySort(QComboBox *tri, QCheckBox *ASC, QCheckBox *DSC, QTableWidget *tableWidget);
+
 
 
 

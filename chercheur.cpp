@@ -101,36 +101,34 @@ bool Chercheur::ajouter() {
 
     if (query.exec()) {
 
-       addToHistory(id, projet_en_cours); // Save to DB
+
         return true;
     }
     return false;
 }
-QList<Chercheur> Chercheur::afficher() {
-    QList<Chercheur> chercheursList;
-
+QList<Chercheur> Chercheur::afficher()
+{
+    QList<Chercheur> chercheurs;
     QSqlQuery query;
-    query.prepare("SELECT * FROM CHERCHEUR");
 
-    if (!query.exec()) {
-        qDebug() << "SQL Error: " << query.lastError().text();
-        return chercheursList;
+    if (query.exec("SELECT * FROM CHERCHEUR")) {
+        while (query.next()) {
+            Chercheur c(
+                query.value("ID_CHERCHEUR").toInt(),
+                query.value("NOM").toString(),
+                query.value("PRENOM").toString(),
+                query.value("EMAIL").toString(),
+                query.value("NUM_TLP").toInt(),
+                query.value("DOMAINE_RECHERCHE").toString(),
+                query.value("PROJET_EN_COURS").toString()
+                );
+            chercheurs.append(c);
+        }
+    } else {
+        qDebug() << "Database error:" << query.lastError().text();
     }
 
-    // Loop through the result set and create Chercheur objects
-    while (query.next()) {
-        int id = query.value(0).toInt();
-        QString nom = query.value(1).toString();
-        QString prenom = query.value(2).toString();
-        QString email = query.value(3).toString();
-        int num_tlp = query.value(4).toInt();
-        QString domaine_recherche = query.value(5).toString();
-        QString projet_en_cours = query.value(6).toString();
-        Chercheur chercheur(id, nom, prenom, email, num_tlp, domaine_recherche, projet_en_cours);
-        chercheursList.append(chercheur);
-    }
-
-    return chercheursList;
+    return chercheurs;
 }
 
 bool Chercheur::supprimer(int id) {
@@ -175,7 +173,7 @@ bool Chercheur::modify(int id, const QString &nom, const QString &prenom, const 
     if (oldQuery.exec() && oldQuery.next()) {
         QString oldProject = oldQuery.value(0).toString();
         if (oldProject != projet_en_cours) {
-            addToHistory(id, oldProject);
+
         }
     }
     QSqlQuery query;
@@ -202,160 +200,85 @@ bool Chercheur::modify(int id, const QString &nom, const QString &prenom, const 
 
 }
 
+QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QString &filter) {
+    QList<Chercheur> results;
+    QSqlQuery query;
 
-void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
-{
-    if (filePath.isEmpty()) {
-        return; // User cancelled
+    QString sqlQuery = "SELECT * FROM CHERCHEUR WHERE ";
+    if (filter == "Nom") {
+        sqlQuery += "NOM LIKE :searchTerm";
+    }
+    else if (filter == "Email") {
+        sqlQuery += "EMAIL LIKE :searchTerm";
+    }
+    else if (filter == "Projet En Cours") {
+        sqlQuery += "PROJET_EN_COURS LIKE :searchTerm";
+    }
+    else {
+        // Default case if filter doesn't match
+        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR PROJET_EN_COURS LIKE :searchTerm)";
     }
 
-    // Ensure .pdf extension
-    QString finalFilePath = filePath;
-    if (!finalFilePath.endsWith(".pdf", Qt::CaseInsensitive)) {
-        finalFilePath += ".pdf";
+    query.prepare(sqlQuery);
+    query.bindValue(":searchTerm", "%" + searchTerm + "%");
+
+    if (!query.exec()) {
+        qDebug() << "Search error:" << query.lastError().text();
+        return results;
     }
 
-    // Setup printer with clean professional settings
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(finalFilePath);
-    printer.setPageSize(QPageSize(QPageSize::A4));
-    printer.setPageMargins(QMarginsF(20, 20, 20, 15), QPageLayout::Millimeter);
-
-    // Create document
-    QTextDocument doc;
-    doc.setDocumentMargin(10);
-    QTextCursor cursor(&doc);
-
-    // Add logo at the top, centered
-    // Create a larger background area for the image
-    QTextBlockFormat blockFormat;
-    blockFormat.setAlignment(Qt::AlignCenter); // Center-align the image and its background
-
-    // Create a larger block to represent the background width
-    cursor.insertBlock(blockFormat);
-
-    // Add a background color for the block (larger area)
-    QTextCharFormat blockBgFormat;
-    blockBgFormat.setBackground(QColor(44, 62, 80)); // Dark blue background from your style
-    cursor.setCharFormat(blockBgFormat);
-
-    // Insert the image (keeping it small)
-    QTextImageFormat logoFormat;
-    logoFormat.setName("C:/Users/nesri/Downloads/projet_c (3) (2)/projet_c/logo1.png");
-    logoFormat.setWidth(80);  // Fixed width (small image size)
-    logoFormat.setHeight(40);  // Fixed height (small image size)
-    cursor.insertImage(logoFormat);
-    cursor.insertBlock(); // Insert a block to finish the image line
-
-
-    // Add BIOVANTA header
-    QTextBlockFormat centerFormat;
-    centerFormat.setAlignment(Qt::AlignCenter);
-    QTextCharFormat headerFormat;
-    headerFormat.setFont(QFont("Segoe UI", 20, QFont::Bold));
-    headerFormat.setForeground(QColor(44, 62, 80)); // Dark blue from your style
-    cursor.setBlockFormat(centerFormat);
-    cursor.insertText("BIOVANTA", headerFormat);
-
-    cursor.insertBlock();
-    cursor.insertBlock();
-
-    // Add title
-    QTextCharFormat titleFormat;
-    titleFormat.setFont(QFont("Segoe UI", 14, QFont::Bold));
-    cursor.setBlockFormat(centerFormat);
-    cursor.insertText("Liste des Chercheurs", titleFormat);
-
-    cursor.insertBlock();
-    cursor.insertBlock();
-
-    // Create table matching your UI style
-    QTextTableFormat tableFormat;
-    tableFormat.setHeaderRowCount(1);
-    tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
-    tableFormat.setBorderBrush(QBrush(QColor(208, 208, 208))); // #d0d0d0 from your style
-    tableFormat.setBorder(1);
-    tableFormat.setCellPadding(6);
-    tableFormat.setCellSpacing(0);
-    tableFormat.setAlignment(Qt::AlignLeft);
-    tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
-
-    QTextTable *table = cursor.insertTable(1, 7, tableFormat);
-
-    // Add column headers with dark blue background
-    QStringList headers = {"ID", "Nom", "Prénom", "Email", "Téléphone", "Domaine", "Projet"};
-    QTextTableCellFormat headerCellFormat;
-    headerCellFormat.setBackground(QColor(44, 62, 80)); // #2C3E50 from your style
-    headerCellFormat.setFont(QFont("Segoe UI", 10));
-    headerCellFormat.setForeground(Qt::white);
-    headerCellFormat.setVerticalAlignment(QTextCharFormat::AlignMiddle);
-
-    for (int i = 0; i < headers.size(); ++i) {
-        QTextTableCell cell = table->cellAt(0, i);
-        cell.setFormat(headerCellFormat);
-        cell.firstCursorPosition().insertText(headers[i]);
+    while (query.next()) {
+        Chercheur c(
+            query.value("ID_CHERCHEUR").toInt(),
+            query.value("NOM").toString(),
+            query.value("PRENOM").toString(),
+            query.value("EMAIL").toString(),
+            query.value("NUM_TLP").toInt(),
+            query.value("DOMAINE_RECHERCHE").toString(),
+            query.value("PROJET_EN_COURS").toString()
+            );
+        results.append(c);
     }
 
-    // Add data rows with clean styling
-    QTextCharFormat cellFormat;
-    cellFormat.setFont(QFont("Segoe UI", 9));
-    cellFormat.setForeground(QColor(51, 51, 51)); // #333 from your style
-
-    QTableWidget *tableWidget = parent->findChild<QTableWidget*>();
-    for (int row = 0; row < tableWidget->rowCount(); ++row) {
-        table->appendRows(1);
-
-        // Optional: Add special formatting for Histologie rows
-        if (tableWidget->item(row, 5) && tableWidget->item(row, 5)->text().contains("Histologie")) {
-            QTextTableCellFormat histoFormat;
-            histoFormat.setBackground(QColor(240, 230, 255)); // #f0e6ff from your style
-            histoFormat.setFont(QFont("Segoe UI", 9, QFont::Bold));
-            for (int col = 0; col < 7; col++) {
-                table->cellAt(row + 1, col).setFormat(histoFormat);
-            }
-        }
-
-        for (int col = 0; col < 7; ++col) {
-            QTableWidgetItem *item = tableWidget->item(row, col);
-            QTextTableCell cell = table->cellAt(row + 1, col);
-            cell.setFormat(cellFormat);
-
-            QString text = item ? item->text() : "";
-            if (col == 3) { // Fix email formatting
-                text = text.replace(" @", "@").replace("@ ", "@");
-            }
-            cell.firstCursorPosition().insertText(text);
-        }
-    }
-
-    // Add footer
-    cursor.movePosition(QTextCursor::End);
-    cursor.insertBlock();
-
-    QTextBlockFormat footerFormat;
-    footerFormat.setAlignment(Qt::AlignRight);
-    QTextCharFormat footerTextFormat;
-    footerTextFormat.setFont(QFont("Segoe UI", 8));
-    footerTextFormat.setForeground(QColor(150, 150, 150));
-
-    cursor.setBlockFormat(footerFormat);
-    cursor.insertText("Généré le " + QDate::currentDate().toString("dd/MM/yyyy"), footerTextFormat);
-
-    // Generate PDF
-    doc.print(&printer);
-
-    // Verify and open
-    if (QFile::exists(finalFilePath)) {
-        QMessageBox::information(parent, "Succès", QString("PDF généré avec succès!\n\nFichier: %1").arg(finalFilePath));
-        QDesktopServices::openUrl(QUrl::fromLocalFile(finalFilePath));
-    } else {
-        QMessageBox::warning(parent, "Erreur", "Le fichier PDF n'a pas été créé.");
-    }
+    return results;
 }
+QList<Chercheur> Chercheur::getChercheursSorted(const QString& sortBy, bool ascending) {
+    QList<Chercheur> chercheurs;
+    QSqlQuery query;
 
+    QString orderBy;
+    if (sortBy == "ID") {
+        orderBy = "ID_CHERCHEUR";
+    } else if (sortBy == "Nom") {
+        orderBy = "NOM";
+    } else if (sortBy == "Domaine de Recherche") {
+        orderBy = "DOMAINE_RECHERCHE";
+    } else {
+        orderBy = "ID_CHERCHEUR"; // Default fallback
+    }
 
+    QString direction = ascending ? "ASC" : "DESC";
+    QString sql = QString("SELECT * FROM CHERCHEUR ORDER BY %1 %2").arg(orderBy).arg(direction);
 
+    if (query.exec(sql)) {
+        while (query.next()) {
+            Chercheur c(
+                query.value("ID_CHERCHEUR").toInt(),
+                query.value("NOM").toString(),
+                query.value("PRENOM").toString(),
+                query.value("EMAIL").toString(),
+                query.value("NUM_TLP").toInt(),
+                query.value("DOMAINE_RECHERCHE").toString(),
+                query.value("PROJET_EN_COURS").toString()
+                );
+            chercheurs.append(c);
+        }
+    } else {
+        qDebug() << "Sorting error:" << query.lastError().text();
+    }
+
+    return chercheurs;
+}
 void Chercheur::afficherStatistiques(QWidget *parent)
 {
     QSqlQuery query;
@@ -518,194 +441,156 @@ void Chercheur::afficherStatistiques(QWidget *parent)
     QObject::connect(closeButton, &QPushButton::clicked, &statsDialog, &QDialog::accept);
     statsDialog.exec();
 }
-
-QList<Chercheur> Chercheur::searchByIdNameEmail(const QString &searchTerm,
-                                                const QString &filterField)
+void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
 {
-    QList<Chercheur> results;
-    QSqlQuery query;
-    QString queryStr;
-
-    // Determine search type
-    if (filterField == "ID") {
-        bool ok;
-        int id = searchTerm.toInt(&ok);
-        if (!ok) return results;
-
-        queryStr = "SELECT * FROM CHERCHEUR WHERE ID_CHERCHEUR = :id";
-        query.prepare(queryStr);
-        query.bindValue(":id", id);
-    }
-    else if (filterField == "NOM") {
-        queryStr = "SELECT * FROM CHERCHEUR WHERE NOM LIKE :term";
-        query.prepare(queryStr);
-        query.bindValue(":term", "%" + searchTerm + "%");
-    }
-    else if (filterField == "EMAIL") {
-        queryStr = "SELECT * FROM CHERCHEUR WHERE EMAIL LIKE :term";
-        query.prepare(queryStr);
-        query.bindValue(":term", "%" + searchTerm + "%");
-    }
-    else {
-        return results; // Invalid filter field
+    if (filePath.isEmpty()) {
+        return; // User cancelled
     }
 
-    if (!query.exec()) {
-        qDebug() << "Search error:" << query.lastError().text();
-        return results;
+    // Ensure .pdf extension
+    QString finalFilePath = filePath;
+    if (!finalFilePath.endsWith(".pdf", Qt::CaseInsensitive)) {
+        finalFilePath += ".pdf";
     }
 
-    // Process results (unchanged)
-    while (query.next()) {
-        results.append(Chercheur(
-            query.value("ID_CHERCHEUR").toInt(),
-            query.value("NOM").toString(),
-            query.value("PRENOM").toString(),
-            query.value("EMAIL").toString(),
-            query.value("NUM_TLP").toInt(),
-            query.value("DOMAINE_RECHERCHE").toString(),
-            query.value("PROJET_EN_COURS").toString()
-            ));
+    // Setup printer with clean professional settings
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(finalFilePath);
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageMargins(QMarginsF(20, 20, 20, 15), QPageLayout::Millimeter);
+
+    // Create document
+    QTextDocument doc;
+    doc.setDocumentMargin(10);
+    QTextCursor cursor(&doc);
+
+    // Add logo at the top, centered
+    // Create a larger background area for the image
+    QTextBlockFormat blockFormat;
+    blockFormat.setAlignment(Qt::AlignCenter); // Center-align the image and its background
+
+    // Create a larger block to represent the background width
+    cursor.insertBlock(blockFormat);
+
+    // Add a background color for the block (larger area)
+    QTextCharFormat blockBgFormat;
+    blockBgFormat.setBackground(QColor(44, 62, 80)); // Dark blue background from your style
+    cursor.setCharFormat(blockBgFormat);
+
+    // Insert the image (keeping it small)
+    QTextImageFormat logoFormat;
+    logoFormat.setName("C:/Users/nesri/Downloads/projet_c (3) (2)/projet_c/logo1.png");
+    logoFormat.setWidth(80);  // Fixed width (small image size)
+    logoFormat.setHeight(40);  // Fixed height (small image size)
+    cursor.insertImage(logoFormat);
+    cursor.insertBlock(); // Insert a block to finish the image line
+
+
+    // Add BIOVANTA header
+    QTextBlockFormat centerFormat;
+    centerFormat.setAlignment(Qt::AlignCenter);
+    QTextCharFormat headerFormat;
+    headerFormat.setFont(QFont("Segoe UI", 20, QFont::Bold));
+    headerFormat.setForeground(QColor(44, 62, 80)); // Dark blue from your style
+    cursor.setBlockFormat(centerFormat);
+    cursor.insertText("BIOVANTA", headerFormat);
+
+    cursor.insertBlock();
+    cursor.insertBlock();
+
+    // Add title
+    QTextCharFormat titleFormat;
+    titleFormat.setFont(QFont("Segoe UI", 14, QFont::Bold));
+    cursor.setBlockFormat(centerFormat);
+    cursor.insertText("Liste des Chercheurs", titleFormat);
+
+    cursor.insertBlock();
+    cursor.insertBlock();
+
+    // Create table matching your UI style
+    QTextTableFormat tableFormat;
+    tableFormat.setHeaderRowCount(1);
+    tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
+    tableFormat.setBorderBrush(QBrush(QColor(208, 208, 208))); // #d0d0d0 from your style
+    tableFormat.setBorder(1);
+    tableFormat.setCellPadding(6);
+    tableFormat.setCellSpacing(0);
+    tableFormat.setAlignment(Qt::AlignLeft);
+    tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
+
+    QTextTable *table = cursor.insertTable(1, 7, tableFormat);
+
+    // Add column headers with dark blue background
+    QStringList headers = {"ID", "Nom", "Prénom", "Email", "Téléphone", "Domaine", "Projet"};
+    QTextTableCellFormat headerCellFormat;
+    headerCellFormat.setBackground(QColor(44, 62, 80)); // #2C3E50 from your style
+    headerCellFormat.setFont(QFont("Segoe UI", 10));
+    headerCellFormat.setForeground(Qt::white);
+    headerCellFormat.setVerticalAlignment(QTextCharFormat::AlignMiddle);
+
+    for (int i = 0; i < headers.size(); ++i) {
+        QTextTableCell cell = table->cellAt(0, i);
+        cell.setFormat(headerCellFormat);
+        cell.firstCursorPosition().insertText(headers[i]);
     }
 
-    return results;
-}
+    // Add data rows with clean styling
+    QTextCharFormat cellFormat;
+    cellFormat.setFont(QFont("Segoe UI", 9));
+    cellFormat.setForeground(QColor(51, 51, 51)); // #333 from your style
 
-// Keep your existing displayResults() implementation
-void Chercheur::displayResults(const QList<Chercheur> &results, QTableWidget *table)
-{
-    table->setRowCount(0); // Clear existing rows
+    QTableWidget *tableWidget = parent->findChild<QTableWidget*>();
+    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+        table->appendRows(1);
 
-    for (const Chercheur &c : results) {
-        int row = table->rowCount();
-        table->insertRow(row);
-
-        // Adjust column numbers to match your table structure
-        table->setItem(row, 0, new QTableWidgetItem(QString::number(c.getId())));
-        table->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-        table->setItem(row, 2, new QTableWidgetItem(c.getPrenom()));
-        table->setItem(row, 3, new QTableWidgetItem(c.getEmail()));
-        table->setItem(row, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
-        table->setItem(row, 5, new QTableWidgetItem(c.getDomaineRecherche()));
-        table->setItem(row, 6, new QTableWidgetItem(c.getProjetEnCours()));
-
-    }
-}
-//howwwwwwwww
-// Initialize the static member
-QHash<int, QList<QPair<QString, QDateTime>>> Chercheur::projectHistory;
-
-// Load history when the program starts (call this once at startup)
-void Chercheur::loadHistory() {
-    QSettings settings("YourCompany", "YourAppName");
-    int size = settings.beginReadArray("researcherHistory");
-
-    for (int i = 0; i < size; ++i) {
-        settings.setArrayIndex(i);
-        int id = settings.value("id").toInt();
-
-        int historySize = settings.beginReadArray("projects");
-        QList<QPair<QString, QDateTime>> history;
-
-        for (int j = 0; j < historySize; ++j) {
-            settings.setArrayIndex(j);
-            QString project = settings.value("project").toString();
-            QDateTime timestamp = settings.value("timestamp").toDateTime();
-            history.append(qMakePair(project, timestamp));
-        }
-        settings.endArray();
-
-        projectHistory[id] = history;
-    }
-    settings.endArray();
-}
-
-// Save history when adding new entries
-void Chercheur::saveHistory() {
-    QSettings settings("YourCompany", "YourAppName");
-    settings.beginWriteArray("researcherHistory");
-
-    int i = 0;
-    for (auto it = projectHistory.begin(); it != projectHistory.end(); ++it, ++i) {
-        settings.setArrayIndex(i);
-        settings.setValue("id", it.key());
-
-        settings.beginWriteArray("projects");
-        for (int j = 0; j < it.value().size(); ++j) {
-            settings.setArrayIndex(j);
-            settings.setValue("project", it.value()[j].first);
-            settings.setValue("timestamp", it.value()[j].second);
-        }
-        settings.endArray();
-    }
-    settings.endArray();
-}
-
-void Chercheur::addToHistory(int id, const QString& project) {
-    if (!project.isEmpty()) {
-        // Load history if empty (lazy loading)
-        if (projectHistory.isEmpty()) {
-            loadHistory();
+        // Optional: Add special formatting for Histologie rows
+        if (tableWidget->item(row, 5) && tableWidget->item(row, 5)->text().contains("Histologie")) {
+            QTextTableCellFormat histoFormat;
+            histoFormat.setBackground(QColor(240, 230, 255)); // #f0e6ff from your style
+            histoFormat.setFont(QFont("Segoe UI", 9, QFont::Bold));
+            for (int col = 0; col < 7; col++) {
+                table->cellAt(row + 1, col).setFormat(histoFormat);
+            }
         }
 
-        QList<QPair<QString, QDateTime>>& history = projectHistory[id];
-        history.prepend(qMakePair(project, QDateTime::currentDateTime()));
+        for (int col = 0; col < 7; ++col) {
+            QTableWidgetItem *item = tableWidget->item(row, col);
+            QTextTableCell cell = table->cellAt(row + 1, col);
+            cell.setFormat(cellFormat);
 
-        // Limit history to last 5 entries
-        if (history.size() > 5) {
-            history.removeLast();
+            QString text = item ? item->text() : "";
+            if (col == 3) { // Fix email formatting
+                text = text.replace(" @", "@").replace("@ ", "@");
+            }
+            cell.firstCursorPosition().insertText(text);
         }
-
-        // Save after modification
-        saveHistory();
-    }
-}
-
-QList<QPair<QString, QDateTime>> Chercheur::getHistory(int id) {
-    // Load history if empty (lazy loading)
-    if (projectHistory.isEmpty()) {
-        loadHistory();
-    }
-    return projectHistory.value(id);
-}
-
-void Chercheur::applySort(QComboBox *tri, QCheckBox *ASC, QCheckBox *DSC, QTableWidget *tableWidget)
-{
-    QString column;
-    switch (tri->currentIndex()) {
-    case 0: column = "NOM"; break;
-    case 1: column = "ID_CHERCHEUR"; break;
-    case 2: column = "PROJET_EN_COURS"; break;
-    default: column = "NOM";
     }
 
-    QString direction = "ASC";  // Default if both are unchecked
-    if (ASC->isChecked() && !DSC->isChecked()) {
-        direction = "ASC";
-    } else if (DSC->isChecked() && !ASC->isChecked()) {
-        direction = "DESC";
-    }
+    // Add footer
+    cursor.movePosition(QTextCursor::End);
+    cursor.insertBlock();
 
-    QSqlQuery query;
-    query.prepare(QString("SELECT * FROM CHERCHEUR ORDER BY %1 %2")
-                      .arg(column)
-                      .arg(direction));
+    QTextBlockFormat footerFormat;
+    footerFormat.setAlignment(Qt::AlignRight);
+    QTextCharFormat footerTextFormat;
+    footerTextFormat.setFont(QFont("Segoe UI", 8));
+    footerTextFormat.setForeground(QColor(150, 150, 150));
 
-    if (query.exec()) {
-        tableWidget->setRowCount(0);
-        while (query.next()) {
-            int row = tableWidget->rowCount();
-            tableWidget->insertRow(row);
+    cursor.setBlockFormat(footerFormat);
+    cursor.insertText("Généré le " + QDate::currentDate().toString("dd/MM/yyyy"), footerTextFormat);
 
-            tableWidget->setItem(row, 0, new QTableWidgetItem(query.value("ID_CHERCHEUR").toString()));
-            tableWidget->setItem(row, 1, new QTableWidgetItem(query.value("NOM").toString()));
-            tableWidget->setItem(row, 2, new QTableWidgetItem(query.value("PRENOM").toString()));
-            tableWidget->setItem(row, 3, new QTableWidgetItem(query.value("EMAIL").toString()));
-            tableWidget->setItem(row, 4, new QTableWidgetItem(query.value("NUM_TLP").toString()));
-            tableWidget->setItem(row, 5, new QTableWidgetItem(query.value("DOMAINE_RECHERCHE").toString()));
-            tableWidget->setItem(row, 6, new QTableWidgetItem(query.value("PROJET_EN_COURS").toString()));
-        }
+    // Generate PDF
+    doc.print(&printer);
+
+    // Verify and open
+    if (QFile::exists(finalFilePath)) {
+        QMessageBox::information(parent, "Succès", QString("PDF généré avec succès!\n\nFichier: %1").arg(finalFilePath));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(finalFilePath));
     } else {
-        qDebug() << "Sort error:" << query.lastError();
+        QMessageBox::warning(parent, "Erreur", "Le fichier PDF n'a pas été créé.");
     }
 }
+
+
+

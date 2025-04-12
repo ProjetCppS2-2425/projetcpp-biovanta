@@ -104,8 +104,8 @@ QPushButton#btnEquipement:checked {
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>59</y>
+      <x>490</x>
+      <y>70</y>
       <width>1061</width>
       <height>571</height>
      </rect>
@@ -244,17 +244,17 @@ QGroupBox {
      </property>
      <item>
       <property name="text">
-       <string>nom</string>
+       <string>NOM</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>id chercheur </string>
+       <string>EMAIL</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>email</string>
+       <string>projet en cours</string>
       </property>
      </item>
     </widget>
@@ -408,9 +408,9 @@ QGroupBox {
     <widget class="QGroupBox" name="groupBox_4">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>30</x>
        <y>130</y>
-       <width>981</width>
+       <width>611</width>
        <height>391</height>
       </rect>
      </property>
@@ -480,8 +480,8 @@ QPushButton {
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
-        <x>510</x>
-        <y>20</y>
+        <x>150</x>
+        <y>30</y>
         <width>251</width>
         <height>20</height>
        </rect>
@@ -505,10 +505,10 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
      <widget class="QTableWidget" name="tableWidget">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>60</y>
-        <width>911</width>
-        <height>301</height>
+        <x>20</x>
+        <y>70</y>
+        <width>571</width>
+        <height>271</height>
        </rect>
       </property>
       <row/>
@@ -570,6 +570,85 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       </rect>
      </property>
     </widget>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="geometry">
+      <rect>
+       <x>660</x>
+       <y>130</y>
+       <width>371</width>
+       <height>391</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>371</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI Variable</family>
+        <pointsize>14</pointsize>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>assitance ai</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="supp_2">
+      <property name="geometry">
+       <rect>
+        <x>850</x>
+        <y>10</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QPushButton {
+        background-color: #cbddf5; /* Rouge */
+        color: white;
+        border-radius: 5px;
+        padding: 5px;
+        font-weight: bold;
+    }
+    QPushButton:hover {
+        background-color: #ff1a1a;  /* Rouge plus foncé au survol */
+    }
+    QPushButton:pressed {
+        background-color: #cc0000;  /* Rouge foncé au clic */
+    }</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>effacer.png</normaloff>effacer.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>25</width>
+        <height>25</height>
+       </size>
+      </property>
+     </widget>
+    </widget>
     <zorder>groupBox_4</zorder>
     <zorder>label_8</zorder>
     <zorder>filtrage</zorder>
@@ -581,6 +660,7 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
     <zorder>ASC</zorder>
     <zorder>DSC</zorder>
     <zorder>S1</zorder>
+    <zorder>groupBox_5</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
@@ -1112,22 +1192,6 @@ QPushButton#pushButton_8::before {
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>142</x>
-      <y>0</y>
-      <width>1691</width>
-      <height>621</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>bg.jpg</pixmap>
-    </property>
-   </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
@@ -1142,9 +1206,8 @@ QPushButton#pushButton_8::before {
     border-right: 2px solid #1A252F;</string>
     </property>
    </widget>
-   <zorder>label_5</zorder>
-   <zorder>groupBox_3</zorder>
    <zorder>groupBox_2</zorder>
+   <zorder>groupBox_3</zorder>
    <zorder>groupBox</zorder>
    <zorder>sidebare</zorder>
    <zorder>widget</zorder>
