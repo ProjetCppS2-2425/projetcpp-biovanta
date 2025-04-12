@@ -1,0 +1,13 @@
+release/chatbot.o
+release/connection.o
+release/geminiapi.o
+release/main.o
+release/mainwindow.o
+release/statistique.o
+release/vaccin.o
+release/vaccin_ui.o
+release/moc_chatbot.o
+release/moc_geminiapi.o
+release/moc_mainwindow.o
+release/moc_statistique.o
+release/moc_vaccin_ui.o

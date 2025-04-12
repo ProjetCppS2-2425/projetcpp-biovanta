@@ -5,6 +5,7 @@
 #include <QtCharts/QPieSeries>
 
 
+
 statistique::statistique(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::statistique)
@@ -20,18 +21,18 @@ statistique::~statistique()
 void statistique::paintEvent(QPaintEvent *)
 {
 
-    int A=v.statistique1();
-    int B=v.statistique2();
+    int A=v.statistique1();//resultat count 1
+    int B=v.statistique2();//resultat count 2
 
     float s1= A*100 ;
     float s2=B*100;
     float nb = A+B;
     float q1 ;
-    q1 = s1/nb ;
+    q1 = s1/nb ;//pourcentage
     float q2;
     q2=s2/nb;
     float y  ;
-    y= (q1*360)/100;
+    y= (q1*360)/100;//cercle
     float m;
     m= (q2*360)/100;
 

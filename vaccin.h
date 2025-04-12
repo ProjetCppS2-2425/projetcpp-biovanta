@@ -39,16 +39,21 @@ public:
     void setTemperatureConservation(float temp) { temperature_conservation = temp; }
     void setDateExpiration(const QDate& date) { date_expiration = date; }
 
-    vaccin * readvaccin (QString val);
+    vaccin * readvaccin (QString val);//pdf
 
-    QSqlQueryModel * afficher_choix_ASC(QString choix);
+    QSqlQueryModel * afficher_choix_ASC(QString choix);//tri
     QSqlQueryModel * afficher_choix_DSC(QString choix);
-    QSqlQueryModel *afficher_temperature_conservation(QString ch);
+    QSqlQueryModel *afficher_temperature_conservation(QString ch);//recherche
     QSqlQueryModel *afficher_nom_vaccin(QString ch);
     QSqlQueryModel *afficher_type_vaccin(QString ch);
 
-    int statistique1();
+    int statistique1();//stat
     int statistique2();
+
+
+    // metiers avancées //
+    void sendSMS(const QString& phoneNumber , const QString& message );
+    QString constructSMS(const QString& nomSponsor);
 
 };
 

@@ -1,5 +1,15 @@
 #include "vaccin.h"
+#include "connection.h"
 #include<QSqlError>
+#include <QDebug>
+#include <QUrl>
+#include <QUrlQuery>
+#include <QNetworkRequest>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QCoreApplication>
+#include <QMessageBox>
+
 vaccin::vaccin() {
     id_vaccin = "";
     nom_vaccin = "";
@@ -168,11 +178,11 @@ int vaccin::statistique2(){
 vaccin* vaccin::readvaccin(QString val)
 {
     QSqlQuery query;
-    query.prepare("SELECT * FROM VACCIN WHERE id_vaccin = :val"); // ✅ correct column name
-    query.bindValue(":val", val); // ✅ correctly using the bind variable
+    query.prepare("SELECT * FROM VACCIN WHERE id_vaccin = :val"); //correct column name
+    query.bindValue(":val", val); // correctly using the bind variable
 
     if (query.exec()) {
-        if (query.next()) { // ✅ Only one expected row
+        if (query.next()) { //  Only one expected row
             setIdVaccin(query.value(0).toString());
             setNomVaccin(query.value(1).toString());
             setTypeVaccin(query.value(2).toString());
@@ -189,6 +199,45 @@ vaccin* vaccin::readvaccin(QString val)
     }
 
     return this;
+}
+
+
+void vaccin::sendSMS(const QString& phoneNumber, const QString& message ) {
+    // Twilio Account SID, Auth Token, and Twilio phone number
+    QString accountSid = "AC7508f4d0886aedb6ee88594fc15210b2";
+    QString authToken = "5c7ef8ea1965482ce72573dc27eb03f1";
+    QString twilioPhoneNumber = "+19472175897";
+
+    // Twilio API endpoint
+    QUrl apiUrl("https://api.twilio.com/2010-04-01/Accounts/AC7508f4d0886aedb6ee88594fc15210b2/Messages.json");
+
+    // Create a request
+    QNetworkRequest request(apiUrl);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setRawHeader("Authorization", "Basic " + QByteArray((accountSid + ":" + authToken).toUtf8()).toBase64());
+
+    // Prepare POST data
+    QUrlQuery postData;
+    postData.addQueryItem("To", phoneNumber);
+    postData.addQueryItem("From", twilioPhoneNumber);
+    postData.addQueryItem("Body", message);
+
+    // Create a network manager and send the request
+    QNetworkAccessManager* manager = new QNetworkAccessManager();
+    QNetworkReply* reply = manager->post(request, postData.toString(QUrl::FullyEncoded).toUtf8());
+
+    // Handle the reply
+    QObject::connect(reply, &QNetworkReply::finished, [=]() {
+        if (reply->error() == QNetworkReply::NoError) {
+            QMessageBox::information(nullptr, "SMS envoye", "SMS envoyé avec succès.");
+        } else {
+            QMessageBox::critical(nullptr, "SMS erreur", "Échec de l'envoi du SMS. Erreur: " + reply->errorString());
+        }
+
+        // Clean up
+        reply->deleteLater();
+        manager->deleteLater();
+    });
 }
 
 
