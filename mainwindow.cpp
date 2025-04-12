@@ -3,6 +3,7 @@
 #include "chatbot.h"
 #include "vaccin.h"
 
+
 #include<QMessageBox>
 #include <QPrinter>
 #include <QPainter>
@@ -113,16 +114,16 @@ void MainWindow::on_pushButton_7_clicked()
             ui->tableView_vaccin->setModel(vac.afficher());
             QMessageBox::information(this, "Success!", "Vaccin ajouté avec succès.");
 
-            // 🧠 Calcul des jours restants avant expiration
+            //  Calcul des jours restants avant expiration
             QDate date_actuelle = QDate::currentDate();
             int jours_restants = date_actuelle.daysTo(date_exp);
 
-            // 📨 Création du message SMS
+            //  Création du message SMS
             QString message = "Un vaccin a été ajouté sous le nom : " + nom +
                               ". Il expirera dans " + QString::number(jours_restants) + " jour(s).";
 
-            // 📤 Envoi du SMS
-            vac.sendSMS("+21650256940", message);
+            //  Envoi du SMS
+           // vac.sendSMS("+21650256940", message);
 
             clearInputs();
         } else {
