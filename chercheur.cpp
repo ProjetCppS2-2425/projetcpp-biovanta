@@ -76,14 +76,13 @@ class QLabel;
 
 Chercheur::Chercheur() {}
 
-Chercheur::Chercheur(int id, QString nom, QString prenom, QString email, int num_tlp, QString domaine_recherche, QString projet_en_cours) {
-    this->id = id;
-    this->nom = nom;
-    this->prenom = prenom;
-    this->email = email;
-    this->num_tlp = num_tlp;
-    this->domaine_recherche = domaine_recherche;
-    this->projet_en_cours = projet_en_cours;
+Chercheur::Chercheur(int id, QString nom, QString prenom, QString email,
+                      int num_tlp, QString domaine_recherche, QString projet_en_cours)
+    : id(id), nom(nom), prenom(prenom), email(email),
+    num_tlp(num_tlp), domaine_recherche(domaine_recherche),
+    projet_en_cours(projet_en_cours)
+{
+    initProjectJson();
 }
 
 bool Chercheur::ajouter() {
@@ -155,49 +154,57 @@ bool Chercheur::fetchDataById(int id) {
     query.bindValue(":id", id);
 
     if (query.exec() && query.next()) {
-        // Assuming you have getters for all fields:
-        setNom(query.value("NOM").toString());
-        setPrenom(query.value("PRENOM").toString());
-        setEmail(query.value("EMAIL").toString());
-        setNumTlp(query.value("NUM_TLP").toInt());
-        setDomaineRecherche(query.value("DOMAINE_RECHERCHE").toString());
-        setProjetEnCours(query.value("PROJET_EN_COURS").toString());
+        this->id = id;
+        nom = query.value("NOM").toString();
+        prenom = query.value("PRENOM").toString();
+        email = query.value("EMAIL").toString();
+        num_tlp = query.value("NUM_TLP").toInt();
+        domaine_recherche = query.value("DOMAINE_RECHERCHE").toString();
+
+        // Store the complete JSON string internally
+        projet_en_cours = query.value("PROJET_EN_COURS").toString();
+
+        // Initialize if empty or invalid
+        initProjectJson();
         return true;
     }
+    qDebug() << "Fetch error:" << query.lastError().text();
     return false;
 }
-bool Chercheur::modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours) {
-    QSqlQuery oldQuery;
-    oldQuery.prepare("SELECT PROJET_EN_COURS FROM CHERCHEUR WHERE ID_CHERCHEUR=?");
-    oldQuery.addBindValue(id);
-    if (oldQuery.exec() && oldQuery.next()) {
-        QString oldProject = oldQuery.value(0).toString();
-        if (oldProject != projet_en_cours) {
 
-        }
+bool Chercheur::modify(int id, const QString &nom, const QString &prenom,
+                       const QString &email, int num_tlp,
+                       const QString &domaine_recherche, const QString &newProject) {
+
+    if (!fetchDataById(id)) {
+        qDebug() << "Failed to fetch researcher data";
+        return false;
     }
+
+    // Update project history before saving
+    updateProjectHistory(newProject);
+
     QSqlQuery query;
-    query.prepare("UPDATE CHERCHEUR SET nom = :nom, prenom = :prenom, email = :email, num_tlp = :num_tlp, domaine_recherche = :domaine_recherche, projet_en_cours = :projet_en_cours WHERE ID_CHERCHEUR = :id");
+    query.prepare("UPDATE CHERCHEUR SET "
+                  "nom = :nom, prenom = :prenom, "
+                  "email = :email, num_tlp = :num_tlp, "
+                  "domaine_recherche = :domaine, "
+                  "projet_en_cours = :projet "
+                  "WHERE ID_CHERCHEUR = :id");
+
     query.bindValue(":id", id);
     query.bindValue(":nom", nom);
     query.bindValue(":prenom", prenom);
     query.bindValue(":email", email);
     query.bindValue(":num_tlp", num_tlp);
-    query.bindValue(":domaine_recherche", domaine_recherche);
-    query.bindValue(":projet_en_cours", projet_en_cours);
+    query.bindValue(":domaine", domaine_recherche);
+    query.bindValue(":projet", projet_en_cours);  // Full JSON
 
-    // Debug: Print the query and values
-    qDebug() << "Executing query:" << query.lastQuery();
-    qDebug() << "Values:" << id << nom << prenom << email << num_tlp << domaine_recherche << projet_en_cours;
-
-    if (query.exec()) {
-        qDebug() << "Researcher updated successfully!";
-        return true;
-    } else {
-        qDebug() << "Failed to update researcher:" << query.lastError().text();
+    if (!query.exec()) {
+        qDebug() << "Update error:" << query.lastError().text();
         return false;
     }
-
+    return true;
 }
 
 QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QString &filter) {
@@ -592,5 +599,64 @@ void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
     }
 }
 
+void Chercheur::initProjectJson() {
+    if (projet_en_cours.isEmpty() ||
+        !projet_en_cours.startsWith("{")) {
+        QJsonObject json;
+        json["current"] = "";
+        json["history"] = QJsonArray();
+        projet_en_cours = QJsonDocument(json).toJson();
+    }
+}
 
+// Update project and maintain history
+void Chercheur::updateProjectHistory(const QString &newProject) {
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    QJsonObject json = doc.object();
 
+    QString current = json["current"].toString();
+    if (current != newProject && !current.isEmpty()) {
+        QJsonArray history = json["history"].toArray();
+        history.prepend(QJsonObject{
+            {"date", QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss")},
+            {"project", current}
+        });
+
+        // Keep only last 5 entries
+        while (history.size() > 5) history.removeLast();
+        json["history"] = history;
+    }
+
+    json["current"] = newProject;
+    projet_en_cours = QJsonDocument(json).toJson();
+}
+
+// Get just the current project name
+QString Chercheur::getCurrentProject() const {
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    if (doc.isObject()) {
+        return doc.object()["current"].toString();
+    }
+    return "";
+}
+
+// Format history for display
+QString Chercheur::getFormattedHistory() const {
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    if (!doc.isObject()) return "No history available";
+
+    QJsonObject json = doc.object();
+    QString current = json["current"].toString();
+    QJsonArray history = json["history"].toArray();
+
+    QString result = QString("<b>Current Project:</b> %1<br><br><b>History:</b>").arg(current);
+
+    for (const QJsonValue& item : history) {
+        QJsonObject obj = item.toObject();
+        result += QString("<br>• %1: %2")
+                      .arg(obj["date"].toString())
+                      .arg(obj["project"].toString());
+    }
+
+    return result;
+}

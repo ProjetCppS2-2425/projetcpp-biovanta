@@ -61,7 +61,10 @@ private:
     int num_tlp;
     QString domaine_recherche;
     QString projet_en_cours;
-    static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
+   static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
+    void initProjectJson();
+    void updateProjectHistory(const QString &newProject);
+
 
 public:
     // Constructors
@@ -84,18 +87,25 @@ public:
     void setEmail(const QString& newEmail) { email = newEmail; }
     void setNumTlp(int newNumTlp) { num_tlp = newNumTlp; }
     void setDomaineRecherche(const QString& newDomaineRecherche) { domaine_recherche = newDomaineRecherche; }
-    void setProjetEnCours(const QString& newProjetEnCours) { projet_en_cours = newProjetEnCours; }
+
 
     // Database Methods
     bool ajouter(); // To add a new chercheur
     static QList<Chercheur> afficher();  // Static method to display all chercheurs
     bool supprimer(int id); // To remove a chercheur by ID
-    bool modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours);
+    bool modify(int id, const QString &nom, const QString &prenom,
+                const QString &email, int num_tlp,
+                const QString &domaine_recherche, const QString &newProject);
     static void generatePDF(const QString &filePath, QWidget *parent);
     static void afficherStatistiques(QWidget *parent);
     bool fetchDataById(int id);
     static QList<Chercheur> searchChercheur(const QString &searchTerm, const QString &filter);
     static QList<Chercheur> getChercheursSorted(const QString& sortBy, bool ascending);
+    QString getCurrentProject() const;
+    QString getFullProjectJson() const { return projet_en_cours; }
+    QString getFormattedHistory() const;
+
+
 
     // Function to display search results in a QTableWidget
 

@@ -54,8 +54,7 @@ private:
 public:
     bool modify(int id, const QString &nom, const QString &prenom, const QString &email, int num_tlp, const QString &domaine_recherche, const QString &projet_en_cours);
     bool validateInput(int id, const QString& nom, const QString& prenom, const QString& email, int num_tlp, const QString& projet_en_cours);
-    void addHistoryIcon(int row, int researcherId);  // Add this declaration
-    const int HISTORY_COLUMN = 7;
+
 
 
 
@@ -66,12 +65,17 @@ private slots:
 void onTriClicked();
  void on_stat_clicked();
 void onPdfButtonClicked();
+void onCellClicked(int row, int column);
 
 
 private:
     Ui::MainWindow *ui;
 
+    void showResearcherHistory(int row);
+    void addHistoryIcon(int row, int researcherId);
 
+    // Add this constant (or make it a static const class member)
+    static const int HISTORY_COLUMN = 7;
     QTableWidget *tableWidget;
         // Declare the table widget
 

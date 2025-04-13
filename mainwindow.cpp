@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    const int HISTORY_COLUMN = 7; // Matches your "historique" column position
 
     ui->tableWidget->setStyleSheet(
         "QTableWidget {"
@@ -47,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     // When populating table rows:
 
 
-
+connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onCellClicked);
                                                          ui->logo->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\empe.png"));
@@ -60,13 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->stat->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\search.png"));
     ui->supp->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\effacer.png"));
-
-    connect(ui->tableWidget, &QTableWidget::cellClicked, [this](int row, int col){
-        if (col == HISTORY_COLUMN) {
-            int id = ui->tableWidget->item(row, 0)->text().toInt();
-            showHistory(id); // You'll implement this
-        }
-    });
 
 
     // Connect search
@@ -152,19 +146,23 @@ void MainWindow::pushButton_2_clicked()
             return;
         }
 
-        // Create and add researcher
+        // Create and add researcher with initial empty history
+        QJsonObject projectJson;
+        projectJson["current"] = ui->lineEdit_8->text().trimmed();
+        projectJson["history"] = QJsonArray();
+        QString projetJsonString = QJsonDocument(projectJson).toJson();
+
         Chercheur c(id, nom,
                     ui->lineEdit_4->text().trimmed(),
                     email,
                     num_tlp,
                     domaine_recherche,
-                    ui->lineEdit_8->text().trimmed());
+                    projetJsonString);
 
         if (c.ajouter()) {
             QMessageBox::information(this, "Succès", "Chercheur ajouté !");
             refreshTable();
             clearFields();
-
         } else {
             QMessageBox::critical(this, "Erreur", "Échec de l'ajout. Vérifiez les données.");
         }
@@ -177,36 +175,62 @@ void MainWindow::pushButton_2_clicked()
             return;
         }
 
-        if (!ui->lineEdit_3->text().isEmpty()) {
+        if (!ui->lineEdit_3->text().isEmpty()) {  // Modification mode
             // Validation
             QString nom = ui->lineEdit_3->text().trimmed();
-            if (nom.isEmpty()) return;
+            if (nom.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Le nom ne peut pas être vide");
+                return;
+            }
 
             QString phoneText = ui->lineEdit_5->text().trimmed();
             int num_tlp = phoneText.toInt(&ok);
-            if (!ok || phoneText.length() != 8) return;
+            if (!ok || phoneText.length() != 8) {
+                QMessageBox::warning(this, "Erreur", "Le téléphone doit contenir 8 chiffres");
+                return;
+            }
 
             QString email = ui->lineEdit_7->text().trimmed();
-            if (!email.contains("@") || !email.contains(".")) return;
+            if (!email.contains("@") || !email.contains(".")) {
+                QMessageBox::warning(this, "Erreur", "Format email invalide");
+                return;
+            }
 
             QString domaine = ui->comboBox_4->currentText().trimmed();
-            if (domaine.isEmpty()) return;
+            if (domaine.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Sélectionnez un domaine de recherche");
+                return;
+            }
 
-            // Perform modification
+            QString newProject = ui->lineEdit_8->text().trimmed();
+
+            // Fetch current data
             Chercheur c;
-            if (c.modify(id, nom,
-                         ui->lineEdit_4->text().trimmed(),
-                         email,
-                         num_tlp,
-                         domaine,
-                         ui->lineEdit_8->text().trimmed())) {
-                QMessageBox::information(this, "Succès", "Modification réussie");
-                refreshTable();
-                clearFields();
+            if (c.fetchDataById(id)) {
+                // Store old project before updating
+                QString oldProject = c.getProjetEnCours();
+
+                // Update project (this will handle history)
+                c.setProjetEnCours(newProject);
+
+                // Perform the database update with the complete JSON
+                if (c.modify(id, nom,
+                             ui->lineEdit_4->text().trimmed(),
+                             email,
+                             num_tlp,
+                             domaine,
+                             c.getProjetEnCours())) {
+                    QMessageBox::information(this, "Succès", "Modification réussie");
+                    refreshTable();
+                    clearFields();
+                } else {
+                    QMessageBox::warning(this, "Erreur", "Échec de la modification");
+                }
+            } else {
+                QMessageBox::warning(this, "Erreur", "Chercheur non trouvé");
             }
         }
-        else {
-            // Fetch mode
+        else {  // Fetch mode
             Chercheur c;
             if (c.fetchDataById(id)) {
                 ui->lineEdit_3->setText(c.getNom());
@@ -214,12 +238,15 @@ void MainWindow::pushButton_2_clicked()
                 ui->lineEdit_7->setText(c.getEmail());
                 ui->lineEdit_5->setText(QString::number(c.getNumTlp()));
                 ui->comboBox_4->setCurrentText(c.getDomaineRecherche());
+
+                // Display current project (not the full JSON)
                 ui->lineEdit_8->setText(c.getProjetEnCours());
+            } else {
+                QMessageBox::warning(this, "Erreur", "Chercheur non trouvé");
             }
         }
     }
 }
-
 void MainWindow::refreshTable()
 {
     ui->tableWidget->setRowCount(0);
@@ -249,8 +276,9 @@ void MainWindow::addHistoryIcon(int row, int researcherId)
 {
     QTableWidgetItem *historyIcon = new QTableWidgetItem("📜");
     historyIcon->setTextAlignment(Qt::AlignCenter);
+    historyIcon->setToolTip("Cliquez pour voir l'historique des projets");
     historyIcon->setFlags(historyIcon->flags() ^ Qt::ItemIsEditable);
-    historyIcon->setData(Qt::UserRole, researcherId);  // Store ID for future click handling
+    historyIcon->setData(Qt::UserRole, researcherId);
     ui->tableWidget->setItem(row, HISTORY_COLUMN, historyIcon);
 }
 
@@ -365,5 +393,39 @@ void MainWindow::onPdfButtonClicked() {
 
         Chercheur::generatePDF(filePath, this);
 
+    }
+}
+void MainWindow::showResearcherHistory(int row)
+{
+    if (row < 0 || row >= ui->tableWidget->rowCount()) return;
+
+    int id = ui->tableWidget->item(row, 0)->text().toInt();
+    Chercheur c;
+    if (c.fetchDataById(id)) {
+        QDialog historyDialog(this);
+        historyDialog.setWindowTitle("Historique des Projets");
+
+        QVBoxLayout layout(&historyDialog);
+        QLabel title(QString("Historique pour %1 %2").arg(c.getPrenom()).arg(c.getNom()));
+
+        QTextEdit historyDisplay;
+        historyDisplay.setHtml(c.getFormattedHistory());
+        historyDisplay.setReadOnly(true);
+
+        QPushButton closeButton("Fermer");
+        connect(&closeButton, &QPushButton::clicked, &historyDialog, &QDialog::accept);
+
+        layout.addWidget(&title);
+        layout.addWidget(&historyDisplay);
+        layout.addWidget(&closeButton);
+
+        historyDialog.exec();
+    }
+}
+
+void MainWindow::onCellClicked(int row, int column)
+{
+    if (column == HISTORY_COLUMN) {
+        showResearcherHistory(row);
     }
 }
