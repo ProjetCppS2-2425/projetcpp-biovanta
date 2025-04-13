@@ -61,6 +61,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ok->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\search.png"));
     ui->supp->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\effacer.png"));
 
+    connect(ui->tableWidget, &QTableWidget::cellClicked, [this](int row, int col){
+        if (col == HISTORY_COLUMN) {
+            int id = ui->tableWidget->item(row, 0)->text().toInt();
+            showHistory(id); // You'll implement this
+        }
+    });
+
 
     // Connect search
     connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_searchButton_clicked);
@@ -281,16 +288,14 @@ void MainWindow::on_searchButton_clicked() {
     QString searchTerm = ui->S1->text().trimmed();
     QString filter = ui->filtrage->currentText();
 
-    // Make sure your combo box only has these three options
     QList<Chercheur> results = Chercheur::searchChercheur(searchTerm, filter);
-
-    // Directly update the table here - no need for separate display function
     ui->tableWidget->setRowCount(0);
 
     for (int i = 0; i < results.size(); ++i) {
         const Chercheur &c = results[i];
         ui->tableWidget->insertRow(i);
 
+        // Regular columns
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString::number(c.getId())));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(c.getNom()));
         ui->tableWidget->setItem(i, 2, new QTableWidgetItem(c.getPrenom()));
@@ -299,7 +304,8 @@ void MainWindow::on_searchButton_clicked() {
         ui->tableWidget->setItem(i, 5, new QTableWidgetItem(c.getDomaineRecherche()));
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(c.getProjetEnCours()));
 
-
+        // Add history icon (assuming it's column 7)
+        addHistoryIcon(i, c.getId());
     }
 
     if (results.isEmpty()) {
@@ -308,23 +314,20 @@ void MainWindow::on_searchButton_clicked() {
 }
 // In MainWindow.cpp
 void MainWindow::onTriClicked() {
-    // Get sort parameters
     if (!ui->ASC->isChecked() && !ui->DSC->isChecked()) {
-        ui->ASC->setChecked(true);}
-    QString sortBy = ui->tri->currentText();  // "ID", "Nom", or "Domaine de Recherche"
-    bool ascending = ui->ASC->isChecked();    // true=ASC, false=DSC
+        ui->ASC->setChecked(true);
+    }
+    QString sortBy = ui->tri->currentText();
+    bool ascending = ui->ASC->isChecked();
 
-    // Get sorted data
     QList<Chercheur> chercheurs = Chercheur::getChercheursSorted(sortBy, ascending);
-
-    // Clear existing table
     ui->tableWidget->setRowCount(0);
 
-    // Populate table with sorted data
     for (int i = 0; i < chercheurs.size(); ++i) {
         const Chercheur &c = chercheurs[i];
         ui->tableWidget->insertRow(i);
 
+        // Regular columns
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString::number(c.getId())));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem(c.getNom()));
         ui->tableWidget->setItem(i, 2, new QTableWidgetItem(c.getPrenom()));
@@ -333,16 +336,15 @@ void MainWindow::onTriClicked() {
         ui->tableWidget->setItem(i, 5, new QTableWidgetItem(c.getDomaineRecherche()));
         ui->tableWidget->setItem(i, 6, new QTableWidgetItem(c.getProjetEnCours()));
 
+        // Add history icon (assuming it's column 7)
+        addHistoryIcon(i, c.getId());
     }
 
-    // Visual feedback
     statusBar()->showMessage(
         QString("Trié par %1 (%2)")
             .arg(sortBy)
             .arg(ascending ? "Croissant" : "Décroissant"),
-        3000
-        );
-
+        3000);
 }
 void MainWindow::on_stat_clicked()
 {
