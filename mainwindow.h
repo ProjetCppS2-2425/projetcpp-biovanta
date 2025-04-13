@@ -47,7 +47,7 @@ private:
     QString selectedId;  // Add this variable to track the selected ID for modification
 
 
- // Add this declaration
+    // Add this declaration
 
     // Slot to handle delete radio button click
 
@@ -58,14 +58,15 @@ public:
 
 
 
- // Update slot name to match signal
+    // Update slot name to match signal
 
 private slots:
     void on_searchButton_clicked();
-void onTriClicked();
- void on_stat_clicked();
-void onPdfButtonClicked();
-void onCellClicked(int row, int column);
+    void onTriClicked();
+    void on_stat_clicked();
+    void onPdfButtonClicked();
+    void onCellClicked(int row, int column);
+
 
 
 private:

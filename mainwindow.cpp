@@ -12,7 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    const int HISTORY_COLUMN = 7; // Matches your "historique" column position
+    // When adding rows to your table:
+
 
     ui->tableWidget->setStyleSheet(
         "QTableWidget {"
@@ -48,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     // When populating table rows:
 
 
-connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onCellClicked);
-                                                         ui->logo->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
+    connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onCellClicked);
+    ui->logo->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\empe.png"));
     ui->chercheur->setIcon(QPixmap("C:\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\cher.png"));
@@ -61,7 +62,7 @@ connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onCellCl
     ui->stat->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\st.png"));
     ui->ok->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\search.png"));
     ui->supp->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\effacer.png"));
-
+    // Replace whatever displays the current project with:
 
     // Connect search
     connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_searchButton_clicked);
@@ -98,11 +99,18 @@ connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onCellCl
     connect(ui->DSC, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) ui->ASC->setChecked(false);
     });
+    // After populating the table with data:
+    ui->tableWidget->resizeColumnsToContents();
 
+    // Set minimum widths after auto-resizing
+    for (int i = 0; i < ui->tableWidget->columnCount(); ++i) {
+        int current = ui->tableWidget->columnWidth(i);
+        if (current < 80) ui->tableWidget->setColumnWidth(i, 80);
+    }
     // Load initial data
 
     refreshTable();
-     onTriClicked();
+    onTriClicked();
 }
 
 MainWindow::~MainWindow()
@@ -146,7 +154,7 @@ void MainWindow::pushButton_2_clicked()
             return;
         }
 
-        // Create and add researcher with initial empty history
+        // Initialize project JSON structure
         QJsonObject projectJson;
         projectJson["current"] = ui->lineEdit_8->text().trimmed();
         projectJson["history"] = QJsonArray();
@@ -207,19 +215,16 @@ void MainWindow::pushButton_2_clicked()
             // Fetch current data
             Chercheur c;
             if (c.fetchDataById(id)) {
-                // Store old project before updating
-                QString oldProject = c.getProjetEnCours();
+                // Update project history
+                c.updateProjectHistory(newProject);
 
-                // Update project (this will handle history)
-                c.setProjetEnCours(newProject);
-
-                // Perform the database update with the complete JSON
+                // Perform database modification with complete JSON
                 if (c.modify(id, nom,
                              ui->lineEdit_4->text().trimmed(),
                              email,
                              num_tlp,
                              domaine,
-                             c.getProjetEnCours())) {
+                             c.getFullProjectJson())) {
                     QMessageBox::information(this, "Succès", "Modification réussie");
                     refreshTable();
                     clearFields();
@@ -239,8 +244,8 @@ void MainWindow::pushButton_2_clicked()
                 ui->lineEdit_5->setText(QString::number(c.getNumTlp()));
                 ui->comboBox_4->setCurrentText(c.getDomaineRecherche());
 
-                // Display current project (not the full JSON)
-                ui->lineEdit_8->setText(c.getProjetEnCours());
+                // Display only current project name
+                ui->lineEdit_8->setText(c.getCurrentProject());
             } else {
                 QMessageBox::warning(this, "Erreur", "Chercheur non trouvé");
             }
@@ -429,3 +434,5 @@ void MainWindow::onCellClicked(int row, int column)
         showResearcherHistory(row);
     }
 }
+// When loading a single researcher (like from database)
+

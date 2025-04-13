@@ -61,9 +61,9 @@ private:
     int num_tlp;
     QString domaine_recherche;
     QString projet_en_cours;
-   static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
+    static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
     void initProjectJson();
-    void updateProjectHistory(const QString &newProject);
+
 
 
 public:
@@ -101,11 +101,16 @@ public:
     bool fetchDataById(int id);
     static QList<Chercheur> searchChercheur(const QString &searchTerm, const QString &filter);
     static QList<Chercheur> getChercheursSorted(const QString& sortBy, bool ascending);
-    QString getCurrentProject() const;
+ QString getCurrentProject() const;
     QString getFullProjectJson() const { return projet_en_cours; }
     QString getFormattedHistory() const;
 
+    void updateProjectHistory(const QString &newProject);
+     void cleanCurrentProject();
 
+    private:
+        QString cleanProjectName(const QString &project) const;
+        // ...
 
     // Function to display search results in a QTableWidget
 
@@ -118,4 +123,4 @@ public:
 
 };
 
-#endif // CHERCHEUR_H
+#endif // CHER
