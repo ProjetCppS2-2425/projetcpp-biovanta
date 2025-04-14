@@ -2,6 +2,8 @@
 #include <QSqlQuery>
 #include <QVariant>
 #include <QSqlError>
+#include <QFile>
+#include <QProcess>
 // Constructeurs
 Equipement::Equipement() {}
 
@@ -24,7 +26,7 @@ bool Equipement::ajouter() {
     query.bindValue(":id", id_equipement);
     query.bindValue(":nom", nom_eq);
     query.bindValue(":etat", etat);
-   query.bindValue(":img", imageData);
+    query.bindValue(":img", imageData);
     query.bindValue(":type", type);
     query.bindValue(":dispo", disponibilite);
     query.bindValue(":nbre", nbre_eq);
@@ -205,4 +207,44 @@ int Equipement::countEquipementsParEtat(const QString &etatRecherche) {
         return query.value(0).toInt();
     }
     return 0;
+}
+void Equipement::sendEmail(const QString &to, const QString &subject, const QString &body)
+{
+    QString customPath = "C:/Users/manel/Desktop/projet_c/email.txt";
+    QFile f(customPath);
+    if (!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qWarning() << "Failed to open file for writing:" << customPath;
+        return;
+    }
+
+    QTextStream s(&f);
+    s << QString("From: manelh993@gmail.com\n"
+                 "To: %1\n"
+                 "Subject: %2\n"
+                 "Content-Type: text/plain; charset=utf-8\n\n"
+                 "=== Notification d'équipement ===\n\n"
+                 "%3\n\n"
+                 "-----------------------------\n"
+                 "Envoyé automatiquement par le système\n")
+             .arg(to, subject, body);
+    f.close();
+
+    QString curlCommand = QString(
+                              "curl.exe --urlmanelh993@gmail.com\" "
+                              "--mail-rcpt \"%1\" "
+                              "--user \"manelh993@gmail.com:ptqvmvnlukjhh\" "
+                              "--upload-file \"%2\""
+                              ).arg(to, customPath);
+
+    QProcess process;
+    process.setProcessChannelMode(QProcess::MergedChannels);
+    process.setProgram("cmd.exe");
+    process.setNativeArguments(QString("/C \"%1\"").arg(curlCommand));
+    process.start();
+    process.waitForFinished();
+
+    QString output = process.readAll();
+    qDebug() << "Email send output:" << output;
+
+    QFile::remove(customPath);
 }

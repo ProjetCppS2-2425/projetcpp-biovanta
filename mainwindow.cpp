@@ -26,9 +26,6 @@
 #include <QDialog>
 #include <QTimer>
 #include <QPainter>
-#include <QtCharts/QChartView>
-#include <QtCharts/QPieSeries>
-#include <QtCharts/QPieSlice>
 #include <QPieSeries>
 #include <QChart>
 #include <QChartView>
@@ -138,6 +135,7 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
     }
+     Equipement::sendEmail("manelhosni813@gmail.com", "Your Account Details", "Your account has been created.\nEmail: aab627092003@gmail.com");
 
 }
 
@@ -194,15 +192,36 @@ void MainWindow::on_pushButton_2_clicked() {
                 return;
             }
             Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
+             Equipement ancienEquip = Equipement::getEquipementById(id);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
                 reinitialiserFormulaire();
                 refreshAlertCount();
                 isModifying = false;
-            } else {
-                QMessageBox::critical(this, "Erreur", "La modification a échoué.");
+                if (ancienEquip.getEtat().toLower().contains("maintenance") &&
+                    etat.toLower().contains("fonctionnel")) {
+                    QString subject = "Équipement réparé - " + equip.getNom();
+                    QString message = QString("Bonjour,\n\n"
+                                              "L'équipement suivant a changé d'état :\n\n"
+                                              "Détails de l'équipement :\n"
+                                              "-----------------------------\n"
+                                              "Nom: %1\n"
+                                              "ID: %2\n"
+                                              "Type: %3\n"
+                                              "-----------------------------\n\n"
+                                              "Changement d'état :\n"
+                                              "Ancien état: Maintenance\n"
+                                              "Nouvel état: Fonctionnel\n\n"
+                                              "Cet équipement est maintenant disponible pour utilisation.")
+                                          .arg(equip.getNom())
+                                          .arg(equip.getId())
+                                          .arg(equip.getType());
+
+                    Equipement::sendEmail("manelhosni813@gmail.com", subject, message);
+                }
             }
+
         }
     } else if (ui->radioButton->isChecked()) { // Mode ajout
         if (equip.existe(id)) {
@@ -911,4 +930,5 @@ void MainWindow::refreshAlertCount()
 {
     checkEquipmentStatus();
 }
+
 

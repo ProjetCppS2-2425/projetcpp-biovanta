@@ -1,8 +1,12 @@
-QT       += core gui
+QT       += core gui \
+    quick
 QT+= sql
 QT += printsupport
 QT += charts
 QT += widgets sql printsupport
+QT += network
+
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -16,7 +20,6 @@ SOURCES += \
     equipement.cpp \
     main.cpp \
     mainwindow.cpp
-
 HEADERS += \
     connection.h \
     equipement.h \

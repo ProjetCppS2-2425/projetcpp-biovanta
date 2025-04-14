@@ -23,6 +23,7 @@ public:
     static QList<Equipement> afficher();
     bool modifier();
     bool supprimer(const QString &id);
+    static void sendEmail(const QString &to, const QString &subject, const QString &body);
 
 
     bool existe(const QString &id);

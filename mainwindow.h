@@ -42,6 +42,7 @@ private:
     void updateNotificationBadge(int count);
 
 
+
 private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item);
     void supp_clicked();
