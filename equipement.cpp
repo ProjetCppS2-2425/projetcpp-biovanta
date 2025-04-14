@@ -230,9 +230,10 @@ void Equipement::sendEmail(const QString &to, const QString &subject, const QStr
     f.close();
 
     QString curlCommand = QString(
-                              "curl.exe --urlmanelh993@gmail.com\" "
+                              "curl.exe --url smtps://smtp.gmail.com:465 "
+                              "--mail-from \"manelh993@gmail.com\" "
                               "--mail-rcpt \"%1\" "
-                              "--user \"manelh993@gmail.com:ptqvmvnlukjhh\" "
+                              "--user \"manelh993@gmail.com:ptqvmvnluyedaqki\" "
                               "--upload-file \"%2\""
                               ).arg(to, customPath);
 
