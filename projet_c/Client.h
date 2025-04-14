@@ -3,6 +3,7 @@
 #include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <map>
+#include <QString>
 using namespace std;
 class Client
 {
@@ -53,6 +54,8 @@ public:
     bool exists(int);
     QSqlQueryModel * afficher();
     bool modifier();
+
+    QString AdresseSup();
 
 };
 

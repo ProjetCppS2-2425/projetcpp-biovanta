@@ -46,6 +46,7 @@ public slots:
     void on_radioButton_Modifier_toggled(bool checked);
     void onPdfButtonClicked();
     void on_stat_clicked();
+    void on_stat_2_clicked();
     void display();
     void filtereddisplay();
 private slots:

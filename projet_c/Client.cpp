@@ -257,6 +257,18 @@ int Client::CalculLabo(){
     return countL;
 }
 
+QString Client::AdresseSup(){
+    QSqlQuery query;
+    query.prepare("SELECT ID_CLIENT, ADRESSE  FROM CLIENT");
+    if (query.exec()) {
+        while (query.next()) {
+            QString Adr = query.value(1).toString();
+
+        }
+    }
+   // qDebug()<<countC<<" error:"<<query.lastError().text();
+   // return countC;
+}
 /*  int Client::SupAdress(){
         QSqlQuery query;
         query.prepare("SELECT ADRESSE FROM CLIENT");

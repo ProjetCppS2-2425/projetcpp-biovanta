@@ -104,3 +104,16 @@ void Todo::on_btnRemoveAll_clicked()
      ui->listWidget->clear();
 }
 
+
+void Todo::on_btnRemove_2_clicked()
+{
+    QListWidgetItem* item = ui->listWidget_2->takeItem(ui->listWidget_2->currentRow());
+    delete item;
+}
+
+
+void Todo::on_btnRemoveAll_2_clicked()
+{
+     ui->listWidget_2->clear();
+}
+

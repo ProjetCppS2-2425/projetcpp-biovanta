@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QtCore>
 #include "Client.h"
+
 Qtstat::Qtstat(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Qtstat)
@@ -17,23 +18,17 @@ Qtstat::Qtstat(QWidget *parent)
    // auto *seriestot = new QBarSeries();
 
     //setting the bars
-    QBarSet *set1 = new QBarSet("TOP ADRESS"); //bar data name
-    QBarSet *set2 = new QBarSet("SECOND ADRESS");
-    QBarSet *set3 = new QBarSet("other");
-    QBarSet *set4 = new QBarSet("TOTALM");
-    QBarSet *set5 = new QBarSet("TOTALC");
-    QBarSet *set6 = new QBarSet("TOTALL");
+
+    QBarSet *set4 = new QBarSet("Ministère de santé");
+    QBarSet *set5 = new QBarSet("Centres pharmaceutiques");
+    QBarSet *set6 = new QBarSet("total laboratoires d'analyse");
     set4->append(C.CalculMinister());
     set5->append(C.CalculCentre());
     set6->append(C.CalculLabo());
-    *set1 << 0 << 3 << 6 << 4 << 8;
-    *set2 << 0 << 3 << 8 << 13 << 8 << 5;
-    *set3 << 0 << 3 << 7 << 3 << 4 << 5;
+
 
     //putting bars inside series
-    series->append(set1);
-    series->append(set2);
-    series->append(set3);
+
     series->append(set4);
     series->append(set5);
     series->append(set6);
@@ -46,20 +41,20 @@ Qtstat::Qtstat(QWidget *parent)
     chart->setAnimationDuration(QChart::SeriesAnimations);
 
     //setting the names of bars horizontally
-    QStringList Subjectname1;
+   /* QStringList Subjectname1;
     Subjectname1.append("Ministère de santé"); //one name set
     QStringList Subjectname2;
     Subjectname2.append("Centre Pharmaceutique"); //one name set
     QStringList Subjectname3;
-    Subjectname3.append("Laboratoire d'analyses"); //one name set
+    Subjectname3.append("Laboratoire d'analyses"); //one name set*/
     QStringList Subjectname4;
-    Subjectname4.append("Total");
+    Subjectname4.append("Total des clients par type");
 
     QBarCategoryAxis *axisX = new QBarCategoryAxis();
     axisX->append(Subjectname4);
-    axisX->append(Subjectname1);
+   /* axisX->append(Subjectname1);
     axisX->append(Subjectname2);
-    axisX->append(Subjectname3);
+    axisX->append(Subjectname3);*/
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
     //seriestot->attachAxis(axisX);
@@ -90,3 +85,6 @@ Qtstat::~Qtstat()
 {
     delete ui;
 }
+
+
+

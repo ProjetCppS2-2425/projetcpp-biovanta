@@ -247,19 +247,9 @@ void MainWindow::on_pushButton_supp_clicked(){
             }
         }
 
-        void MainWindow::onPdfButtonClicked() {
+         /* void MainWindow::onPdfButtonClicked() {
             QTextDocument doc;
             QSqlQueryModel *model = C.afficher();
-           // QString head = R"(<table style="width: 90px; background-color: #2C3E50; color: white;">
-             //   <tr>
-               /* <th   style="background-color: #2C3E50;  color: white;" >ID</th>
-                <th   style="background-color: #2C3E50; color: white;" >NOM ASSOCIATION</th>
-                <th   style="background-color: #2C3E50;  color: white;" >ADRESSE</th>
-                <th   style="background-color: #2C3E50;  color: white;" >TYPE ASSOCIATION</th>
-                <th   style="background-color: #2C3E50;  color: white;" >NOM RESPONSABLE</th>
-                <th   style="background-color: #2C3E50;  color: white;" >EMAIL</th>
-                <th   style="background-color: #2C3E50;  color: white;" >ID CONTRAT</th>
-                </tr>)";*/
                             QString head = R"(
                 <table style="border-spacing: 5px; width: 630px; table-layout: fixed; text-align: left;">
                     <colgroup>
@@ -280,18 +270,8 @@ void MainWindow::on_pushButton_supp_clicked(){
                         <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">EMAIL</th>
                         <th style="background-color: #2C3E50; color: white; padding: 5px; border: 1px solid black;">ID CONTRAT</th>
                     </tr>)";
-           /* QString col= R"(                    <colgroup>
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                        <col style="width: 90px;">
-                    </colgroup>)";*/
-            //data stuff
             int count;
-            QString data="<tr>"; //second html
+            QString data="<tr>";
             for (count =1; count<=model->rowCount();count++){
                 if (count==model->rowCount()){
                     int id_c = model->data(model->index(count, 0)).toInt();
@@ -301,8 +281,6 @@ void MainWindow::on_pushButton_supp_clicked(){
                     QString nomR = model->data(model->index(count, 4)).toString();
                     QString email = model->data(model->index(count, 5)).toString();
                     int id_contrat = model->data(model->index(count, 6)).toInt();
-                    //all data taken
-                    //build html:
                     data += R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
                     data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomA +"</td>";
                     data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ adresse +"</td>";
@@ -320,8 +298,6 @@ void MainWindow::on_pushButton_supp_clicked(){
                 QString nomR = model->data(model->index(count, 4)).toString();
                 QString email = model->data(model->index(count, 5)).toString();
                 int id_contrat = model->data(model->index(count, 6)).toInt();
-                //all data taken
-                //build html:
                 data += R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ QString::number(id_c) +"</td>";
                 data = data +  R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ nomA +"</td>";
                 data = data + R"(<td width="90px"  style="background-color: #136f5c;  color: white;">)"+ adresse +"</td>";
@@ -332,16 +308,84 @@ void MainWindow::on_pushButton_supp_clicked(){
                 data = data + "</tr>" +"<tr>";
 
             }
-            //setting html to the doc
             doc.setHtml(head + "<tr>" + data + "</tr>" + "</table>");
-            //printing
             QPrinter printer(QPrinter::PrinterResolution);
             printer.setOutputFormat(QPrinter::PdfFormat);
             QString saveas = QFileDialog::getSaveFileName(this, "Save PDF", "", "PDF Files (*.pdf)");
             printer.setOutputFileName(saveas);
             doc.print(&printer);
-        }
+        }*/
 
+
+        void MainWindow::onPdfButtonClicked() {
+            //doc generated
+            QTextDocument doc;
+            //preparing the model
+            QSqlQueryModel *model = C.afficher();
+            //html
+            //pdfline
+            int id=ui->pdfline->text().toInt();
+            int count;
+            QString nomA ;
+            QString adresse;
+            QString typeA ;
+            QString nomR ;
+            QString email;
+            int id_contrat;
+            for (count =1; count<=model->rowCount();count++){
+                //if (count==model->rowCount()){
+                    int id_c = model->data(model->index(count, 0)).toInt();
+                    if (id_c==id){
+                         nomA = model->data(model->index(count, 1)).toString();
+                         adresse = model->data(model->index(count, 2)).toString();
+                         typeA = model->data(model->index(count, 3)).toString();
+                         nomR = model->data(model->index(count, 4)).toString();
+                         email = model->data(model->index(count, 5)).toString();
+                         id_contrat = model->data(model->index(count, 6)).toInt();
+                        break;
+                    }
+                //}
+            }
+            QString code = R"(<!DOCTYPE html>
+          <body>
+
+              <h1 class="title"> Contrat Commercial</h1>
+              <p id="currentTime">2024/2025</p>
+
+              <h5>Parties concernées:</h5>
+               <p>Le présent contrat est conclu entre )" + nomA + R"(, une)" + typeA + R"( immatriculée à )" + adresse +R"(, représenté(e) par )" + nomR +R"(, et Sample Biotechnology Association. Le Client autorise expressément l'utilisation de ses données professionnelles uniquement pour l'exécution des services décrits dans ce
+               contrat, conformément au RGPD et aux lois locales sur la protection des données.</p>
+
+               <h5>Objet:</h5>
+              <p>Le présent contrat a pour objet la fourniture de vaccins par
+              le Prestataire au Client, selon les conditions décrites ci-après.</p>
+
+              <h5>Services:</h5>
+              <p>Fourniture de <strong>100 doses de vaccins</strong> conformes aux normes ISO.</p>
+
+              <h5>Engagement des Parties :</h5>
+          <p>
+            Le contrat N°<strong>)"+ QString::number(id_contrat) +R"(</strong> lie les Parties pour la durée nécessaire à l'exécution des prestations.<br>
+            Toute communication relative à ce contrat se fera à l'adresse email : <strong>)"+email+R"(</strong>.
+          </p>
+
+          <h5>Résiliation :</h5>
+          <p>En cas de manquement grave, le contrat pourra
+          être résilié avec un préavis de <strong>30 jours</strong> par lettre recommandée.</p>
+
+          <h5>Signature :</h5>
+          <p><strong>Pour _____________ :</strong> _________________________<br>
+            <strong>Pour Sample Biotechnology Association :</strong> _________________________</p>
+
+          </body>
+        )";
+         doc.setHtml(code);
+        QPrinter printer(QPrinter::PrinterResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        QString saveas = QFileDialog::getSaveFileName(this, "Save PDF", "", "PDF Files (*.pdf)");
+        printer.setOutputFileName(saveas);
+        doc.print(&printer);
+        }
 
 
         void MainWindow::on_stat_clicked()
@@ -350,6 +394,12 @@ void MainWindow::on_pushButton_supp_clicked(){
             s->show();
 
         }
+       /* void MainWindow::on_stat_2_clicked()
+        {
+           auto s = new Pie(this);
+            s->show();
+
+        }*/
         void MainWindow::filtereddisplay(){
 
         }

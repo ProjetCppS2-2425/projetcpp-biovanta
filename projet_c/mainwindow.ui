@@ -1294,6 +1294,16 @@ color:#000000;
       </rect>
      </property>
     </widget>
+    <widget class="QLineEdit" name="pdfline">
+     <property name="geometry">
+      <rect>
+       <x>82</x>
+       <y>80</y>
+       <width>101</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
     <zorder>groupBox_4</zorder>
     <zorder>label_8</zorder>
     <zorder>CBbar</zorder>
@@ -1305,6 +1315,7 @@ color:#000000;
     <zorder>ASC</zorder>
     <zorder>DSC</zorder>
     <zorder>Rbar</zorder>
+    <zorder>pdfline</zorder>
    </widget>
    <widget class="QLabel" name="bg">
     <property name="geometry">

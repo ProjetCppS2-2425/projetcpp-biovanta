@@ -15,6 +15,9 @@ public:
     explicit Qtstat(QWidget *parent = nullptr);
     ~Qtstat();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::Qtstat *ui;
 };

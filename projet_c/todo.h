@@ -25,6 +25,10 @@ private slots:
 
     void on_btnRemoveAll_clicked();
 
+    void on_btnRemove_2_clicked();
+
+    void on_btnRemoveAll_2_clicked();
+
 private:
     Ui::Todo *ui;
     QString path ;
