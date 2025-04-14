@@ -135,6 +135,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
     }
+
+
      Equipement::sendEmail("manelhosni813@gmail.com", "Your Account Details", "Your account has been created.\nEmail: aab627092003@gmail.com");
 
 }
@@ -286,10 +288,8 @@ void MainWindow::on_pushButton_clicked() {
 
 void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
     ui->tableWidget->setRowCount(liste.size());
-
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
-
     ui->tableWidget->setUpdatesEnabled(false);
 
     for (int i = 0; i < liste.size(); ++i) {
@@ -401,8 +401,6 @@ void MainWindow::chargerEquipement() {
         QMessageBox::warning(this, "Erreur", "Aucun équipement trouvé avec cet ID.");
         return;
     }
-
-    // Remplir les champs du formulaire
     ui->lineEdit_3->setText(equip.getNom());
     ui->comboBox_4->setCurrentText(equip.getType());
     ui->comboBox_2->setCurrentText(equip.getEtat());
@@ -414,7 +412,6 @@ void MainWindow::chargerEquipement() {
         selectedImageData = imageData;
         QPixmap pixmap;
         if (pixmap.loadFromData(imageData)) {
-            // Si vous avez un QLabel pour l'aperçu (remplacez 'ui->labelImage' par votre widget)
             ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
             ui->pushButton->setText("Image chargée");
         } else {
@@ -430,18 +427,6 @@ void MainWindow::chargerEquipement() {
 
     isModifying = true;
 }
-void MainWindow::on_pushButton_3_clicked() {
-    ui->lineEdit->clear();
-    ui->lineEdit_3->clear();
-    ui->comboBox_4->setCurrentIndex(0);
-    ui->comboBox_2->setCurrentIndex(0);
-    ui->comboBox_3->setCurrentIndex(0);
-    ui->spinBox->setValue(0);
-    selectedImageData.clear();
-    ui->radioButton->setChecked(false);
-    ui->radioButton_2->setChecked(false);
-}
-
 void MainWindow::reinitialiserFormulaire() {
     ui->lineEdit->clear();
     ui->lineEdit_3->clear();
@@ -465,6 +450,9 @@ void MainWindow::reinitialiserFormulaire() {
     ui->lineEdit->setFocus();
 }
 
+void MainWindow::on_pushButton_3_clicked() {
+    reinitialiserFormulaire();
+}
 void MainWindow::on_pdf_clicked()
 {
     QString strStream;
@@ -473,13 +461,20 @@ void MainWindow::on_pdf_clicked()
     const int rowCount = ui->tableWidget->rowCount();
     const int columnCount = ui->tableWidget->columnCount();
 
+    QString logoPath = QDir::tempPath() + "/logo_app.png";
+    QPixmap originalLogo("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png");
+    QPixmap largeLogo = originalLogo.scaled(1050, 1050, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    largeLogo.save(logoPath);
+
     out << "<html>\n"
            "<head>\n"
            "<meta Content=\"Text/html; charset=UTF-8\">\n"
         << QString("<title>%1</title>\n").arg("Liste des Equipements")
         << "<style>\n"
            "body { font-family: Arial, sans-serif; font-size: 200px; margin: 250px; }\n"
-           ".grand-titre { font-size: 200px !important; font-weight: bold; text-align: center; text-decoration: underline; margin: 200px 0; }\n"
+           ".header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 500px; }\n"
+           ".logo { height: 3000px !important; }\n"
+           ".grand-titre {font-size: 300px !important;font-weight: bold; text-align: center;color: #2c3e50;background: linear-gradient(to right, #3498db, #9b59b6);-webkit-background-clip: text;-webkit-text-fill-color: transparent;margin: 200px 0; letter-spacing: 15px;text-transform: uppercase; }\n"
            "table { border-collapse: collapse; width: 100%; border: 20px solid #ddd; }\n"
            "th, td { text-align: left; padding: 100px; border: 20px solid #ddd; }\n"
            "th { background-color: #2980B9; color: white; font-size: 200px; }\n"
@@ -489,10 +484,15 @@ void MainWindow::on_pdf_clicked()
            "</style>\n"
            "</head>\n"
            "<body>\n"
+           "<div class='header'>\n"
 
-           "<div class='grand-titre'>Liste des Equipements</div>\n"
-           "<br><br>\n"
+        <<QString("<img class='logo' src='%1' />\n").arg(logoPath)
+        << "<div class='grand-titre'>Liste des Equipements</div>\n"
+           "<div style='width: 150px;'></div>\n"
+           "</div>\n"
+           "<br>\n"
            "<table>\n";
+
 
     // headers
     out << "<thead><tr> <th>Numero</th>";

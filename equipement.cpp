@@ -208,6 +208,7 @@ int Equipement::countEquipementsParEtat(const QString &etatRecherche) {
     }
     return 0;
 }
+
 void Equipement::sendEmail(const QString &to, const QString &subject, const QString &body)
 {
     QString customPath = "C:/Users/manel/Desktop/projet_c/email.txt";
@@ -218,7 +219,7 @@ void Equipement::sendEmail(const QString &to, const QString &subject, const QStr
     }
 
     QTextStream s(&f);
-    s << QString("From: manelh993@gmail.com\n"
+    s << QString("From: aab627092003@gmail.com\n"
                  "To: %1\n"
                  "Subject: %2\n"
                  "Content-Type: text/plain; charset=utf-8\n\n"
@@ -231,9 +232,9 @@ void Equipement::sendEmail(const QString &to, const QString &subject, const QStr
 
     QString curlCommand = QString(
                               "curl.exe --url smtps://smtp.gmail.com:465 "
-                              "--mail-from \"manelh993@gmail.com\" "
+                              "--mail-from \"aab627092003@gmail.com\" "
                               "--mail-rcpt \"%1\" "
-                              "--user \"manelh993@gmail.com:ptqvmvnluyedaqki\" "
+                              "--user \"aab627092003@gmail.com:ptqvmvnluyedaqki\" "
                               "--upload-file \"%2\""
                               ).arg(to, customPath);
 
