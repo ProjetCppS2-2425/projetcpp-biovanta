@@ -150,20 +150,35 @@ QSqlQueryModel *vaccin:: afficher_temperature_conservation(QString ch)
 
 }
 
+QSqlQueryModel *vaccin:: afficher_id_vaccin(QString ch)
+{
+    QSqlQueryModel * model =new QSqlQueryModel();
+    model->setQuery("SELECT * FROM VACCIN where id_vaccin= '"+ch+"' ");
+
+    return model ;
+
+}
+
+
+
 //Statistiques
 int vaccin::statistique1(){
+    connection c;
+    c.createconnect();
     QSqlQuery query;
     int count=0 ;
-    QSqlQuery requete("select * from VACCIN where nombres_doses like 'unidose' ") ;
+    QSqlQuery requete("select * from VACCIN where NOMBRES_DOSES = 'unidose' ") ;
     while(requete.next())
     {
         count++ ;
     }
-
+    qDebug() << "Nombre de vaccins unidose:" << count;
     return count ;
 }
 
 int vaccin::statistique2(){
+    connection c;
+    c.createconnect();
     QSqlQuery query;
     int count=0 ;
     QSqlQuery requete("select * from VACCIN where nombres_doses like 'multidose' ") ;

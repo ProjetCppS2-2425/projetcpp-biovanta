@@ -24,6 +24,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableView>
@@ -95,10 +96,18 @@ public:
     QPushButton *pushButton_6;
     QLineEdit *vaccin_id_input;
     QWidget *tab_2;
-    QTextEdit *chatTextEdit;
-    QLineEdit *inputLineEdit;
-    QPushButton *sendButton;
-    QLabel *bg_2;
+    QStackedWidget *stackedWidget;
+    QWidget *page_3;
+    QTextEdit *chatTextEdit_2;
+    QPushButton *sendButton_2;
+    QLineEdit *inputLineEdit_2;
+    QLabel *bg_3;
+    QPushButton *pushButton_2;
+    QWidget *page_4;
+    QLabel *bg_4;
+    QLabel *label;
+    QPushButton *pushButton_11;
+    QPushButton *pushButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -546,6 +555,7 @@ public:
         cb_rech_emp->addItem(QString());
         cb_rech_emp->addItem(QString());
         cb_rech_emp->addItem(QString());
+        cb_rech_emp->addItem(QString());
         cb_rech_emp->setObjectName("cb_rech_emp");
         cb_rech_emp->setGeometry(QRect(270, 55, 111, 31));
         comboBox_7 = new QComboBox(groupBox_2);
@@ -623,24 +633,71 @@ public:
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName("tab_2");
-        chatTextEdit = new QTextEdit(tab_2);
-        chatTextEdit->setObjectName("chatTextEdit");
-        chatTextEdit->setGeometry(QRect(150, 20, 871, 401));
-        inputLineEdit = new QLineEdit(tab_2);
-        inputLineEdit->setObjectName("inputLineEdit");
-        inputLineEdit->setGeometry(QRect(150, 459, 651, 61));
-        sendButton = new QPushButton(tab_2);
-        sendButton->setObjectName("sendButton");
-        sendButton->setGeometry(QRect(820, 460, 201, 61));
-        bg_2 = new QLabel(tab_2);
-        bg_2->setObjectName("bg_2");
-        bg_2->setGeometry(QRect(0, -30, 1221, 731));
-        bg_2->setPixmap(QPixmap(QString::fromUtf8("bg.jpg")));
+        stackedWidget = new QStackedWidget(tab_2);
+        stackedWidget->setObjectName("stackedWidget");
+        stackedWidget->setGeometry(QRect(30, 20, 1131, 511));
+        page_3 = new QWidget();
+        page_3->setObjectName("page_3");
+        chatTextEdit_2 = new QTextEdit(page_3);
+        chatTextEdit_2->setObjectName("chatTextEdit_2");
+        chatTextEdit_2->setGeometry(QRect(0, 20, 1111, 401));
+        sendButton_2 = new QPushButton(page_3);
+        sendButton_2->setObjectName("sendButton_2");
+        sendButton_2->setGeometry(QRect(810, 430, 201, 61));
+        inputLineEdit_2 = new QLineEdit(page_3);
+        inputLineEdit_2->setObjectName("inputLineEdit_2");
+        inputLineEdit_2->setGeometry(QRect(120, 430, 651, 61));
+        bg_3 = new QLabel(page_3);
+        bg_3->setObjectName("bg_3");
+        bg_3->setGeometry(QRect(-80, -70, 1221, 731));
+        bg_3->setPixmap(QPixmap(QString::fromUtf8("bg.jpg")));
+        pushButton_2 = new QPushButton(page_3);
+        pushButton_2->setObjectName("pushButton_2");
+        pushButton_2->setGeometry(QRect(960, 30, 131, 41));
+        stackedWidget->addWidget(page_3);
+        bg_3->raise();
+        chatTextEdit_2->raise();
+        sendButton_2->raise();
+        inputLineEdit_2->raise();
+        pushButton_2->raise();
+        page_4 = new QWidget();
+        page_4->setObjectName("page_4");
+        bg_4 = new QLabel(page_4);
+        bg_4->setObjectName("bg_4");
+        bg_4->setGeometry(QRect(-130, 30, 1221, 731));
+        bg_4->setPixmap(QPixmap(QString::fromUtf8("bg.jpg")));
+        label = new QLabel(page_4);
+        label->setObjectName("label");
+        label->setGeometry(QRect(68, 10, 850, 600));
+        pushButton_11 = new QPushButton(page_4);
+        pushButton_11->setObjectName("pushButton_11");
+        pushButton_11->setGeometry(QRect(840, 650, 101, 31));
+        pushButton_11->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+" 	font: 14pt \"Sitka Text\";\n"
+"   	background-color: transparent;\n"
+"    border: 1px solid  #000000;\n"
+"    color: #000000;\n"
+"    padding: 5px 5px;\n"
+"    border-radius: 5px;\n"
+"    transition: background-color 0.3s ease;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"	\n"
+"	font: 75 italic 14pt \"Sitka Text\";\n"
+"    background-color: #transparent;\n"
+"	color: #000000;\n"
+" 	border: 1px solid  #FFFFFF;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    color: black;\n"
+"}"));
+        pushButton = new QPushButton(page_4);
+        pushButton->setObjectName("pushButton");
+        pushButton->setGeometry(QRect(980, 60, 71, 41));
+        stackedWidget->addWidget(page_4);
         tabWidget->addTab(tab_2, QString());
-        bg_2->raise();
-        chatTextEdit->raise();
-        inputLineEdit->raise();
-        sendButton->raise();
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -653,6 +710,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -697,8 +755,9 @@ public:
         label_13->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
         label_14->setText(QCoreApplication::translate("MainWindow", "  Listes ", nullptr));
         cb_rech_emp->setItemText(0, QCoreApplication::translate("MainWindow", "type_vaccin", nullptr));
-        cb_rech_emp->setItemText(1, QCoreApplication::translate("MainWindow", "nom_vaccin", nullptr));
-        cb_rech_emp->setItemText(2, QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
+        cb_rech_emp->setItemText(1, QCoreApplication::translate("MainWindow", "id_vaccin", nullptr));
+        cb_rech_emp->setItemText(2, QCoreApplication::translate("MainWindow", "nom_vaccin", nullptr));
+        cb_rech_emp->setItemText(3, QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
 
         comboBox_7->setItemText(0, QCoreApplication::translate("MainWindow", "nom_vaccin", nullptr));
         comboBox_7->setItemText(1, QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
@@ -712,8 +771,13 @@ public:
         checkBox_2->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
         pushButton_6->setText(QCoreApplication::translate("MainWindow", "Refresh", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
-        sendButton->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
-        bg_2->setText(QString());
+        sendButton_2->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
+        bg_3->setText(QString());
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Aller vers stats", nullptr));
+        bg_4->setText(QString());
+        label->setText(QString());
+        pushButton_11->setText(QCoreApplication::translate("MainWindow", "Fermer", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "Retour", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
 

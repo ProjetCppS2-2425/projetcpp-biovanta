@@ -41,11 +41,12 @@ public:
 
     vaccin * readvaccin (QString val);//pdf
 
-    QSqlQueryModel * afficher_choix_ASC(QString choix);//tri
-    QSqlQueryModel * afficher_choix_DSC(QString choix);
+    QSqlQueryModel *afficher_choix_ASC(QString choix);//tri
+    QSqlQueryModel *afficher_choix_DSC(QString choix);
     QSqlQueryModel *afficher_temperature_conservation(QString ch);//recherche
     QSqlQueryModel *afficher_nom_vaccin(QString ch);
     QSqlQueryModel *afficher_type_vaccin(QString ch);
+    QSqlQueryModel *afficher_id_vaccin(QString ch);
 
     int statistique1();//stat
     int statistique2();

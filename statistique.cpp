@@ -1,61 +1,53 @@
 #include "statistique.h"
-#include "ui_statistique.h"
 
-#include <QDialog>
-#include <QtCharts/QPieSeries>
-
-
-
-statistique::statistique(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::statistique)
+statistique::statistique()
 {
-    ui->setupUi(this);
+    // constructeur vide
 }
 
 statistique::~statistique()
 {
-    delete ui;
+    // destructeur vide
 }
 
-void statistique::paintEvent(QPaintEvent *)
+QChartView* statistique::genererStatistiques()
 {
-
-    int A=v.statistique1();//resultat count 1
-    int B=v.statistique2();//resultat count 2
-
-    float s1= A*100 ;
-    float s2=B*100;
-    float nb = A+B;
-    float q1 ;
-    q1 = s1/nb ;//pourcentage
-    float q2;
-    q2=s2/nb;
-    float y  ;
-    y= (q1*360)/100;//cercle
-    float m;
-    m= (q2*360)/100;
-
-    float res1 = 16*y;
-    float res2 = 16*m;
-
+    int A = v.statistique1(); // unidose
+    int B = v.statistique2(); // multidose
+    int total = A + B;
 
     QPieSeries *series = new QPieSeries();
-    series->append("unidose", res1);
-    series->append("multidose", res2);
+
+    if (total > 0) {
+        QPieSlice* sliceA = series->append("Unidose", A);
+        QPieSlice* sliceB = series->append("Multidose", B);
+
+        // Calculs pourcentages
+        float pourcentageA = (float)A / total * 100;
+        float pourcentageB = (float)B / total * 100;
+
+        // Affichage formaté avec pourcentages
+        sliceA->setLabel(QString("Unidose: %1%").arg(QString::number(pourcentageA, 'f', 1)));
+        sliceB->setLabel(QString("Multidose: %1%").arg(QString::number(pourcentageB, 'f', 1)));
+
+        // Rendre les labels visibles
+        sliceA->setLabelVisible(true);
+        sliceB->setLabelVisible(true);
+    } else {
+        QPieSlice* sliceEmpty = series->append("Aucune donnée", 1);
+        sliceEmpty->setLabelVisible(true);
+    }
 
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("Statistique par rapport au nombres doses");
+    chart->setTitle("Répartition des types de doses de vaccin");
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
 
-    chartView = new QChartView(chart,ui->label);
+    QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->setMinimumSize(850,600);
-    chartView->show();
-}
+    chartView->setMinimumSize(850, 600);
 
-void statistique::on_pushButton_11_clicked()
-{
-    close();
+    return chartView;
 }
 

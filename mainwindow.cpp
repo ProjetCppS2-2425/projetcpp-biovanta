@@ -7,6 +7,7 @@
 #include<QMessageBox>
 #include <QPrinter>
 #include <QPainter>
+#include <QFileDialog>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    statistique s;
+    QChartView *chart = s.genererStatistiques();
+    chart->setParent(ui->label);
+    chart->show();
     ui->logo->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logo1.png"));  // C:\\Users\\user\\Desktop\\projetarwa
     ui->bg->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\bg.jpg"));
     ui->logout_2->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logout.png"));
@@ -37,9 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->nombre_doses->setText("unidose");
     // dans ton constructeur
     Chatbot *chatbot = new Chatbot(
-        ui->chatTextEdit,
-        ui->inputLineEdit,
-        ui->sendButton,
+        ui->chatTextEdit_2,
+        ui->inputLineEdit_2,
+        ui->sendButton_2,
         this
     );
 
@@ -252,6 +257,10 @@ void MainWindow::on_ok_2_clicked()
     {
         ui->tableView_vaccin->setModel(vac.afficher());
     }
+    else if ((option=="id_vaccin")&&((val!="")) )
+    {
+        ui->tableView_vaccin->setModel(vac.afficher_id_vaccin(val));
+    }
 }
 
 
@@ -261,19 +270,20 @@ void MainWindow::on_pushButton_6_clicked()
 }
 
 
-void MainWindow::on_stat_2_clicked()
-{
-    statistique S;
-    S.exec();
-}
+
 
 
 
 void MainWindow::on_pdf_2_clicked()
 {
-    QString idpdf=ui->vaccin_id_input->text();
+    QString idpdf = ui->vaccin_id_input->text();
     vaccin temp;
     vaccin* v = temp.readvaccin(idpdf);
+
+    if (!v) {
+        QMessageBox::warning(this, "Erreur", "Vaccin introuvable !");
+        return;
+    }
 
     QString id = v->getIdVaccin();
     QString nom = v->getNomVaccin();
@@ -282,22 +292,37 @@ void MainWindow::on_pdf_2_clicked()
     QString temperature = QString::number(v->getTemperatureConservation(), 'f', 1) + " °C";
     QString date = v->getDateExpiration().toString("dd/MM/yyyy");
 
+    // Choisir le chemin où enregistrer le fichier
+    QString filePath = QFileDialog::getSaveFileName(this,
+                                                    "Enregistrer le PDF",
+                                                    nom + "_" + id + ".pdf", // nom par défaut
+                                                    "Fichiers PDF (*.pdf)");
+
+    if (filePath.isEmpty()) {
+        // L'utilisateur a annulé
+        return;
+    }
+
     QColor Color2(209, 148, 87);
     QPrinter printer;
     printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("C:/Users/user/Desktop/projetarwa/pdf/"+nom+"_"+id+".pdf");
-    QPainter painter;
+    printer.setOutputFileName(filePath);
 
-    if(!painter.begin(&printer))
-    {qWarning("failed to open file");}
+    QPainter painter;
+    if (!painter.begin(&printer)) {
+        qWarning("Échec lors de l'ouverture du fichier PDF");
+        return;
+    }
+
     painter.setFont(QFont("Bahnschrift Light", 25));
     painter.setPen(Color2);
-    painter.drawText(130,230,"Information relative au Vaccin");
+    painter.drawText(130, 230, "Information relative au Vaccin");
     painter.setPen(Qt::black);
     QPen borderPen(Qt::black);
     borderPen.setWidth(1);
     painter.setPen(borderPen);
-    painter.drawText(260,150,"Gestion Vaccin");
+    painter.drawText(260, 150, "Gestion Vaccin");
+
     painter.setPen(Qt::black);
     painter.drawText(100, 300, "ID : " + id);
     painter.drawText(100, 350, "Nom : " + nom);
@@ -308,11 +333,19 @@ void MainWindow::on_pdf_2_clicked()
 
     painter.end();
 
+    QMessageBox::information(this, "Succès", "PDF généré avec succès !");
+}
 
-    if (!v) {
-        QMessageBox::warning(this, "Erreur", "Vaccin introuvable !");
-        return;
-    }
-    QMessageBox::information(this, "Succès", "PDF généré avec succès");
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0); // Page 3 (index 2)
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1); // Page 3 (index 2)
 }
 

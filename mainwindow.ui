@@ -771,6 +771,11 @@ QGroupBox {
        </item>
        <item>
         <property name="text">
+         <string>id_vaccin</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>nom_vaccin</string>
         </property>
        </item>
@@ -992,59 +997,168 @@ QPushButton {
      <attribute name="title">
       <string>Tab 2</string>
      </attribute>
-     <widget class="QTextEdit" name="chatTextEdit">
+     <widget class="QStackedWidget" name="stackedWidget">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>30</x>
         <y>20</y>
-        <width>871</width>
-        <height>401</height>
+        <width>1131</width>
+        <height>511</height>
        </rect>
       </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_3">
+       <widget class="QTextEdit" name="chatTextEdit_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>1111</width>
+          <height>401</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sendButton_2">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>430</y>
+          <width>201</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Envoyer</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="inputLineEdit_2">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>430</y>
+          <width>651</width>
+          <height>61</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="bg_3">
+        <property name="geometry">
+         <rect>
+          <x>-80</x>
+          <y>-70</y>
+          <width>1221</width>
+          <height>731</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>bg.jpg</pixmap>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="geometry">
+         <rect>
+          <x>960</x>
+          <y>30</y>
+          <width>131</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Aller vers stats</string>
+        </property>
+       </widget>
+       <zorder>bg_3</zorder>
+       <zorder>chatTextEdit_2</zorder>
+       <zorder>sendButton_2</zorder>
+       <zorder>inputLineEdit_2</zorder>
+       <zorder>pushButton_2</zorder>
+      </widget>
+      <widget class="QWidget" name="page_4">
+       <widget class="QLabel" name="bg_4">
+        <property name="geometry">
+         <rect>
+          <x>-130</x>
+          <y>30</y>
+          <width>1221</width>
+          <height>731</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>bg.jpg</pixmap>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>68</x>
+          <y>10</y>
+          <width>850</width>
+          <height>600</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_11">
+        <property name="geometry">
+         <rect>
+          <x>840</x>
+          <y>650</y>
+          <width>101</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+ 	font: 14pt &quot;Sitka Text&quot;;
+   	background-color: transparent;
+    border: 1px solid  #000000;
+    color: #000000;
+    padding: 5px 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+QPushButton:hover {
+	
+	font: 75 italic 14pt &quot;Sitka Text&quot;;
+    background-color: #transparent;
+	color: #000000;
+ 	border: 1px solid  #FFFFFF;
+}
+
+QPushButton:pressed {
+    color: black;
+}</string>
+        </property>
+        <property name="text">
+         <string>Fermer</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>980</x>
+          <y>60</y>
+          <width>71</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Retour</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
-     <widget class="QLineEdit" name="inputLineEdit">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>459</y>
-        <width>651</width>
-        <height>61</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="sendButton">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>460</y>
-        <width>201</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Envoyer</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="bg_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>-30</y>
-        <width>1221</width>
-        <height>731</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap>bg.jpg</pixmap>
-      </property>
-     </widget>
-     <zorder>bg_2</zorder>
-     <zorder>chatTextEdit</zorder>
-     <zorder>inputLineEdit</zorder>
-     <zorder>sendButton</zorder>
     </widget>
    </widget>
   </widget>
