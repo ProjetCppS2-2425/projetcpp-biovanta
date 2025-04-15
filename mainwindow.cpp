@@ -35,6 +35,10 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QFont>
+// Les includes existants plus :
+#include <QSqlQuery>        // Déjà présent normalement
+#include <QMessageBox>      // Déjà présent normalement
+#include <QDebug>           // Pour le débogage
 
 
 
@@ -44,14 +48,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->supp, &QPushButton::clicked, this, &MainWindow::supp_clicked);
+    connect(ui->supp_3, &QPushButton::clicked, this, &MainWindow::supp_3_clicked);
     isModifying = false;
-    connect(ui->ok, &QPushButton::clicked, this, &MainWindow::on_ok_clicked);
-    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::on_pushButton_4_clicked);
-    connect(ui->radioButton_3, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
-    connect(ui->radioButton_4, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
-    connect(ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
-        if (ui->radioButton_3->isChecked() || ui->radioButton_4->isChecked()) {
+    connect(ui->ok_3, &QPushButton::clicked, this, &MainWindow::on_ok_3_clicked);
+    connect(ui->pushButton_13, &QPushButton::clicked, this, &MainWindow::on_pushButton_10_clicked);
+    connect(ui->radioButton_9, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+    connect(ui->radioButton_10, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+    connect(ui->comboBox_12, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
+        if (ui->radioButton_9->isChecked() || ui->radioButton_10->isChecked()) {
             onTriDeclenche();
         }
     });
@@ -59,17 +63,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
-    ui->supp->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
+    ui->supp_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
     ui->chercheur->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
-    ui->pdf->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
+    ui->pdf_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
     ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
     ui->eq->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\equipement.png"));
     ui->test->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\teste.png"));
     ui->client->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\client.png"));
-    ui->stat->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
-    ui->ok->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
-    ui->pushButton_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
+    ui->stat_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
+    ui->ok_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
+    ui->pushButton_10->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
     ui->noti->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\notif.png"));
+    ui->calen->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\calend.png"));
 
 
     QList<Equipement> liste = Equipement::afficher();
@@ -109,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent)
     checkEquipmentStatus();
     connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showEquipmentAlerts);
 
-    ui->tableWidget->setStyleSheet(
+    ui->tableWidget_3->setStyleSheet(
         "QTableWidget {"
         "   background-color: #f8f9fa;"
         "   gridline-color: #dee2e6;"
@@ -130,14 +135,87 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
 
-    ui->tableWidget->repaint();
+    ui->tableWidget_3->repaint();
 
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
     }
+// Garantir que page_liste est affichée au démarrage
+    QTimer::singleShot(0, this, [this]() {
+        ui->stackedWidget->setCurrentWidget(ui->page_liste);
+    });
+    // Initialiser les vues de graphiques
+    etatView = new QChartView(ui->page_stats);
+    dispoView = new QChartView(ui->page_stats);
+    typeView = new QChartView(ui->page_stats);
 
+    // Configurer la mise en page de la page des statistiques
+    QVBoxLayout *statsLayout = new QVBoxLayout(ui->page_stats);
 
-     Equipement::sendEmail("manelhosni813@gmail.com", "Your Account Details", "Your account has been created.\nEmail: aab627092003@gmail.com");
+    QLabel *statsTitle = new QLabel("Statistiques des Équipements");
+    statsTitle->setAlignment(Qt::AlignCenter);
+    QFont titleFont = statsTitle->font();
+    titleFont.setPointSize(16);
+    titleFont.setBold(true);
+    statsTitle->setFont(titleFont);
+
+    statsLayout->addWidget(statsTitle);
+
+    // Configurer la disposition des graphiques
+    QGridLayout *chartsLayout = new QGridLayout();
+    chartsLayout->addWidget(etatView, 0, 0);
+    chartsLayout->addWidget(dispoView, 0, 1);
+    chartsLayout->addWidget(typeView, 1, 0, 1, 2);
+
+    statsLayout->addLayout(chartsLayout);
+
+    // Ajouter un bouton Retour
+    QPushButton *backButton = new QPushButton("Retour à la liste");
+    backButton->setStyleSheet("QPushButton { background-color: #02767F; color: white; padding: 8px; border-radius: 4px; }");
+    connect(backButton, &QPushButton::clicked, [this]() {
+        ui->stackedWidget->setCurrentWidget(ui->page_liste);
+    });
+    statsLayout->addWidget(backButton, 0, Qt::AlignLeft);
+    connect(ui->calen, &QPushButton::clicked, this, [this]() {
+        ui->stackedWidget->setCurrentWidget(ui->calender_page);
+        afficherDisponibiliteSurCalendrier();
+    });
+
+    connect(ui->calendarWidget, &QCalendarWidget::clicked, this, &MainWindow::afficherDetailsEquipement);
+     calendarWidget = ui->calendarWidget;
+    // Connexion du bouton calendrier
+     connect(ui->calen, &QPushButton::clicked, this, [this]() {
+         ui->stackedWidget->setCurrentWidget(ui->calender_page);
+         afficherDisponibiliteSurCalendrier();
+     });
+     connect(calendarWidget, &QCalendarWidget::currentPageChanged,
+             this, &MainWindow::afficherDisponibiliteSurCalendrier);
+     // Création du bouton de retour
+     backButtonCalendar = new QPushButton("Retour", ui->calender_page);
+     backButtonCalendar->setGeometry(20, 10, 121, 41);
+     backButtonCalendar->setStyleSheet(
+         "QPushButton {"
+         "    background-color: #02767F;"
+         "    color: white;"
+         "    border-radius: 5px;"
+         "    padding: 10px;"
+         "    font-weight: bold;"
+         "    border: none;"
+         "}"
+         "QPushButton:hover {"
+         "    background-color: #247361;"
+         "}"
+         );
+
+     // Si vous avez une icône
+     backButtonCalendar->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\back.png"));
+     backButtonCalendar->setIconSize(QSize(20, 20));
+
+     // Connexion du signal
+     connect(backButtonCalendar, &QPushButton::clicked, this, [this]() {
+         ui->stackedWidget->setCurrentWidget(ui->page_liste);
+     });
+
 
 }
 
@@ -146,15 +224,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_2_clicked() {
-    QString id = ui->lineEdit->text();
+void MainWindow::on_pushButton_12_clicked() {
+    QString id = ui->lineEdit_8->text();
+    QDate dateDebut = ui->dateEditDebut->date();
+    QDate dateFin = ui->dateEditFin->date();
 
     if (id.isEmpty() || id.length() > 5 || !id.toInt()) {
         QMessageBox::warning(this, "Erreur", "L'ID de l'équipement doit être un nombre entier de maximum 5 chiffres.");
         return;
     }
-
-    if (ui->radioButton_2->isChecked()) {
+    // Vérification des dates
+    if (dateDebut > dateFin) {
+        QMessageBox::warning(this, "Erreur", "La date de début doit être antérieure à la date de fin.");
+        return;
+    }
+    if (ui->radioButton_12->isChecked()) {
         if (!isModifying) {
             if (!equip.existe(id)) {
                 QMessageBox::warning(this, "Erreur", "L'équipement avec cet ID n'existe pas.");
@@ -164,11 +248,11 @@ void MainWindow::on_pushButton_2_clicked() {
             chargerEquipement();
             isModifying = true;
         } else {
-            QString nom = ui->lineEdit_3->text();
-            QString type = ui->comboBox_4->currentText();
-            QString etat = ui->comboBox_2->currentText();
-            QString dispo = ui->comboBox_3->currentText();
-            int nbre = ui->spinBox->value();
+            QString nom = ui->lineEdit_9->text();
+            QString type = ui->comboBox_15->currentText();
+            QString etat = ui->comboBox_13->currentText();
+            QString dispo = ui->comboBox_14->currentText();
+            int nbre = ui->spinBox_3->value();
             QRegularExpression nomRegex("^[A-Za-z\\s]+$");
             if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
                 QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
@@ -193,49 +277,28 @@ void MainWindow::on_pushButton_2_clicked() {
                 QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
                 return;
             }
-            Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
-             Equipement ancienEquip = Equipement::getEquipementById(id);
+            Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
                 reinitialiserFormulaire();
                 refreshAlertCount();
                 isModifying = false;
-                if (ancienEquip.getEtat().toLower().contains("maintenance") &&
-                    etat.toLower().contains("fonctionnel")) {
-                    QString subject = "Équipement réparé - " + equip.getNom();
-                    QString message = QString("Bonjour,\n\n"
-                                              "L'équipement suivant a changé d'état :\n\n"
-                                              "Détails de l'équipement :\n"
-                                              "-----------------------------\n"
-                                              "Nom: %1\n"
-                                              "ID: %2\n"
-                                              "Type: %3\n"
-                                              "-----------------------------\n\n"
-                                              "Changement d'état :\n"
-                                              "Ancien état: Maintenance\n"
-                                              "Nouvel état: Fonctionnel\n\n"
-                                              "Cet équipement est maintenant disponible pour utilisation.")
-                                          .arg(equip.getNom())
-                                          .arg(equip.getId())
-                                          .arg(equip.getType());
-
-                    Equipement::sendEmail("manelhosni813@gmail.com", subject, message);
-                }
+                afficherDisponibiliteSurCalendrier();
             }
 
         }
-    } else if (ui->radioButton->isChecked()) { // Mode ajout
+    } else if (ui->radioButton_11->isChecked()) { // Mode ajout
         if (equip.existe(id)) {
             QMessageBox::warning(this, "Erreur", "Un équipement avec cet ID existe déjà.");
             return;
         }
 
-        QString nom = ui->lineEdit_3->text();
-        QString type = ui->comboBox_4->currentText();
-        QString etat = ui->comboBox_2->currentText();
-        QString dispo = ui->comboBox_3->currentText();
-        int nbre = ui->spinBox->value();
+        QString nom = ui->lineEdit_9->text();
+        QString type = ui->comboBox_15->currentText();
+        QString etat = ui->comboBox_13->currentText();
+        QString dispo = ui->comboBox_14->currentText();
+        int nbre = ui->spinBox_3->value();
         QRegularExpression nomRegex("^[A-Za-z\\s]+$");
         if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
             QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
@@ -257,11 +320,12 @@ void MainWindow::on_pushButton_2_clicked() {
             QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
             return;
         }
-        Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre);
+        Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin);
         if (equip.ajouter()) {
             QMessageBox::information(this, "Succès", "Équipement ajouté avec succès.");
             actualiserTableau();
             reinitialiserFormulaire();
+            afficherDisponibiliteSurCalendrier();
         } else {
             QMessageBox::critical(this, "Erreur", "L'ajout a échoué.");
         }
@@ -269,7 +333,7 @@ void MainWindow::on_pushButton_2_clicked() {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' ou 'Modifier' avant de valider.");
     }
 }
-void MainWindow::on_pushButton_clicked() {
+void MainWindow::on_pushButton_11_clicked() {
     QString filePath = QFileDialog::getOpenFileName(this, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)");
 
     if (!filePath.isEmpty()) {
@@ -282,21 +346,21 @@ void MainWindow::on_pushButton_clicked() {
         file.close();
         selectedImageData = imageData;
 
-        ui->pushButton->setText("Image sélectionnée");
+        ui->pushButton_11->setText("Image sélectionnée");
     }
 }
 
 void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
-    ui->tableWidget->setRowCount(liste.size());
+    ui->tableWidget_3->setRowCount(liste.size());
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
-    ui->tableWidget->setHorizontalHeaderLabels(headers);
-    ui->tableWidget->setUpdatesEnabled(false);
+    ui->tableWidget_3->setHorizontalHeaderLabels(headers);
+    ui->tableWidget_3->setUpdatesEnabled(false);
 
     for (int i = 0; i < liste.size(); ++i) {
         const Equipement& e = liste[i];
 
-        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(e.getId()));
-        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(e.getNom()));
+        ui->tableWidget_3->setItem(i, 0, new QTableWidgetItem(e.getId()));
+        ui->tableWidget_3->setItem(i, 1, new QTableWidgetItem(e.getNom()));
 
 
         QByteArray imageData = e.getImageData();
@@ -306,34 +370,34 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
                 QLabel *imageLabel = new QLabel();
                 imageLabel->setPixmap(pixmap.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
                 imageLabel->setAlignment(Qt::AlignCenter);
-                ui->tableWidget->setCellWidget(i, 2, imageLabel);
+                ui->tableWidget_3->setCellWidget(i, 2, imageLabel);
             } else {
-                ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Image invalide"));
+                ui->tableWidget_3->setItem(i, 2, new QTableWidgetItem("Image invalide"));
             }
         } else {
-            ui->tableWidget->setItem(i, 2, new QTableWidgetItem("Aucune image"));
+            ui->tableWidget_3->setItem(i, 2, new QTableWidgetItem("Aucune image"));
         }
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(e.getType()));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(e.getEtat()));
-        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(e.getDispo()));
-        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(e.getNombre())));
+        ui->tableWidget_3->setItem(i, 3, new QTableWidgetItem(e.getType()));
+        ui->tableWidget_3->setItem(i, 4, new QTableWidgetItem(e.getEtat()));
+        ui->tableWidget_3->setItem(i, 5, new QTableWidgetItem(e.getDispo()));
+        ui->tableWidget_3->setItem(i, 6, new QTableWidgetItem(QString::number(e.getNombre())));
     }
-    ui->tableWidget->setUpdatesEnabled(true);
-    ui->tableWidget->resizeColumnsToContents();
-    ui->tableWidget->resizeRowsToContents();
+    ui->tableWidget_3->setUpdatesEnabled(true);
+    ui->tableWidget_3->resizeColumnsToContents();
+    ui->tableWidget_3->resizeRowsToContents();
 }
 
 
 void MainWindow::actualiserTableau() {
-    ui->tableWidget->clear();
-    ui->tableWidget->setColumnCount(7);
+    ui->tableWidget_3->clear();
+    ui->tableWidget_3->setColumnCount(7);
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
-    ui->tableWidget->setHorizontalHeaderLabels(headers);
+    ui->tableWidget_3->setHorizontalHeaderLabels(headers);
     QList<Equipement> liste = Equipement::afficher();
-    ui->tableWidget->setRowCount(liste.size());
+    ui->tableWidget_3->setRowCount(liste.size());
     for (int i = 0; i < liste.size(); ++i) {
-        ui->tableWidget->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
-        ui->tableWidget->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
+        ui->tableWidget_3->setItem(i, 0, new QTableWidgetItem(liste[i].getId()));
+        ui->tableWidget_3->setItem(i, 1, new QTableWidgetItem(liste[i].getNom()));
 
         QByteArray imageData = liste[i].getImageData();
         if (!imageData.isEmpty()) {
@@ -342,17 +406,17 @@ void MainWindow::actualiserTableau() {
             if (!pixmap.isNull()) {
                 QLabel *imageLabel = new QLabel();
                 imageLabel->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatio));
-                ui->tableWidget->setCellWidget(i, 2, imageLabel);
+                ui->tableWidget_3->setCellWidget(i, 2, imageLabel);
             }
         }
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(liste[i].getType()));
-        ui->tableWidget->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
-        ui->tableWidget->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
-        ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
+        ui->tableWidget_3->setItem(i, 3, new QTableWidgetItem(liste[i].getType()));
+        ui->tableWidget_3->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
+        ui->tableWidget_3->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
+        ui->tableWidget_3->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
     }
 }
 
-void MainWindow::supp_clicked() {
+void MainWindow::supp_3_clicked() {
     if (selectedId.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un équipement à supprimer.");
         return;
@@ -368,27 +432,28 @@ void MainWindow::supp_clicked() {
         if (e.supprimer(selectedId)) {
             QMessageBox::information(this, "Succès", "Équipement supprimé avec succès.");
             actualiserTableau();
+            afficherDisponibiliteSurCalendrier();
             selectedId.clear();
         } else {
             QMessageBox::critical(this, "Erreur", "La suppression a échoué ou l'équipement n'existe pas.");
         }
     }
 }
-void MainWindow::on_tableWidget_itemClicked(QTableWidgetItem *item) {
+void MainWindow::on_tableWidget_3_itemClicked(QTableWidgetItem *item) {
     if (!item) return;
 
     int row = item->row();
-    if (row < 0 || row >= ui->tableWidget->rowCount()) return;
-    ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-    QTableWidgetItem *idItem = ui->tableWidget->item(row, 0);
+    if (row < 0 || row >= ui->tableWidget_3->rowCount()) return;
+    ui->tableWidget_3->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_3->setSelectionMode(QAbstractItemView::SingleSelection);
+    QTableWidgetItem *idItem = ui->tableWidget_3->item(row, 0);
     if (idItem) {
         selectedId = idItem->text();
-        ui->tableWidget->selectRow(row);
+        ui->tableWidget_3->selectRow(row);
     }
 }
 void MainWindow::chargerEquipement() {
-    QString id = ui->lineEdit->text();
+    QString id = ui->lineEdit_8->text();
 
     if (id.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez entrer un ID d'équipement.");
@@ -401,65 +466,65 @@ void MainWindow::chargerEquipement() {
         QMessageBox::warning(this, "Erreur", "Aucun équipement trouvé avec cet ID.");
         return;
     }
-    ui->lineEdit_3->setText(equip.getNom());
-    ui->comboBox_4->setCurrentText(equip.getType());
-    ui->comboBox_2->setCurrentText(equip.getEtat());
-    ui->comboBox_3->setCurrentText(equip.getDispo());
-    ui->spinBox->setValue(equip.getNombre());
+    ui->lineEdit_9->setText(equip.getNom());
+    ui->comboBox_15->setCurrentText(equip.getType());
+    ui->comboBox_13->setCurrentText(equip.getEtat());
+    ui->comboBox_14->setCurrentText(equip.getDispo());
+    ui->spinBox_3->setValue(equip.getNombre());
 
     QByteArray imageData = equip.getImageData();
     if (!imageData.isEmpty()) {
         selectedImageData = imageData;
         QPixmap pixmap;
         if (pixmap.loadFromData(imageData)) {
-            ui->labelImage->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            ui->pushButton->setText("Image chargée");
+            // ui->labelImage_3->setPixmap(pixmap.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui->pushButton_11->setText("Image chargée");
         } else {
-            ui->labelImage->clear();
-            ui->pushButton->setText("Image corrompue");
+            ui->labelImage_3->clear();
+            ui->pushButton_11->setText("Image corrompue");
             selectedImageData.clear();
         }
     } else {
-        ui->labelImage->clear();
-        ui->pushButton->setText("Choisir image");
+        ui->labelImage_3->clear();
+        ui->pushButton_11->setText("Choisir image");
         selectedImageData.clear();
     }
 
     isModifying = true;
 }
 void MainWindow::reinitialiserFormulaire() {
-    ui->lineEdit->clear();
-    ui->lineEdit_3->clear();
-    ui->comboBox_4->setCurrentIndex(0);
-    ui->comboBox_2->setCurrentIndex(0);
-    ui->comboBox_3->setCurrentIndex(0);
-    ui->spinBox->setValue(1);
+    ui->lineEdit_8->clear();
+    ui->lineEdit_9->clear();
+    ui->comboBox_15->setCurrentIndex(0);
+    ui->comboBox_13->setCurrentIndex(0);
+    ui->comboBox_14->setCurrentIndex(0);
+    ui->spinBox_3->setValue(1);
     selectedImageData.clear();
-    if (ui->labelImage) {
-        ui->labelImage->clear();
+    if (ui->labelImage_3) {
+        ui->labelImage_3->clear();
     }
-    ui->pushButton->setText("Choisir image");
-    ui->pushButton->setIcon(QIcon());
-    ui->radioButton->setAutoExclusive(false);
-    ui->radioButton->setChecked(false);
-    ui->radioButton_2->setChecked(false);
-    ui->radioButton->setAutoExclusive(true);
+    ui->pushButton_11->setText("Choisir image");
+    ui->pushButton_11->setIcon(QIcon());
+    ui->radioButton_11->setAutoExclusive(false);
+    ui->radioButton_11->setChecked(false);
+    ui->radioButton_12->setChecked(false);
+    ui->radioButton_11->setAutoExclusive(true);
     isModifying = false;
-    ui->tableWidget->clearSelection();
+    ui->tableWidget_3->clearSelection();
     selectedId.clear();
-    ui->lineEdit->setFocus();
+    ui->lineEdit_8->setFocus();
 }
 
-void MainWindow::on_pushButton_3_clicked() {
+void MainWindow::on_pushButton_13_clicked() {
     reinitialiserFormulaire();
 }
-void MainWindow::on_pdf_clicked()
+void MainWindow::on_pdf_3_clicked()
 {
     QString strStream;
     QTextStream out(&strStream);
 
-    const int rowCount = ui->tableWidget->rowCount();
-    const int columnCount = ui->tableWidget->columnCount();
+    const int rowCount = ui->tableWidget_3->rowCount();
+    const int columnCount = ui->tableWidget_3->columnCount();
 
     QString logoPath = QDir::tempPath() + "/logo_app.png";
     QPixmap originalLogo("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png");
@@ -498,7 +563,7 @@ void MainWindow::on_pdf_clicked()
     out << "<thead><tr> <th>Numero</th>";
     for (int column = 0; column < columnCount; column++)
     {
-        QString header = ui->tableWidget->horizontalHeaderItem(column)->text();
+        QString header = ui->tableWidget_3->horizontalHeaderItem(column)->text();
         out << QString("<th>%1</th>").arg(header);
     }
     out << "</tr></thead>\n";
@@ -513,7 +578,7 @@ void MainWindow::on_pdf_clicked()
 
             if (column == 2) {
 
-                QLabel* imageLabel = qobject_cast<QLabel*>(ui->tableWidget->cellWidget(row, column));
+                QLabel* imageLabel = qobject_cast<QLabel*>(ui->tableWidget_3->cellWidget(row, column));
                 if (imageLabel) {
                     QPixmap pixmap = imageLabel->pixmap(Qt::ReturnByValue);
                     if (!pixmap.isNull()) {
@@ -529,7 +594,7 @@ void MainWindow::on_pdf_clicked()
                     data = "Aucune image";
                 }
             } else {
-                QTableWidgetItem* item = ui->tableWidget->item(row, column);
+                QTableWidgetItem* item = ui->tableWidget_3->item(row, column);
                 data = item ? item->text() : QString();
             }
 
@@ -563,11 +628,20 @@ void MainWindow::on_pdf_clicked()
 
     QMessageBox::information(this, "PDF généré", QString("Le fichier PDF a été généré avec succès dans %1.").arg(fileName));
 }
-
-
-void MainWindow::on_stat_clicked()
+void MainWindow::on_stat_3_clicked()
 {
     QSqlQuery query;
+
+    // Obtenir le nombre total d'équipements
+    int totalEquipements = 0;
+    if (query.exec("SELECT COUNT(*) FROM EQUIPEMENT") && query.next()) {
+        totalEquipements = query.value(0).toInt();
+    }
+
+    if (totalEquipements == 0) {
+        QMessageBox::information(this, "Information", "Aucun équipement trouvé dans la base de données.");
+        return;
+    }
 
     // --- Série pour état ---
     QPieSeries *etatSeries = new QPieSeries();
@@ -575,7 +649,8 @@ void MainWindow::on_stat_clicked()
     while (query.next()) {
         QString etat = query.value(0).toString();
         int count = query.value(1).toInt();
-        QPieSlice *slice = etatSeries->append(etat + " (" + QString::number(count) + ")", count);
+        double percentage = (count * 100.0) / totalEquipements;
+        QPieSlice *slice = etatSeries->append(QString("%1 (%2%)").arg(etat).arg(QString::number(percentage, 'f', 1)), count);
         slice->setLabelVisible(true);
     }
 
@@ -585,7 +660,8 @@ void MainWindow::on_stat_clicked()
     while (query.next()) {
         QString dispo = query.value(0).toString();
         int count = query.value(1).toInt();
-        QPieSlice *slice = dispoSeries->append(dispo + " (" + QString::number(count) + ")", count);
+        double percentage = (count * 100.0) / totalEquipements;
+        QPieSlice *slice = dispoSeries->append(QString("%1 (%2%)").arg(dispo).arg(QString::number(percentage, 'f', 1)), count);
         slice->setLabelVisible(true);
     }
 
@@ -595,64 +671,50 @@ void MainWindow::on_stat_clicked()
     while (query.next()) {
         QString type = query.value(0).toString();
         int count = query.value(1).toInt();
-        QPieSlice *slice = typeSeries->append(type + " (" + QString::number(count) + ")", count);
+        double percentage = (count * 100.0) / totalEquipements;
+        QPieSlice *slice = typeSeries->append(QString("%1 (%2%)").arg(type).arg(QString::number(percentage, 'f', 1)), count);
         slice->setLabelVisible(true);
     }
 
-    // --- Création des graphiques ---
-    auto createChart = [](QPieSeries *series, const QString &title) -> QChartView* {
-        QChart *chart = new QChart();
-        chart->addSeries(series);
-        chart->setTitle(title);
-        chart->legend()->setVisible(true);
-        chart->legend()->setAlignment(Qt::AlignBottom);
-        chart->setAnimationOptions(QChart::SeriesAnimations);
-        chart->setBackgroundBrush(QColor(245, 245, 245));
-        chart->setBackgroundRoundness(10);
+    // Créer les graphiques
+    QChart *etatChart = new QChart();
+    etatChart->addSeries(etatSeries);
+    etatChart->setTitle("Répartition par état");
+    etatChart->legend()->setVisible(true);
+    etatChart->legend()->setAlignment(Qt::AlignBottom);
+    etatChart->setAnimationOptions(QChart::SeriesAnimations);
+    etatView->setChart(etatChart);
+    etatView->setRenderHint(QPainter::Antialiasing);
 
-        QChartView *view = new QChartView(chart);
-        view->setRenderHint(QPainter::Antialiasing);
-        view->setMinimumSize(400, 300);
-        view->setStyleSheet("QChartView { border: 1px solid lightgray; border-radius: 10px; }");
-        return view;
-    };
+    QChart *dispoChart = new QChart();
+    dispoChart->addSeries(dispoSeries);
+    dispoChart->setTitle("Répartition par disponibilité");
+    dispoChart->legend()->setVisible(true);
+    dispoChart->legend()->setAlignment(Qt::AlignBottom);
+    dispoChart->setAnimationOptions(QChart::SeriesAnimations);
+    dispoView->setChart(dispoChart);
+    dispoView->setRenderHint(QPainter::Antialiasing);
 
-    QChartView *etatView = createChart(etatSeries, "Répartition par état");
-    QChartView *dispoView = createChart(dispoSeries, "Répartition par disponibilité");
-    QChartView *typeView = createChart(typeSeries, "Répartition par type");
+    QChart *typeChart = new QChart();
+    typeChart->addSeries(typeSeries);
+    typeChart->setTitle("Répartition par type");
+    typeChart->legend()->setVisible(true);
+    typeChart->legend()->setAlignment(Qt::AlignBottom);
+    typeChart->setAnimationOptions(QChart::SeriesAnimations);
+    typeView->setChart(typeChart);
+    typeView->setRenderHint(QPainter::Antialiasing);
 
-
-    QWidget *statsWindow = new QWidget();
-    statsWindow->setWindowTitle("Statistiques des équipements");
-    statsWindow->resize(1200, 700);
-
-    QLabel *mainTitle = new QLabel("Statistiques Générales des Équipements");
-    QFont titleFont("Arial", 16, QFont::Bold);
-    mainTitle->setFont(titleFont);
-    mainTitle->setAlignment(Qt::AlignCenter);
-
-    QGridLayout *gridLayout = new QGridLayout();
-    gridLayout->addWidget(etatView, 0, 0);
-    gridLayout->addWidget(dispoView, 0, 1);
-    gridLayout->addWidget(typeView, 1, 0, 1, 2);
-    gridLayout->setContentsMargins(10, 10, 10, 10);
-    gridLayout->setSpacing(20);
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(statsWindow);
-    mainLayout->addWidget(mainTitle);
-    mainLayout->addLayout(gridLayout);
-
-    statsWindow->setLayout(mainLayout);
-    statsWindow->show();
+    // Passer à la page des statistiques
+    ui->stackedWidget->setCurrentWidget(ui->page_stats);
 }
-void MainWindow::on_ok_clicked() {
+void MainWindow::on_ok_3_clicked() {
     if (!ui) {
         qDebug() << "Erreur: ui n'est pas initialisé!";
         return;
     }
 
-    QString critere = ui->comboBox_5->currentText().trimmed();
-    QString valeur = ui->lineEdit_2->text().trimmed();
+    QString critere = ui->comboBox_11->currentText().trimmed();
+    QString valeur = ui->lineEdit_7->text().trimmed();
 
     if (valeur.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez entrer une valeur de recherche.");
@@ -668,7 +730,7 @@ void MainWindow::on_ok_clicked() {
         queryStr = "SELECT * FROM EQUIPEMENT WHERE TRIM(id_equipement) LIKE :valeur";
     }
     else if (critere == "disponibilité") {
-        queryStr = "SELECT * FROM EQUIPEMENT WHERE disponibilite = :valeur";
+        queryStr = "SELECT * FROM EQUIPEMENT WHERE disponibilite LIKE :valeur";
     }
     else {
         QMessageBox::warning(this, "Erreur", "Critère de recherche invalide.");
@@ -678,7 +740,7 @@ void MainWindow::on_ok_clicked() {
     QSqlQuery query;
     query.prepare(queryStr);
 
-    if (critere == "type" || critere == "id équipement") {
+    if (critere == "type" || critere == "disponibilité") {
         query.bindValue(":valeur", "%" + valeur + "%");
     } else {
         query.bindValue(":valeur", valeur);
@@ -690,14 +752,14 @@ void MainWindow::on_ok_clicked() {
         return;
     }
 
-    ui->tableWidget->clearContents();
-    ui->tableWidget->setRowCount(0);
+    ui->tableWidget_3->clearContents();
+    ui->tableWidget_3->setRowCount(0);
 
     int row = 0;
     while (query.next()) {
-        ui->tableWidget->insertRow(row);
-        ui->tableWidget->setItem(row, 0, new QTableWidgetItem(query.value("id_equipement").toString()));
-        ui->tableWidget->setItem(row, 1, new QTableWidgetItem(query.value("nom_eq").toString()));
+        ui->tableWidget_3->insertRow(row);
+        ui->tableWidget_3->setItem(row, 0, new QTableWidgetItem(query.value("id_equipement").toString()));
+        ui->tableWidget_3->setItem(row, 1, new QTableWidgetItem(query.value("nom_eq").toString()));
 
         QByteArray imageData = query.value("image").toByteArray();
         if (!imageData.isEmpty()) {
@@ -705,18 +767,18 @@ void MainWindow::on_ok_clicked() {
             if (pixmap.loadFromData(imageData)) {
                 QLabel *imageLabel = new QLabel(this);
                 imageLabel->setPixmap(pixmap.scaled(80, 80, Qt::KeepAspectRatio));
-                ui->tableWidget->setCellWidget(row, 2, imageLabel);
+                ui->tableWidget_3->setCellWidget(row, 2, imageLabel);
             } else {
-                ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Image invalide"));
+                ui->tableWidget_3->setItem(row, 2, new QTableWidgetItem("Image invalide"));
             }
         } else {
-            ui->tableWidget->setItem(row, 2, new QTableWidgetItem("Aucune image"));
+            ui->tableWidget_3->setItem(row, 2, new QTableWidgetItem("Aucune image"));
         }
 
-        ui->tableWidget->setItem(row, 3, new QTableWidgetItem(query.value("type").toString()));
-        ui->tableWidget->setItem(row, 4, new QTableWidgetItem(query.value("etat").toString()));
-        ui->tableWidget->setItem(row, 5, new QTableWidgetItem(query.value("disponibilite").toString()));
-        ui->tableWidget->setItem(row, 6, new QTableWidgetItem(query.value("nbre_eq").toString()));
+        ui->tableWidget_3->setItem(row, 3, new QTableWidgetItem(query.value("type").toString()));
+        ui->tableWidget_3->setItem(row, 4, new QTableWidgetItem(query.value("etat").toString()));
+        ui->tableWidget_3->setItem(row, 5, new QTableWidgetItem(query.value("disponibilite").toString()));
+        ui->tableWidget_3->setItem(row, 6, new QTableWidgetItem(query.value("nbre_eq").toString()));
 
         row++;
     }
@@ -725,23 +787,22 @@ void MainWindow::on_ok_clicked() {
         QMessageBox::information(this, "Information", "Aucun résultat trouvé.");
     }
 }
-
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_pushButton_10_clicked()
 {
     QList<Equipement> liste = Equipement::afficher();
     afficherEquipements(liste);
-    ui->lineEdit_2->clear();
-    ui->comboBox_5->setCurrentIndex(0);
+    ui->lineEdit_7->clear();
+    ui->comboBox_11->setCurrentIndex(0);
 }
 
 
 void MainWindow::onTriDeclenche() {
-    if (!ui->radioButton_3->isChecked() && !ui->radioButton_4->isChecked()) {
+    if (!ui->radioButton_9->isChecked() && !ui->radioButton_10->isChecked()) {
         return;
     }
 
-    QString critere = ui->comboBox->currentText();
-    bool ascendant = ui->radioButton_3->isChecked();
+    QString critere = ui->comboBox_12->currentText();
+    bool ascendant = ui->radioButton_9->isChecked();
 
     QList<Equipement> liste = Equipement::afficher();
     if (liste.isEmpty()) return;
@@ -932,3 +993,99 @@ void MainWindow::refreshAlertCount()
 }
 
 
+void MainWindow::afficherDisponibiliteSurCalendrier() {
+    // Réinitialiser toutes les mises en forme
+    calendarWidget->setDateTextFormat(QDate(), QTextCharFormat());
+
+    QList<Equipement> equipements = Equipement::afficher();
+
+    // Format pour les périodes disponibles (bleu)
+    QTextCharFormat formatDisponible;
+    formatDisponible.setBackground(QColor(100, 149, 237)); // Bleu moyen
+    formatDisponible.setForeground(Qt::white);
+    formatDisponible.setFontWeight(QFont::Bold);
+    formatDisponible.setProperty(QTextFormat::FullWidthSelection, true);
+    formatDisponible.setToolTip("Disponible");
+
+    // Format pour les périodes non disponibles (rouge clair)
+    QTextCharFormat formatNonDisponible;
+    formatNonDisponible.setBackground(QColor(255, 182, 193)); // Rouge clair
+    formatNonDisponible.setForeground(Qt::black);
+    formatNonDisponible.setFontWeight(QFont::Bold);
+    formatNonDisponible.setProperty(QTextFormat::FullWidthSelection, true);
+    formatNonDisponible.setToolTip("Non disponible");
+
+    foreach (const Equipement &equip, equipements) {
+        QDate dateDebut = equip.getDateDebutDispo();
+        QDate dateFin = equip.getDateFinDispo();
+
+        if (!dateDebut.isValid() || !dateFin.isValid()) {
+            qDebug() << "Dates invalides pour l'équipement ID:" << equip.getId();
+            continue;
+        }
+
+        qDebug() << "Traitement équipement ID:" << equip.getId()
+                 << "Du" << dateDebut.toString("dd/MM/yyyy")
+                 << "au" << dateFin.toString("dd/MM/yyyy")
+                 << "Dispo:" << equip.getDispo();
+
+        // Appliquer le format selon la disponibilité
+        QTextCharFormat format = (equip.getDispo().toLower() == "disponible")
+                                     ? formatDisponible
+                                     : formatNonDisponible;
+
+        // Ajouter des informations à l'infobulle
+        QString tooltip = QString("Équipement: %1\nID: %2\nType: %3\nÉtat: %4\nDisponibilité: %5\nPériode: %6 - %7")
+                              .arg(equip.getNom())
+                              .arg(equip.getId())
+                              .arg(equip.getType())
+                              .arg(equip.getEtat())
+                              .arg(equip.getDispo())
+                              .arg(dateDebut.toString("dd/MM/yyyy"))
+                              .arg(dateFin.toString("dd/MM/yyyy"));
+        format.setToolTip(tooltip);
+
+        // Appliquer le format à toutes les dates de la plage
+        for (QDate date = dateDebut; date <= dateFin; date = date.addDays(1)) {
+            calendarWidget->setDateTextFormat(date, format);
+        }
+    }
+
+    // Mettre en évidence la date actuelle (en jaune)
+    QTextCharFormat todayFormat;
+    todayFormat.setFontWeight(QFont::Bold);
+    todayFormat.setBackground(QColor(255, 255, 150)); // Jaune clair
+    todayFormat.setForeground(Qt::black);
+    todayFormat.setProperty(QTextFormat::FullWidthSelection, true);
+    calendarWidget->setDateTextFormat(QDate::currentDate(), todayFormat);
+}
+
+
+void MainWindow::afficherDetailsEquipement(const QDate &date) {
+    QString details;
+    QList<Equipement> equipements = Equipement::afficher();
+
+    foreach (const Equipement &equip, equipements) {
+        if (date >= equip.getDateDebutDispo() && date <= equip.getDateFinDispo()) {
+            details += QString("🔧 *Équipement* : %1\n"
+                               "🆔 *ID* : %2\n"
+                               "🏷️ *Type* : %3\n"
+                               "⚙️ *État* : %4\n"
+                               "📅 *Disponible du* %5 *au* %6\n"
+                               "🔄 *Statut* : %7\n\n")
+                           .arg(equip.getNom())
+                           .arg(equip.getId())
+                           .arg(equip.getType())
+                           .arg(equip.getEtat())
+                           .arg(equip.getDateDebutDispo().toString("dd/MM/yyyy"))
+                           .arg(equip.getDateFinDispo().toString("dd/MM/yyyy"))
+                           .arg(equip.getDispo());
+        }
+    }
+
+    if (details.isEmpty()) {
+        details = "Aucun équipement réservé ou disponible pour cette date.";
+    }
+
+    QMessageBox::information(this, "📅 Détails des équipements", details);
+}

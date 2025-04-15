@@ -7,7 +7,7 @@
 // Constructeurs
 Equipement::Equipement() {}
 
-Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre) {
+Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut, QDate fin) {
     this->id_equipement = id;
     this->nom_eq = nom;
     this->etat = etat;
@@ -15,14 +15,15 @@ Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, 
     this->type = type;
     this->disponibilite = dispo;
     this->nbre_eq = nombre;
+    this->dateDebutDispo = debut;
+    this->dateFinDispo = fin;
 }
 
 
 bool Equipement::ajouter() {
     QSqlQuery query;
-    query.prepare("INSERT INTO Equipement (id_equipement, nom_eq, etat, image, type, disponibilite, nbre_eq) "
-                  "VALUES (:id, :nom, :etat, :img, :type, :dispo, :nbre)");
-
+    query.prepare("INSERT INTO Equipement (id_equipement, nom_eq, etat, image, type, disponibilite, nbre_eq, date_debut, date_fin) "
+                  "VALUES (:id, :nom, :etat, :img, :type, :dispo, :nbre, :debut, :fin)");
     query.bindValue(":id", id_equipement);
     query.bindValue(":nom", nom_eq);
     query.bindValue(":etat", etat);
@@ -30,6 +31,8 @@ bool Equipement::ajouter() {
     query.bindValue(":type", type);
     query.bindValue(":dispo", disponibilite);
     query.bindValue(":nbre", nbre_eq);
+    query.bindValue(":debut", dateDebutDispo);
+    query.bindValue(":fin", dateFinDispo);
 
     if (!query.exec()) {
         qDebug() << "Erreur SQL :" << query.lastError().text();
@@ -45,16 +48,18 @@ QList<Equipement> Equipement::afficher() {
     QSqlQuery query("SELECT * FROM EQUIPEMENT");
 
     while (query.next()) {
-        QByteArray imageData = query.value("image").toByteArray();
-        liste.append(Equipement(
+        Equipement e(
             query.value("id_equipement").toString(),
             query.value("nom_eq").toString(),
             query.value("etat").toString(),
-            imageData,
+            query.value("image").toByteArray(),
             query.value("type").toString(),
             query.value("disponibilite").toString(),
             query.value("nbre_eq").toInt()
-            ));
+            );
+        e.setDateDebutDispo(query.value("date_debut").toDate());
+        e.setDateFinDispo(query.value("date_fin").toDate());
+        liste.append(e);
     }
     return liste;
 }
@@ -75,7 +80,9 @@ bool Equipement::modifier() {
                   "etat = :etat, "
                   "disponibilite = :dispo, "
                   "image = :img, "
-                  "nbre_eq = :nbre "
+                  "nbre_eq = :nbre, "
+                  "date_debut = :debut, "
+                  "date_fin = :fin "
                   "WHERE id_equipement = :id");
 
     query.bindValue(":id", id_equipement);
@@ -85,6 +92,8 @@ bool Equipement::modifier() {
     query.bindValue(":dispo", disponibilite);
     query.bindValue(":img", imageData);
     query.bindValue(":nbre", nbre_eq);
+    query.bindValue(":debut", dateDebutDispo);
+    query.bindValue(":fin", dateFinDispo);
 
     if (!query.exec()) {
         qDebug() << "Erreur lors de la modification :" << query.lastError().text();
@@ -136,8 +145,8 @@ QSqlQueryModel* Equipement::rechercher(const QString& critere, const QString& va
     else if (critere == "id équipement") {
         queryStr += "id_equipement = :valeur";
     }
-    else if (critere == "disponibilité") {
-        queryStr += "disponibilite = :valeur";
+    else if (critere == "disponibilite") {
+        queryStr += "disponibilité = :valeur";
     }
 
     QSqlQuery query;
@@ -209,44 +218,3 @@ int Equipement::countEquipementsParEtat(const QString &etatRecherche) {
     return 0;
 }
 
-void Equipement::sendEmail(const QString &to, const QString &subject, const QString &body)
-{
-    QString customPath = "C:/Users/manel/Desktop/projet_c/email.txt";
-    QFile f(customPath);
-    if (!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Failed to open file for writing:" << customPath;
-        return;
-    }
-
-    QTextStream s(&f);
-    s << QString("From: aab627092003@gmail.com\n"
-                 "To: %1\n"
-                 "Subject: %2\n"
-                 "Content-Type: text/plain; charset=utf-8\n\n"
-                 "=== Notification d'équipement ===\n\n"
-                 "%3\n\n"
-                 "-----------------------------\n"
-                 "Envoyé automatiquement par le système\n")
-             .arg(to, subject, body);
-    f.close();
-
-    QString curlCommand = QString(
-                              "curl.exe --url smtps://smtp.gmail.com:465 "
-                              "--mail-from \"aab627092003@gmail.com\" "
-                              "--mail-rcpt \"%1\" "
-                              "--user \"aab627092003@gmail.com:ptqvmvnluyedaqki\" "
-                              "--upload-file \"%2\""
-                              ).arg(to, customPath);
-
-    QProcess process;
-    process.setProcessChannelMode(QProcess::MergedChannels);
-    process.setProgram("cmd.exe");
-    process.setNativeArguments(QString("/C \"%1\"").arg(curlCommand));
-    process.start();
-    process.waitForFinished();
-
-    QString output = process.readAll();
-    qDebug() << "Email send output:" << output;
-
-    QFile::remove(customPath);
-}

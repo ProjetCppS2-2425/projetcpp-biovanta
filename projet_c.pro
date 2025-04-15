@@ -4,7 +4,7 @@ QT+= sql
 QT += printsupport
 QT += charts
 QT += widgets sql printsupport
-QT += network
+
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

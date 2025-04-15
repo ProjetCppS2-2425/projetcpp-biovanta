@@ -5,6 +5,7 @@
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QDate>  // Pour les membres dateDebutDispo et dateFinDispo
 
 class Equipement {
 private:
@@ -15,15 +16,20 @@ private:
     QString type;
     QString disponibilite;
     int nbre_eq;
+    QDate dateDebutDispo;
+    QDate dateFinDispo;
 
 public:
     Equipement();
-    Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre);
+   Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut = QDate(), QDate fin = QDate());
     bool ajouter();
     static QList<Equipement> afficher();
     bool modifier();
     bool supprimer(const QString &id);
-    static void sendEmail(const QString &to, const QString &subject, const QString &body);
+    QDate getDateDebutDispo() const { return dateDebutDispo; }
+    QDate getDateFinDispo() const { return dateFinDispo; }
+    void setDateDebutDispo(const QDate &date) { dateDebutDispo = date; }
+    void setDateFinDispo(const QDate &date) { dateFinDispo = date; }
 
 
     bool existe(const QString &id);
