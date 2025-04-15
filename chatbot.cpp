@@ -2,25 +2,7 @@
 #include <QTime>
 #include <QDebug>
 
-Chatbot::Chatbot(QTextEdit *chatTextEdit,
-                 QLineEdit *inputLineEdit,
-                 QPushButton *sendButton,
-                 QObject *parent)
-    : QObject(parent),
-      m_chatTextEdit(chatTextEdit),
-      m_inputLineEdit(inputLineEdit),
-      m_sendButton(sendButton)
-{
-    m_gemini = new GeminiAPI(this);
 
-    // Bouton envoie
-    connect(m_sendButton, &QPushButton::clicked,
-            this, &Chatbot::handleSendMessage);
-
-    // Réponse de Gemini
-    connect(m_gemini, &GeminiAPI::responseReady,
-            this, &Chatbot::handleGeminiResponse);
-}
 
 void Chatbot::handleSendMessage()
 {
@@ -51,7 +33,7 @@ void Chatbot::handleGeminiResponse(const QString &response)
         cursor.movePosition(QTextCursor::End);
         cursor.movePosition(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);
         cursor.removeSelectedText();
-        cursor.deletePreviousChar();
+        cursor.deletePreviousChar(); //men andou
     }
 
     m_chatTextEdit->append("<b>Gemini:</b> " + response);

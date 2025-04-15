@@ -47,7 +47,7 @@ void GeminiAPI::handleNetworkReply(QNetworkReply *reply)
 
         QString botReply;
 
-        if (doc.isObject()) {
+        if (doc.isObject()) { //convertir le var du type qtypenetworto qbyteArray then to type text
             QJsonObject obj = doc.object();
             auto contents = obj["candidates"].toArray();
             if (!contents.isEmpty()) {

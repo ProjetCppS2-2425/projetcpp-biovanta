@@ -85,7 +85,6 @@ public:
     QComboBox *cb_rech_emp;
     QComboBox *comboBox_7;
     QLabel *label_15;
-    QPushButton *pushButton_5;
     QPushButton *pdf_2;
     QPushButton *stat_2;
     QPushButton *ok_2;
@@ -558,23 +557,6 @@ public:
         label_15 = new QLabel(groupBox_2);
         label_15->setObjectName("label_15");
         label_15->setGeometry(QRect(200, 120, 63, 31));
-        pushButton_5 = new QPushButton(groupBox_2);
-        pushButton_5->setObjectName("pushButton_5");
-        pushButton_5->setGeometry(QRect(10, 50, 31, 31));
-        pushButton_5->setStyleSheet(QString::fromUtf8("\n"
-"QPushButton {\n"
-"        background-color: #ff4d4d;  /* Rouge */\n"
-"        color: white;\n"
-"        border-radius: 5px;\n"
-"        padding: 5px;\n"
-"        font-weight: bold;\n"
-"    }\n"
-"    QPushButton:hover {\n"
-"        background-color: #ff1a1a;  /* Rouge plus fonc\303\251 au survol */\n"
-"    }\n"
-"    QPushButton:pressed {\n"
-"        background-color: #cc0000;  /* Rouge fonc\303\251 au clic */\n"
-"    }"));
         pdf_2 = new QPushButton(groupBox_2);
         pdf_2->setObjectName("pdf_2");
         pdf_2->setGeometry(QRect(140, 120, 51, 31));
@@ -670,7 +652,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -723,7 +705,6 @@ public:
         comboBox_7->setItemText(2, QCoreApplication::translate("MainWindow", "date_expiration", nullptr));
 
         label_15->setText(QCoreApplication::translate("MainWindow", "Tri par :", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", " X", nullptr));
         pdf_2->setText(QString());
         stat_2->setText(QString());
         ok_2->setText(QString());

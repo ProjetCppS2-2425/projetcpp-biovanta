@@ -63,7 +63,7 @@ QPushButton#btnEquipement:checked {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -816,35 +816,6 @@ QGroupBox {
        </property>
        <property name="text">
         <string>Tri par :</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>31</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">
-QPushButton {
-        background-color: #ff4d4d;  /* Rouge */
-        color: white;
-        border-radius: 5px;
-        padding: 5px;
-        font-weight: bold;
-    }
-    QPushButton:hover {
-        background-color: #ff1a1a;  /* Rouge plus foncé au survol */
-    }
-    QPushButton:pressed {
-        background-color: #cc0000;  /* Rouge foncé au clic */
-    }</string>
-       </property>
-       <property name="text">
-        <string> X</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pdf_2">
