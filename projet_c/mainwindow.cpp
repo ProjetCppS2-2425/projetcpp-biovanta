@@ -25,7 +25,8 @@
 #include "connection.h"
 #include "todo.h"
 #include "history.h"
-
+#include <QTextStream>
+#include <QStandardPaths>
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -65,7 +66,7 @@ void MainWindow::display(){
     proxy->setSourceModel(C.afficher());
      proxy->setSortCaseSensitivity(Qt::CaseInsensitive);
      proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    proxy->setFilterKeyColumn(-1);
+    //proxy->setFilterKeyColumn(-1);
       ui->tableView->setModel(proxy);
 }
 void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
@@ -139,6 +140,22 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
             ui->radioButton_Ajouter->setAutoExclusive(true);
             A.Cajt=C;
             A.success=true;
+
+            QFile file(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\ajout.txt");
+            if (!file.open(QIODevice::ReadWrite)){
+                QMessageBox::information(nullptr,"error",file.errorString());
+            }
+            QString historyajt = QString("%1|%2|%3|%4|%5|%6|%7\n")
+                                       .arg(id)
+                                       .arg(nomA)
+                                       .arg(type)
+                                       .arg(rep)
+                                       .arg(adr)
+                                       .arg(email)
+                                       .arg(ctr);
+            QTextStream out(&file);
+                out<<"Vous avez ajouter le client avec les données suivantes:"<<historyajt<<"\n";
+            file.close();
         }
 
         else {
@@ -236,9 +253,24 @@ void MainWindow::on_pushButton_supp_clicked(){
                         ui->lineEdit_ctr->clear();
                         ui->typeCombo->setCurrentIndex(0);
 
-                       /* ui->radioButton_Modifier->setAutoExclusive(false);
-                        ui->radioButton_Modifier->setChecked(false);
-                        ui->radioButton_Modifier->setAutoExclusive(true);*/
+                        QFile filemodif(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\modifier.txt");
+                        if (!filemodif.open(QIODevice::ReadWrite)){
+                            QMessageBox::information(nullptr,"error",filemodif.errorString());
+                        }
+
+                        QString historymodif = QString("%1|%2|%3|%4|%5|%6|%7\n")
+                                                 .arg(id)
+                                                 .arg(nomA)
+                                                 .arg(type)
+                                                 .arg(rep)
+                                                 .arg(adr)
+                                                 .arg(email)
+                                                 .arg(ctr);
+                        QTextStream outt(&filemodif);
+                        QString content = filemodif.readAll();
+                       // filemodif.seek(content.length() - 1);
+                        outt<<QDateTime::currentDateTime().toString()<<"Modification:"<<historymodif<<"\n";
+                        filemodif.close();
                     }
                     else {
                         QMessageBox::critical(this, "Erreur", "Modification non effectué.");
@@ -394,16 +426,6 @@ void MainWindow::on_pushButton_supp_clicked(){
             s->show();
 
         }
-       /* void MainWindow::on_stat_2_clicked()
-        {
-           auto s = new Pie(this);
-            s->show();
-
-        }*/
-        void MainWindow::filtereddisplay(){
-
-        }
-
 
         void MainWindow::on_todo_clicked()
         {

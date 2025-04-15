@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QListWidget" name="ajout">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget_2">
+  <widget class="QListWidget" name="modifier">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -134,8 +134,8 @@ font-size: 25px;
    </property>
   </widget>
   <zorder>bg</zorder>
-  <zorder>listWidget</zorder>
-  <zorder>listWidget_2</zorder>
+  <zorder>ajout</zorder>
+  <zorder>modifier</zorder>
   <zorder>listWidget_3</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>

@@ -14,6 +14,7 @@ class History : public QDialog
 public:
     explicit History(QWidget *parent = nullptr);
     ~History();
+    QString path;
 
 private:
     Ui::History *ui;
