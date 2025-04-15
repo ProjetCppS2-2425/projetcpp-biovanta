@@ -28,10 +28,7 @@ History::History(QWidget *parent)
     if (!filemodif.open(QIODevice::ReadWrite)){
         QMessageBox::information(0,"error",filemodif.errorString());
     }
-    /*int currentRow = ui->listWidget->currentRow();
-    if (currentRow >= 0 && currentRow < ui->listWidget->count() - 1) {
-        ui->listWidget->setCurrentRow(currentRow + 1);  // Move to the row after
-    }*/
+
     QTextStream inmod(&filemodif);
     while(!inmod.atEnd()){
         QListWidgetItem* item = new QListWidgetItem(inmod.readLine(),ui->modifier);

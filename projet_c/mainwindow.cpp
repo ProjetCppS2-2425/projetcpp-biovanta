@@ -154,7 +154,8 @@ void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
                                        .arg(email)
                                        .arg(ctr);
             QTextStream out(&file);
-                out<<"Vous avez ajouter le client avec les données suivantes:"<<historyajt<<"\n";
+            QString content = file.readAll();
+            out<<QDateTime::currentDateTime().toString()<<"Ajout:"<<historyajt<<"\n";
             file.close();
         }
 
