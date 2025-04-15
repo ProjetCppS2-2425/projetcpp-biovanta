@@ -33,7 +33,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget_3">
+  <widget class="QListWidget" name="supp">
    <property name="geometry">
     <rect>
      <x>930</x>
@@ -136,7 +136,7 @@ font-size: 25px;
   <zorder>bg</zorder>
   <zorder>ajout</zorder>
   <zorder>modifier</zorder>
-  <zorder>listWidget_3</zorder>
+  <zorder>supp</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
   <zorder>label_4</zorder>

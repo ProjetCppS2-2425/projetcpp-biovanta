@@ -848,6 +848,19 @@ QPushButton:hover {
       <string>Historique</string>
      </property>
     </widget>
+    <widget class="QLabel" name="client_2">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>20</y>
+       <width>371</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -1333,6 +1346,19 @@ color:#000000;
      <pixmap>../application/bg.jpg</pixmap>
     </property>
    </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>-1</y>
+      <width>1531</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page_9"/>
+    <widget class="QWidget" name="page_10"/>
+   </widget>
+   <zorder>stackedWidget</zorder>
    <zorder>bg</zorder>
    <zorder>groupBox</zorder>
    <zorder>groupBox_2</zorder>

@@ -12,6 +12,7 @@ Todo::Todo(QWidget *parent)
     ui->setupUi(this);
     ui->logo->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\His-bg.jpg"));
+    //connect(ui->btnRemove, &QPushButton::clicked, this, &Todo::on_btnRemove_clicked);
     ui->listWidget->setDragDropMode(QAbstractItemView::DragDrop);
     ui->listWidget_2->setDragDropMode(QAbstractItemView::DragDrop);
     path =  QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt";
@@ -40,21 +41,6 @@ Todo::Todo(QWidget *parent)
     }
 
     file_2.close();
-   /* if (ui->listWidget->count()>ui->listWidget_2->count()){
-        while (ui->listWidget->count()!=0){
-            for (int j=0; j<ui->listWidget_2->count();j++){
-                if(ui->listWidget->item(i)->text()==ui->listWidget_2->item(j)->text()){
-                    QListWidgetItem* item = ui->listWidget->takeItem(item(i));
-                    delete item;
-                }
-            }
-        }
-    }*/
-
-    /*int tot=ui->listWidget->count();
-    if (ui->listWidget->count()<tot){
-        tot = ui->listWidget->count();
-    }*/
 
 }
 
@@ -91,29 +77,9 @@ void Todo::on_btnAdd_clicked()
    // ui->txtTask->setFocus();
 }
 
-
-void Todo::on_btnRemove_clicked()
+void Todo::on_Supp_clicked()
 {
     QListWidgetItem* item = ui->listWidget->takeItem(ui->listWidget->currentRow());
     delete item;
-}
-
-
-void Todo::on_btnRemoveAll_clicked()
-{
-     ui->listWidget->clear();
-}
-
-
-void Todo::on_btnRemove_2_clicked()
-{
-    QListWidgetItem* item = ui->listWidget_2->takeItem(ui->listWidget_2->currentRow());
-    delete item;
-}
-
-
-void Todo::on_btnRemoveAll_2_clicked()
-{
-     ui->listWidget_2->clear();
 }
 

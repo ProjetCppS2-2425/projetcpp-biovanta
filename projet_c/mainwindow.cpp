@@ -173,6 +173,15 @@ void MainWindow::on_pushButton_supp_clicked(){
         bool test=C.supprimer(id);
 
          if (test){
+            Client temp;
+             Client* data = temp.fetch(id);
+
+            QString msg = QString ("%1").arg(data->getEmail());
+             QMessageBox::information(
+                 this,                   // Parent widget (e.g., your main window)
+                 "Client Information",   // Title
+                 msg                 // Formatted message
+                 );
              QMessageBox::information(nullptr, QObject::tr("OK"),
                                       QObject::tr("Suppression effectuée\n"
                                                   "Click Cancel to exit."), QMessageBox::Cancel);

@@ -37,6 +37,20 @@ History::History(QWidget *parent)
         item->setFlags(item->flags()|Qt::ItemIsEditable|Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
     }
 
+    QString supp =  QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\supprimer.txt";
+    QFile filesupp(supp);
+    if (!filesupp.open(QIODevice::ReadWrite)){
+        QMessageBox::information(0,"error",filesupp.errorString());
+    }
+
+    QTextStream insupp(&filesupp);
+    while(!insupp.atEnd()){
+        QListWidgetItem* item = new QListWidgetItem(insupp.readLine(),ui->supp);
+        ui->supp->addItem(item);
+        // ui->modifier->setCurrentRow(ui->modifier->currentRow() + 1);
+        item->setFlags(item->flags()|Qt::ItemIsEditable|Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
+    }
+
 }
 
 History::~History()

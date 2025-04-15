@@ -21,13 +21,9 @@ private slots:
 
     void on_btnAdd_clicked();
 
-    void on_btnRemove_clicked();
 
-    void on_btnRemoveAll_clicked();
 
-    void on_btnRemove_2_clicked();
-
-    void on_btnRemoveAll_2_clicked();
+    void on_Supp_clicked();
 
 private:
     Ui::Todo *ui;
