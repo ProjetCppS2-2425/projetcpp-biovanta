@@ -1010,17 +1010,17 @@ color:#000000;
      </property>
      <item>
       <property name="text">
-       <string>Aucune</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>ID</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Nom Association</string>
+       <string>Aucune</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Adresse</string>
       </property>
      </item>
      <item>

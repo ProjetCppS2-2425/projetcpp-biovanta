@@ -22,9 +22,14 @@ Qtstat::Qtstat(QWidget *parent)
     QBarSet *set4 = new QBarSet("Ministère de santé");
     QBarSet *set5 = new QBarSet("Centres pharmaceutiques");
     QBarSet *set6 = new QBarSet("total laboratoires d'analyse");
-    set4->append(C.CalculMinister());
-    set5->append(C.CalculCentre());
-    set6->append(C.CalculLabo());
+
+    float tot = C.countClients();
+    float m =(C.CalculMinister()/tot)*100;
+    float c=(C.CalculCentre()/tot)*100;
+    float l=(C.CalculLabo()/tot)*100;
+    set4->append(m);
+    set5->append(c);
+    set6->append(l);
 
 
     //putting bars inside series
@@ -37,7 +42,7 @@ Qtstat::Qtstat(QWidget *parent)
     QChart *chart = new QChart();
     chart->addSeries(series);
     //chart->addSeries(seriestot);
-    chart->setTitle("Client stats");
+    chart->setTitle("Client stats and percentages");
     chart->setAnimationDuration(QChart::SeriesAnimations);
 
     //setting the names of bars horizontally
@@ -57,11 +62,14 @@ Qtstat::Qtstat(QWidget *parent)
     axisX->append(Subjectname3);*/
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
+    series->setLabelsVisible(true);
+    series->setLabelsFormat("@value%");
     //seriestot->attachAxis(axisX);
 
     //basic: the y axis stuff
     QValueAxis *axisY = new QValueAxis();
-    axisY->setRange(0,C.countClients());
+    axisY->setRange(0,100);
+    axisY->setMinorTickCount(10);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
     //seriestot->attachAxis(axisY);

@@ -50,9 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pdf, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
     connect(ui->stat, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
     connect(ui->todo, &QPushButton::clicked, this, &MainWindow::on_todo_clicked);
-     connect(ui->History, &QPushButton::clicked, this, &MainWindow::on_History_clicked);
-     connect(ui->ASC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
-      connect(ui->DSC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
+    connect(ui->History, &QPushButton::clicked, this, &MainWindow::on_History_clicked);
+    connect(ui->ASC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
+    connect(ui->DSC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
     //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
 }
@@ -66,7 +66,7 @@ void MainWindow::display(){
     proxy->setSourceModel(C.afficher());
      proxy->setSortCaseSensitivity(Qt::CaseInsensitive);
      proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    //proxy->setFilterKeyColumn(-1);
+    proxy->setFilterKeyColumn(-1);
       ui->tableView->setModel(proxy);
 }
 void MainWindow::on_radioButton_Ajouter_toggled(bool checked)
@@ -462,7 +462,7 @@ void MainWindow::on_pushButton_supp_clicked(){
 
         void MainWindow::on_CBbar_currentIndexChanged(int index)
         {
-            if (index==0){
+            if (index==1){
                 index=-1;
             }
             proxy->setFilterKeyColumn(index);
