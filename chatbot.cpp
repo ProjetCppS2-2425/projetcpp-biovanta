@@ -2,7 +2,25 @@
 #include <QTime>
 #include <QDebug>
 
+Chatbot::Chatbot(QTextEdit *chatTextEdit,
+                 QLineEdit *inputLineEdit,
+                 QPushButton *sendButton,
+                 QObject *parent)
+    : QObject(parent),
+    m_chatTextEdit(chatTextEdit),
+    m_inputLineEdit(inputLineEdit),
+    m_sendButton(sendButton)
+{
+    m_gemini = new GeminiAPI(this);
 
+    // Bouton envoie
+    connect(m_sendButton, &QPushButton::clicked,
+            this, &Chatbot::handleSendMessage);
+
+    // Réponse de Gemini
+    connect(m_gemini, &GeminiAPI::responseReady,
+            this, &Chatbot::handleGeminiResponse);
+}
 
 void Chatbot::handleSendMessage()
 {
