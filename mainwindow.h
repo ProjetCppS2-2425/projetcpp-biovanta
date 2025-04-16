@@ -16,7 +16,10 @@ QT_END_NAMESPACE
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QTableWidget>// Include QSqlQueryModel for database results
+#include <QTableWidget>
+#include <QMainWindow>
+
+#include "ai_report_generator.h"// Include QSqlQueryModel for database results
 
 namespace Ui {
 class MainWindow;
@@ -67,10 +70,28 @@ private slots:
     void onPdfButtonClicked();
     void onCellClicked(int row, int column);
 
+private slots:
+    void updateReportInTable(const QString &projectName, const QString &report);
+
+
+
+
 
 
 private:
     Ui::MainWindow *ui;
+     AIReportGenerator* m_aiGenerator;
+
+    // Add connection tracking
+    bool m_aiConnected = false; // Add this member
+     ;  // Column index for report in tableWidget_5
+    // Table column constants
+    enum Table5Columns {
+        T5_NOM_COL = 0,
+        T5_ID_COL,
+        T5_PROJET_COL,
+        T5_RAPPORT_COL
+    };
 
     void showResearcherHistory(int row);
     void addHistoryIcon(int row, int researcherId);

@@ -223,11 +223,12 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
         sqlQuery += "EMAIL LIKE :searchTerm";
     }
     else if (filter == "Projet En Cours") {
-        sqlQuery += "PROJET_EN_COURS LIKE :searchTerm";
+        // Use JSON_EXTRACT to search the "current" project in JSON
+        sqlQuery += "json_extract(PROJET_EN_COURS, '$.current') LIKE :searchTerm";
     }
     else {
         // Default case if filter doesn't match
-        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR PROJET_EN_COURS LIKE :searchTerm)";
+        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR json_extract(PROJET_EN_COURS, '$.current') LIKE :searchTerm)";
     }
 
     query.prepare(sqlQuery);
@@ -237,6 +238,7 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
         qDebug() << "Search error:" << query.lastError().text();
         return results;
     }
+
 
     while (query.next()) {
         Chercheur c(
@@ -290,13 +292,13 @@ QList<Chercheur> Chercheur::getChercheursSorted(const QString& sortBy, bool asce
 
     return chercheurs;
 }
-void Chercheur::afficherStatistiques(QWidget *parent)
+void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change parameter to QStackedWidget
 {
     QSqlQuery query;
     query.prepare("SELECT DOMAINE_RECHERCHE, COUNT(*) FROM CHERCHEUR GROUP BY DOMAINE_RECHERCHE");
 
     if (!query.exec()) {
-        QMessageBox::critical(parent, "Erreur", "Erreur de base de données: " + query.lastError().text());
+        QMessageBox::critical(nullptr, "Erreur", "Erreur de base de données: " + query.lastError().text());
         return;
     }
 
@@ -314,24 +316,22 @@ void Chercheur::afficherStatistiques(QWidget *parent)
         total += count;
     }
 
-    QDialog statsDialog(parent);
-    statsDialog.setWindowTitle("📈 Statistiques des Domaines de Recherche");
-    statsDialog.setMinimumSize(1020, 740);
-    statsDialog.setStyleSheet(R"(
-        QDialog {
-            background-color: #f0f4f8;
-            border-radius: 16px;
-            padding: 20px;
-            border: 2px solid #e0e6ed;
-        }
-        QLabel {
-            color: #1a202c;
-            font-size: 15px;
-            font-weight: 600;
-        }
-    )");
+    // Get the second page of stacked widget
+    QWidget *statsPage = stackedWidget->widget(1);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(&statsDialog);
+    // Clear existing widgets from the stats page
+    QLayout *existingLayout = statsPage->layout();
+    if (existingLayout) {
+        QLayoutItem *item;
+        while ((item = existingLayout->takeAt(0))) {
+            delete item->widget();
+            delete item;
+        }
+        delete existingLayout;
+    }
+
+    // Create new layout for the stats page
+    QVBoxLayout *mainLayout = new QVBoxLayout(statsPage);
     QTabWidget *tabs = new QTabWidget();
     tabs->setStyleSheet(R"(
         QTabWidget::pane {
@@ -428,9 +428,9 @@ void Chercheur::afficherStatistiques(QWidget *parent)
 
     mainLayout->addWidget(tabs);
 
-    // BUTTON
-    QPushButton *closeButton = new QPushButton("Fermer");
-    closeButton->setStyleSheet(R"(
+    // Add back button
+    QPushButton *backButton = new QPushButton("Retour");
+    backButton->setStyleSheet(R"(
         QPushButton {
             background-color: #2b7a78;
             color: white;
@@ -446,11 +446,15 @@ void Chercheur::afficherStatistiques(QWidget *parent)
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
-    buttonLayout->addWidget(closeButton);
+    buttonLayout->addWidget(backButton);
     mainLayout->addLayout(buttonLayout);
 
-    QObject::connect(closeButton, &QPushButton::clicked, &statsDialog, &QDialog::accept);
-    statsDialog.exec();
+    QObject::connect(backButton, &QPushButton::clicked, [stackedWidget]() {
+        stackedWidget->setCurrentIndex(0); // Go back to first page
+    });
+
+    // Switch to the stats page
+    stackedWidget->setCurrentIndex(1);
 }
 void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
 {

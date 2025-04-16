@@ -48,6 +48,7 @@
 #include <QCheckBox>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QStackedWidget>
 #include <QPushButton>
 class QLineEdit;
 class QLabel;
@@ -97,19 +98,22 @@ public:
                 const QString &email, int num_tlp,
                 const QString &domaine_recherche, const QString &newProject);
     static void generatePDF(const QString &filePath, QWidget *parent);
-    static void afficherStatistiques(QWidget *parent);
+    static void afficherStatistiques(QStackedWidget *stackedWidget);
     bool fetchDataById(int id);
     static QList<Chercheur> searchChercheur(const QString &searchTerm, const QString &filter);
     static QList<Chercheur> getChercheursSorted(const QString& sortBy, bool ascending);
  QString getCurrentProject() const;
     QString getFullProjectJson() const { return projet_en_cours; }
     QString getFormattedHistory() const;
+    QString cleanProjectName(const QString &project) const;
 
     void updateProjectHistory(const QString &newProject);
      void cleanCurrentProject();
+    static void generatePDF(const QString& filePath, const QList<Chercheur>& chercheurs);
 
     private:
-        QString cleanProjectName(const QString &project) const;
+
+          QString getReport() const;
         // ...
 
     // Function to display search results in a QTableWidget
