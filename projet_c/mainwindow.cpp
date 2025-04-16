@@ -174,7 +174,16 @@ void MainWindow::on_pushButton_supp_clicked(){
 
          if (test){
 
+             QFile Suppfile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\supp.txt");
+             if (!Suppfile.open(QIODevice::ReadWrite)){
+                 QMessageBox::information(nullptr,"error",Suppfile.errorString());
+             }
+             QString sup = QString("%1\n").arg(id);
 
+             QTextStream outsup(&Suppfile);
+             QString content = Suppfile.readAll();
+             outsup<<QDateTime::currentDateTime().toString()<<"Suppression du Client sous ID:"<<sup<<"\n";
+             Suppfile.close();
 
              QMessageBox::information(nullptr, QObject::tr("OK"),
                                       QObject::tr("Suppression effectuée\n"
