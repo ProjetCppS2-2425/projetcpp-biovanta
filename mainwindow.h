@@ -72,6 +72,10 @@ private slots:
 
 private slots:
     void updateReportInTable(const QString &projectName, const QString &report);
+private slots:
+
+    // New slot/method to generate the PDF for history
+    void generateHistoryPDF(int researcherId);
 
 
 

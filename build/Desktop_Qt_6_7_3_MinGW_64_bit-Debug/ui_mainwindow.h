@@ -87,9 +87,6 @@ public:
     QLabel *label_48;
     QLineEdit *lineEdit_24;
     QWidget *page_6;
-    QPushButton *btn_backHome;
-    QPushButton *btn_goToReports;
-    QPushButton *mk;
     QWidget *page_7;
     QTableWidget *tableWidget_5;
     QMenuBar *menubar;
@@ -265,7 +262,7 @@ public:
 "    border-right: 2px solid #1A252F;"));
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
-        stackedWidget->setGeometry(QRect(140, 60, 1391, 561));
+        stackedWidget->setGeometry(QRect(140, 50, 1391, 571));
         page_5 = new QWidget();
         page_5->setObjectName("page_5");
         test = new QPushButton(page_5);
@@ -512,7 +509,24 @@ public:
         S1_4->setGeometry(QRect(192, 30, 361, 26));
         btn_goToStats = new QPushButton(groupBox_12);
         btn_goToStats->setObjectName("btn_goToStats");
-        btn_goToStats->setGeometry(QRect(920, 10, 93, 29));
+        btn_goToStats->setGeometry(QRect(840, 10, 171, 41));
+        btn_goToStats->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"                                    stop:0 #2b7a78, stop:1 #3aafa9);\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    padding: 10px 30px;\n"
+"    border-radius: 12px;\n"
+"    border: none;\n"
+"    font-size: 11pt;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"                                    stop:0 #3aafa9, stop:1 #2b7a78);\n"
+"}\n"
+"QPushButton:pressed {\n"
+"    background-color: #2b7a78;\n"
+"}"));
         groupBox_15 = new QGroupBox(page_5);
         groupBox_15->setObjectName("groupBox_15");
         groupBox_15->setGeometry(QRect(10, 490, 311, 91));
@@ -601,15 +615,6 @@ public:
         stackedWidget->addWidget(page_5);
         page_6 = new QWidget();
         page_6->setObjectName("page_6");
-        btn_backHome = new QPushButton(page_6);
-        btn_backHome->setObjectName("btn_backHome");
-        btn_backHome->setGeometry(QRect(20, 10, 93, 29));
-        btn_goToReports = new QPushButton(page_6);
-        btn_goToReports->setObjectName("btn_goToReports");
-        btn_goToReports->setGeometry(QRect(1240, 30, 93, 29));
-        mk = new QPushButton(page_6);
-        mk->setObjectName("mk");
-        mk->setGeometry(QRect(810, 290, 93, 29));
         stackedWidget->addWidget(page_6);
         page_7 = new QWidget();
         page_7->setObjectName("page_7");
@@ -699,7 +704,7 @@ public:
         ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "project en cours", nullptr));
         QTableWidgetItem *___qtablewidgetitem7 = tableWidget_4->horizontalHeaderItem(7);
         ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "Historique", nullptr));
-        btn_goToStats->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        btn_goToStats->setText(QCoreApplication::translate("MainWindow", "AI RAPPORT", nullptr));
         groupBox_15->setTitle(QString());
         radioButton_5->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         radioButton_6->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
@@ -718,9 +723,6 @@ public:
         label_46->setText(QCoreApplication::translate("MainWindow", "email", nullptr));
         label_47->setText(QCoreApplication::translate("MainWindow", "domaine_recherches", nullptr));
         label_48->setText(QCoreApplication::translate("MainWindow", "project_en_cours", nullptr));
-        btn_backHome->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        btn_goToReports->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        mk->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         QTableWidgetItem *___qtablewidgetitem8 = tableWidget_5->horizontalHeaderItem(0);
         ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "nom", nullptr));
         QTableWidgetItem *___qtablewidgetitem9 = tableWidget_5->horizontalHeaderItem(1);

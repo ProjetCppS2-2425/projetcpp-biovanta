@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    // In MainWindow constructor after ui->setupUi(this);
+
 
 
     QStringList headers;
@@ -57,9 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
     // Example: "View Reports" button click
 
-    connect(ui->btn_backHome, &QPushButton::clicked, this, [=](){
-        ui->stackedWidget->setCurrentIndex(0);  // Go back to Page 0
-    });
+
     // ---- Initialize recommendation widget FIRST ----
     // Add this column (typically in your table setup code)
 
@@ -101,7 +101,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set up panel
 
+    connect(ui->btn_goToStats, &QPushButton::clicked, this, [=](){
+        ui->stackedWidget->setCurrentIndex(2);  // Go to Page 1
 
+    });
 
     connect(ui->tableWidget_4, &QTableWidget::cellClicked, this, &MainWindow::onCellClicked);
 
@@ -244,6 +247,11 @@ void MainWindow::pushButton_2_clicked()
                 QMessageBox::warning(this, "Erreur", "Le nom ne peut pas être vide");
                 return;
             }
+            QString prenom = ui->lineEdit_20->text().trimmed();
+            if (nom.isEmpty()) {
+                QMessageBox::warning(this, "Erreur", "Le prenom ne peut pas être vide");
+                return;
+            }
 
             QString phoneText = ui->lineEdit_21->text().trimmed();
             int num_tlp = phoneText.toInt(&ok);
@@ -274,7 +282,7 @@ void MainWindow::pushButton_2_clicked()
 
                 // Perform database modification with complete JSON
                 if (c.modify(id, nom,
-                             ui->lineEdit_19->text().trimmed(),
+                             ui->lineEdit_20->text().trimmed(),
                              email,
                              num_tlp,
                              domaine,
@@ -313,95 +321,100 @@ void MainWindow::pushButton_2_clicked()
 }
 void MainWindow::refreshTable()
 {
-    // Clear tables while preserving headers
+    // Clear both tables while preserving headers
     ui->tableWidget_4->setRowCount(0);
     ui->tableWidget_5->setRowCount(0);
-
-    // Get researcher data
+ui->tableWidget_5->setMinimumSize(800, 600);
     QList<Chercheur> chercheurs = Chercheur::afficher();
 
-    // Configure table properties
+    // Configure selection behavior, etc.
     ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_5->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     for (int row = 0; row < chercheurs.size(); ++row) {
-        const Chercheur& c = chercheurs[row];
+        const Chercheur &c = chercheurs[row];
+        // Get a cleaned version of the current project name
         QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
 
-        // ===== Main Researcher Table (tableWidget_4) =====
+        // ===== Populate Main Researcher Table (tableWidget_4) =====
         ui->tableWidget_4->insertRow(row);
-
-        // ID (Column 0)
-        ui->tableWidget_4->setItem(row, 0,
-                                   new QTableWidgetItem(QString::number(c.getId())));
-
-        // Name (Column 1)
-        ui->tableWidget_4->setItem(row, 1,
-                                   new QTableWidgetItem(c.getNom()));
-
-        // Email (Column 3)
-        ui->tableWidget_4->setItem(row, 3,
-                                   new QTableWidgetItem(c.getEmail()));
-
-        // Project (Column 6)
-        ui->tableWidget_4->setItem(row, 6,
-                                   new QTableWidgetItem(cleanProjectName));
-
-        // Add history icon (Column 7)
+        ui->tableWidget_4->setItem(row, 0, new QTableWidgetItem(QString::number(c.getId())));
+        ui->tableWidget_4->setItem(row, 1, new QTableWidgetItem(c.getNom()));
+        ui->tableWidget_4->setItem(row, 2, new QTableWidgetItem(c.getPrenom()));
+        ui->tableWidget_4->setItem(row, 3, new QTableWidgetItem(c.getEmail()));
+        ui->tableWidget_4->setItem(row, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
+        ui->tableWidget_4->setItem(row, 5, new QTableWidgetItem(c.getDomaineRecherche()));
+        ui->tableWidget_4->setItem(row, 6, new QTableWidgetItem(cleanProjectName));
         addHistoryIcon(row, c.getId());
 
-        // ===== Report Table (tableWidget_5) =====
+        // ===== Populate AI Report Table (tableWidget_5) =====
         ui->tableWidget_5->insertRow(row);
 
-        // ID (Column 0)
-        QTableWidgetItem* idItem = new QTableWidgetItem(QString::number(c.getId()));
+        // Column 0: Researcher ID
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(c.getId()));
         idItem->setTextAlignment(Qt::AlignCenter);
         ui->tableWidget_5->setItem(row, 0, idItem);
 
-        // Name (Column 1)
-        ui->tableWidget_5->setItem(row, 1,
-                                   new QTableWidgetItem(c.getNom()));
+        // Column 1: Researcher Name
+        ui->tableWidget_5->setItem(row, 1, new QTableWidgetItem(c.getNom()));
 
-        // Project (Column 2)
-        QTableWidgetItem* projectItem = new QTableWidgetItem(cleanProjectName);
-        ui->tableWidget_5->setItem(row, 2, projectItem);
+        // Column 2: Current Project Name
+        ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(cleanProjectName));
 
-        // Report (Column 3)
-        QTableWidgetItem* reportItem = new QTableWidgetItem("Generating report...");
-        reportItem->setFlags(reportItem->flags() ^ Qt::ItemIsEditable);
-        ui->tableWidget_5->setItem(row, 3, reportItem);
-
-        // Trigger AI report generation if we have a project name
-        if (!cleanProjectName.isEmpty() && cleanProjectName != "None" && m_aiConnected) {
+        // Column 3: AI-generated Report Text
+        QTableWidgetItem *reportItem = new QTableWidgetItem();
+        reportItem->setFlags(reportItem->flags() ^ Qt::ItemIsEditable); // read-only
+        if (cleanProjectName.isEmpty() || cleanProjectName == "None") {
+            reportItem->setText("No project specified");
+            reportItem->setForeground(Qt::red);
+        } else {
+            reportItem->setText("Generating report...");
+            reportItem->setForeground(Qt::gray);
+            // Store the row index in the item's data for later update
+            reportItem->setData(Qt::UserRole, row);
+            // Trigger the AI generator for the current project
             m_aiGenerator->requestProjectReport(cleanProjectName);
         }
+        ui->tableWidget_5->setItem(row, 3, reportItem);
     }
 
-    // Auto-resize columns with minimum widths
+    // Auto-resize columns for tableWidget_4 and tableWidget_5
     ui->tableWidget_4->resizeColumnsToContents();
     ui->tableWidget_5->resizeColumnsToContents();
-
-    // Ensure minimum column widths
+    // Ensure a minimum width for readability
     for (int col = 0; col < ui->tableWidget_4->columnCount(); ++col) {
         if (ui->tableWidget_4->columnWidth(col) < 80)
             ui->tableWidget_4->setColumnWidth(col, 80);
     }
-
-    // Set specific width for report column
-    ui->tableWidget_5->setColumnWidth(3, 300); // Wider for reports
-
+    // Set a specific width for the report column (e.g., column 3)
+    ui->tableWidget_5->setColumnWidth(3, 600);
+    ui->tableWidget_5->setStyleSheet(
+        "QTableWidget {"
+        "    background-color: white;"
+        "    border: 1px solid #d0d0d0;"
+        "    gridline-color: #eaeaea;"
+        "    font: 10pt 'Segoe UI';"
+        "    color: #333333;"
+        "    border-radius: 4px;"
+        "}"
+        "QHeaderView::section {"
+        "    background-color: #2C3E50;"
+        "    color: white;"
+        "    padding: 6px;"
+        "    border: none;"
+        "    font-weight: normal;"
+        "}"
+        "QTableWidget::item:hover {"
+        "    background-color: #f5f5f5;"
+        "}"
+        "QTableWidget::item:selected {"
+        "    background-color: #2C3E50;"
+        "    color: white;"
+        "}"
+        );
     // Refresh the view
     ui->tableWidget_4->viewport()->update();
     ui->tableWidget_5->viewport()->update();
-}
-void MainWindow::addHistoryIcon(int row, int researcherId)
-{
-    QTableWidgetItem *historyIcon = new QTableWidgetItem("📜");
-    historyIcon->setTextAlignment(Qt::AlignCenter);
-    historyIcon->setToolTip("Cliquez pour voir l'historique des projets");
-    historyIcon->setFlags(historyIcon->flags() ^ Qt::ItemIsEditable);
-    historyIcon->setData(Qt::UserRole, researcherId);
-    ui->tableWidget_4->setItem(row, HISTORY_COLUMN, historyIcon);
 }
 
 void MainWindow::onSuppButtonClicked()
@@ -452,14 +465,18 @@ void MainWindow::on_searchButton_clicked() {
         ui->tableWidget_4->setItem(i, 3, new QTableWidgetItem(c.getEmail()));
         ui->tableWidget_4->setItem(i, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
         ui->tableWidget_4->setItem(i, 5, new QTableWidgetItem(c.getDomaineRecherche()));
-        ui->tableWidget_4->setItem(i, 6, new QTableWidgetItem(c.getProjetEnCours()));
 
-        // Add history icon (assuming it's column 7)
+        // Use getCurrentProject() which returns cleaned name
+        ui->tableWidget_4->setItem(i, 6, new QTableWidgetItem(c.getCurrentProject()));
+
+        // Add history icon
         addHistoryIcon(i, c.getId());
     }
 
     if (results.isEmpty()) {
         QMessageBox::information(this, "Recherche", "Aucun résultat trouvé.");
+    } else {
+        statusBar()->showMessage(QString("%1 résultats trouvés").arg(results.size()), 3000);
     }
 }
 // In MainWindow.cpp
@@ -610,31 +627,152 @@ void MainWindow::showResearcherHistory(int row)
 void MainWindow::onCellClicked(int row, int column)
 {
     if (column == HISTORY_COLUMN) {
-        showResearcherHistory(row);
+        // Retrieve the researcher id stored in the history icon cell's UserRole
+        QTableWidgetItem* historyItem = ui->tableWidget_4->item(row, HISTORY_COLUMN);
+        if (historyItem) {
+            int researcherId = historyItem->data(Qt::UserRole).toInt();
+            generateHistoryPDF(researcherId);
+        }
     }
 }
 
-QString Chercheur::getReport() const
-{
-    // Implement your logic to generate/retrieve reports
-    // This is just an example - modify according to your needs
-    return QString("Rapport pour %1 - Projet: %2").arg(nom).arg(projet_en_cours);
-}
+
+
 void MainWindow::updateReportInTable(const QString &projectName, const QString &report)
 {
-    // Find all rows with matching project name
+    // Iterate through the rows of tableWidget_5
     for (int row = 0; row < ui->tableWidget_5->rowCount(); ++row) {
-        QTableWidgetItem* projectItem = ui->tableWidget_5->item(row, 2); // Project is column 2
+        QTableWidgetItem *projectItem = ui->tableWidget_5->item(row, 2); // Project is in column 2
         if (projectItem && projectItem->text() == projectName) {
-            QTableWidgetItem* reportItem = ui->tableWidget_5->item(row, 3); // Report is column 3
+            QTableWidgetItem *reportItem = ui->tableWidget_5->item(row, 3); // Report is in column 3
             if (reportItem) {
                 reportItem->setText(report);
                 reportItem->setForeground(Qt::black);
-
-                // Auto-resize row height to fit content
+                // Auto-resize the row to fit the new content
                 ui->tableWidget_5->resizeRowToContents(row);
             }
         }
     }
 }
 
+
+void MainWindow::generateHistoryPDF(int researcherId)
+{
+    // Fetch researcher data using the provided ID
+    Chercheur c;
+    if (!c.fetchDataById(researcherId)) {
+        QMessageBox::warning(this, "Erreur", "Chercheur non trouvé.");
+        return;
+    }
+
+    // Retrieve the formatted history (includes current project and history entries)
+    QString historyText = c.getFormattedHistory();
+
+    // Ask the user where to save the PDF file
+    QString filePath = QFileDialog::getSaveFileName(
+        this,
+        "Enregistrer l'historique en PDF",
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/history.pdf",
+        "PDF Files (*.pdf)"
+        );
+    if (filePath.isEmpty()) {
+        return;  // User cancelled the save dialog
+    }
+    if (!filePath.endsWith(".pdf", Qt::CaseInsensitive)) {
+        filePath += ".pdf";
+    }
+
+    // Set up the printer for PDF generation
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(filePath);
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageMargins(QMarginsF(20, 20, 20, 20), QPageLayout::Millimeter);
+
+    // Create a document to hold the history content with enhanced design.
+    QTextDocument doc;
+    QString html = R"(
+        <html>
+        <head>
+            <meta charset='utf-8'>
+            <style>
+                body {
+                    font-family: 'Segoe UI', sans-serif;
+                    margin: 20px;
+                    color: #333;
+                }
+                .header {
+                    text-align: center;
+                    padding: 10px;
+                    background-color: #2C3E50;
+                    color: white;
+                    border-radius: 8px;
+                    margin-bottom: 20px;
+                }
+                .content {
+                    margin: 0 20px;
+                    line-height: 1.6;
+                }
+                .footer {
+                    text-align: right;
+                    font-size: 10pt;
+                    color: #777;
+                    margin-top: 30px;
+                }
+                .section-title {
+                    font-size: 14pt;
+                    font-weight: bold;
+                    margin-top: 20px;
+                    color: #2C3E50;
+                }
+                .history-entry {
+                    margin-bottom: 10px;
+                    padding: 8px;
+                    border-bottom: 1px solid #ddd;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='header'>
+                <h2>Historique du Chercheur</h2>
+            </div>
+            <div class='content'>
+                %1
+            </div>
+            <div class='footer'>
+                Généré le %2
+            </div>
+        </body>
+        </html>
+    )";
+
+    // Use the current date for the footer
+    QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
+
+    // Format the history content further if needed
+    // For example, wrap each line or entry in a div with class 'history-entry'
+    // (This is optional if your historyText already contains formatted HTML.)
+    // Here we assume that historyText is plain text, so we wrap it in a preformatted block.
+    QString formattedHistory = "<div class='section-title'>Détails de l'historique :</div>"
+                               "<div class='history-entry'>" + historyText.replace("\n", "<br>") + "</div>";
+
+    html = html.arg(formattedHistory, currentDate);
+
+    doc.setHtml(html);
+
+    // Print the document to PDF
+    doc.print(&printer);
+
+    // Inform the user and open the PDF
+    QMessageBox::information(this, "Succès", QString("Historique PDF généré avec succès!\n\nFichier: %1").arg(filePath));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
+}
+void MainWindow::addHistoryIcon(int row, int researcherId)
+{
+    QTableWidgetItem *historyIcon = new QTableWidgetItem("📜");
+    historyIcon->setTextAlignment(Qt::AlignCenter);
+    historyIcon->setToolTip("Cliquez pour voir l'historique des projets");
+    historyIcon->setFlags(historyIcon->flags() ^ Qt::ItemIsEditable);
+    historyIcon->setData(Qt::UserRole, researcherId);
+    ui->tableWidget_4->setItem(row, HISTORY_COLUMN, historyIcon);
+}

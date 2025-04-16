@@ -111,9 +111,7 @@ public:
      void cleanCurrentProject();
     static void generatePDF(const QString& filePath, const QList<Chercheur>& chercheurs);
 
-    private:
 
-          QString getReport() const;
         // ...
 
     // Function to display search results in a QTableWidget

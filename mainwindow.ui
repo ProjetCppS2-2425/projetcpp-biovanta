@@ -323,9 +323,9 @@ QPushButton#pushButton_8::before {
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>60</y>
+      <y>50</y>
       <width>1391</width>
-      <height>561</height>
+      <height>571</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -832,14 +832,33 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       <widget class="QPushButton" name="btn_goToStats">
        <property name="geometry">
         <rect>
-         <x>920</x>
+         <x>840</x>
          <y>10</y>
-         <width>93</width>
-         <height>29</height>
+         <width>171</width>
+         <height>41</height>
         </rect>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                    stop:0 #2b7a78, stop:1 #3aafa9);
+    color: white;
+    font-weight: bold;
+    padding: 10px 30px;
+    border-radius: 12px;
+    border: none;
+    font-size: 11pt;
+}
+QPushButton:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                    stop:0 #3aafa9, stop:1 #2b7a78);
+}
+QPushButton:pressed {
+    background-color: #2b7a78;
+}</string>
+       </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>AI RAPPORT</string>
        </property>
       </widget>
      </widget>
@@ -1150,47 +1169,7 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_6">
-     <widget class="QPushButton" name="btn_backHome">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>10</y>
-        <width>93</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btn_goToReports">
-      <property name="geometry">
-       <rect>
-        <x>1240</x>
-        <y>30</y>
-        <width>93</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="mk">
-      <property name="geometry">
-       <rect>
-        <x>810</x>
-        <y>290</y>
-        <width>93</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>PushButton</string>
-      </property>
-     </widget>
-    </widget>
+    <widget class="QWidget" name="page_6"/>
     <widget class="QWidget" name="page_7">
      <widget class="QTableWidget" name="tableWidget_5">
       <property name="geometry">

@@ -216,29 +216,46 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
     QSqlQuery query;
 
     QString sqlQuery = "SELECT * FROM CHERCHEUR WHERE ";
-    if (filter == "Nom") {
+
+    if (filter == "ID") {
+        bool ok;
+        int searchId = searchTerm.toInt(&ok);
+        if (ok) {
+            sqlQuery += "ID_CHERCHEUR = :id";
+            query.prepare(sqlQuery);
+            query.bindValue(":id", searchId);
+        } else {
+            return results;
+        }
+    }
+    else if (filter == "Nom") {
         sqlQuery += "NOM LIKE :searchTerm";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else if (filter == "Email") {
         sqlQuery += "EMAIL LIKE :searchTerm";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else if (filter == "Projet En Cours") {
-        // Use JSON_EXTRACT to search the "current" project in JSON
-        sqlQuery += "json_extract(PROJET_EN_COURS, '$.current') LIKE :searchTerm";
+        // Search in cleaned project names
+        sqlQuery += "LOWER(json_extract(PROJET_EN_COURS, '$.current')) LIKE LOWER(:searchTerm)";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else {
-        // Default case if filter doesn't match
-        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR json_extract(PROJET_EN_COURS, '$.current') LIKE :searchTerm)";
+        // Default search
+        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR "
+                    "LOWER(json_extract(PROJET_EN_COURS, '$.current')) LIKE LOWER(:searchTerm))";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
-
-    query.prepare(sqlQuery);
-    query.bindValue(":searchTerm", "%" + searchTerm + "%");
 
     if (!query.exec()) {
         qDebug() << "Search error:" << query.lastError().text();
         return results;
     }
-
 
     while (query.next()) {
         Chercheur c(
@@ -250,6 +267,9 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
             query.value("DOMAINE_RECHERCHE").toString(),
             query.value("PROJET_EN_COURS").toString()
             );
+
+        // Clean the project name before adding to results
+        c.initProjectJson(); // Ensure clean JSON structure
         results.append(c);
     }
 
@@ -292,7 +312,7 @@ QList<Chercheur> Chercheur::getChercheursSorted(const QString& sortBy, bool asce
 
     return chercheurs;
 }
-void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change parameter to QStackedWidget
+void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget)
 {
     QSqlQuery query;
     query.prepare("SELECT DOMAINE_RECHERCHE, COUNT(*) FROM CHERCHEUR GROUP BY DOMAINE_RECHERCHE");
@@ -316,10 +336,10 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
         total += count;
     }
 
-    // Get the second page of stacked widget
+    // Get the second page of the stacked widget
     QWidget *statsPage = stackedWidget->widget(1);
 
-    // Clear existing widgets from the stats page
+    // Clear existing layout if any
     QLayout *existingLayout = statsPage->layout();
     if (existingLayout) {
         QLayoutItem *item;
@@ -330,8 +350,9 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
         delete existingLayout;
     }
 
-    // Create new layout for the stats page
     QVBoxLayout *mainLayout = new QVBoxLayout(statsPage);
+
+    // Create a tab widget for charts
     QTabWidget *tabs = new QTabWidget();
     tabs->setStyleSheet(R"(
         QTabWidget::pane {
@@ -359,11 +380,9 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
     QPieSeries *pieSeries = new QPieSeries();
     pieSeries->setPieSize(0.75);
     int colorIndex = 0;
-
     for (const QString &domain : domainData.keys()) {
         int count = domainData[domain];
         qreal percentage = (count * 100.0) / total;
-
         QPieSlice *slice = pieSeries->append(domain, count);
         slice->setColor(bioResearchPalette[colorIndex % bioResearchPalette.size()]);
         slice->setLabelVisible(true);
@@ -375,14 +394,12 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
         slice->setBorderColor(Qt::white);
         colorIndex++;
     }
-
     QChart *pieChart = new QChart();
     pieChart->addSeries(pieSeries);
     pieChart->setTitle("Répartition par Domaine de Recherche");
     pieChart->setTitleFont(QFont("Helvetica Neue", 15, QFont::Bold));
     pieChart->setAnimationOptions(QChart::SeriesAnimations);
     pieChart->legend()->setAlignment(Qt::AlignRight);
-
     QChartView *pieChartView = new QChartView(pieChart);
     pieChartView->setRenderHint(QPainter::Antialiasing);
     pieChartView->setStyleSheet("border-radius: 12px; border: 1px solid #cbd5e0; background-color: #ffffff;");
@@ -398,29 +415,25 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
         *barSet << domainData[domain];
         categories << domain;
     }
-
     barSeries->append(barSet);
     barSeries->setLabelsVisible(true);
-    barSeries->setLabelsFormat("@value");
+    barSeries->setLabelsFormat("@value"); // default numeric value
 
     QChart *barChart = new QChart();
     barChart->addSeries(barSeries);
     barChart->setTitle("Distribution Quantitative des Domaines");
     barChart->setTitleFont(QFont("Helvetica Neue", 15, QFont::Bold));
     barChart->setAnimationOptions(QChart::SeriesAnimations);
-
     QBarCategoryAxis *xAxis = new QBarCategoryAxis();
     xAxis->append(categories);
     xAxis->setTitleText("Domaines");
     barChart->addAxis(xAxis, Qt::AlignBottom);
     barSeries->attachAxis(xAxis);
-
     QValueAxis *yAxis = new QValueAxis();
     yAxis->setLabelFormat("%d");
     yAxis->setTitleText("Nombre de Chercheurs");
     barChart->addAxis(yAxis, Qt::AlignLeft);
     barSeries->attachAxis(yAxis);
-
     QChartView *barChartView = new QChartView(barChart);
     barChartView->setRenderHint(QPainter::Antialiasing);
     barChartView->setStyleSheet("border-radius: 12px; border: 1px solid #cbd5e0; background-color: #ffffff;");
@@ -428,19 +441,46 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
 
     mainLayout->addWidget(tabs);
 
-    // Add back button
+    // Create a smaller textual summary of the statistics including percentages
+    QString summaryText;
+    summaryText += "<h3 style='color:#2C3E50; font-family:Segoe UI; font-size:10pt;'>Résumé Statistique</h3>";
+    summaryText += "<ul style='font-family:Segoe UI; font-size:9pt; margin-left:20px;'>";
+    for (const QString &domain : domainData.keys()) {
+        int count = domainData[domain];
+        qreal percentage = (count * 100.0) / total;
+        summaryText += QString("<li>%1 : %2 chercheurs (<b>%3%</b>)</li>")
+                           .arg(domain)
+                           .arg(count)
+                           .arg(percentage, 0, 'f', 1);
+    }
+    summaryText += "</ul>";
+
+    QLabel *summaryLabel = new QLabel;
+    summaryLabel->setTextFormat(Qt::RichText);
+    summaryLabel->setAlignment(Qt::AlignLeft);
+    summaryLabel->setText(summaryText);
+    summaryLabel->setStyleSheet("margin: 10px; padding: 5px; background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 8px;");
+    mainLayout->addWidget(summaryLabel);
+
+    // Add a professionally styled back button
     QPushButton *backButton = new QPushButton("Retour");
     backButton->setStyleSheet(R"(
         QPushButton {
-            background-color: #2b7a78;
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                              stop:0 #2b7a78, stop:1 #3aafa9);
             color: white;
             font-weight: bold;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 10px 30px;
+            border-radius: 12px;
             border: none;
+            font-size: 11pt;
         }
         QPushButton:hover {
-            background-color: #3aafa9;
+            background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                                              stop:0 #3aafa9, stop:1 #2b7a78);
+        }
+        QPushButton:pressed {
+            background-color: #2b7a78;
         }
     )");
 
@@ -456,6 +496,7 @@ void Chercheur::afficherStatistiques(QStackedWidget *stackedWidget) // Change pa
     // Switch to the stats page
     stackedWidget->setCurrentIndex(1);
 }
+
 void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
 {
     if (filePath.isEmpty()) {
@@ -468,7 +509,7 @@ void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
         finalFilePath += ".pdf";
     }
 
-    // Setup printer with clean professional settings
+    // Setup printer
     QPrinter printer(QPrinter::HighResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(finalFilePath);
@@ -480,69 +521,40 @@ void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
     doc.setDocumentMargin(10);
     QTextCursor cursor(&doc);
 
-    // Add logo at the top, centered
-    // Create a larger background area for the image
-    QTextBlockFormat blockFormat;
-    blockFormat.setAlignment(Qt::AlignCenter); // Center-align the image and its background
-
-    // Create a larger block to represent the background width
-    cursor.insertBlock(blockFormat);
-
-    // Add a background color for the block (larger area)
-    QTextCharFormat blockBgFormat;
-    blockBgFormat.setBackground(QColor(44, 62, 80)); // Dark blue background from your style
-    cursor.setCharFormat(blockBgFormat);
-
-    // Insert the image (keeping it small)
-    QTextImageFormat logoFormat;
-    logoFormat.setName("C:/Users/nesri/Downloads/projet_c (3) (2)/projet_c/logo1.png");
-    logoFormat.setWidth(80);  // Fixed width (small image size)
-    logoFormat.setHeight(40);  // Fixed height (small image size)
-    cursor.insertImage(logoFormat);
-    cursor.insertBlock(); // Insert a block to finish the image line
-
-
-    // Add BIOVANTA header
+    // Add header
     QTextBlockFormat centerFormat;
     centerFormat.setAlignment(Qt::AlignCenter);
     QTextCharFormat headerFormat;
     headerFormat.setFont(QFont("Segoe UI", 20, QFont::Bold));
-    headerFormat.setForeground(QColor(44, 62, 80)); // Dark blue from your style
+    headerFormat.setForeground(QColor(44, 62, 80));
     cursor.setBlockFormat(centerFormat);
-    cursor.insertText("BIOVANTA", headerFormat);
-
+    cursor.insertText("Chercheurs Report", headerFormat);
     cursor.insertBlock();
     cursor.insertBlock();
 
-    // Add title
-    QTextCharFormat titleFormat;
-    titleFormat.setFont(QFont("Segoe UI", 14, QFont::Bold));
-    cursor.setBlockFormat(centerFormat);
-    cursor.insertText("Liste des Chercheurs", titleFormat);
-
-    cursor.insertBlock();
-    cursor.insertBlock();
-
-    // Create table matching your UI style
+    // Create table
     QTextTableFormat tableFormat;
     tableFormat.setHeaderRowCount(1);
     tableFormat.setBorderStyle(QTextFrameFormat::BorderStyle_Solid);
-    tableFormat.setBorderBrush(QBrush(QColor(208, 208, 208))); // #d0d0d0 from your style
+    tableFormat.setBorderBrush(QBrush(QColor(208, 208, 208)));
     tableFormat.setBorder(1);
     tableFormat.setCellPadding(6);
     tableFormat.setCellSpacing(0);
     tableFormat.setAlignment(Qt::AlignLeft);
     tableFormat.setWidth(QTextLength(QTextLength::PercentageLength, 100));
 
+    // Get table data directly from database instead of table widget
+    QList<Chercheur> chercheurs = afficher();
+
+    // Create table with header
     QTextTable *table = cursor.insertTable(1, 7, tableFormat);
 
-    // Add column headers with dark blue background
+    // Header cells
     QStringList headers = {"ID", "Nom", "Prénom", "Email", "Téléphone", "Domaine", "Projet"};
     QTextTableCellFormat headerCellFormat;
-    headerCellFormat.setBackground(QColor(44, 62, 80)); // #2C3E50 from your style
+    headerCellFormat.setBackground(QColor(44, 62, 80));
     headerCellFormat.setFont(QFont("Segoe UI", 10));
     headerCellFormat.setForeground(Qt::white);
-    headerCellFormat.setVerticalAlignment(QTextCharFormat::AlignMiddle);
 
     for (int i = 0; i < headers.size(); ++i) {
         QTextTableCell cell = table->cellAt(0, i);
@@ -550,60 +562,56 @@ void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
         cell.firstCursorPosition().insertText(headers[i]);
     }
 
-    // Add data rows with clean styling
+    // Add data rows
     QTextCharFormat cellFormat;
     cellFormat.setFont(QFont("Segoe UI", 9));
-    cellFormat.setForeground(QColor(51, 51, 51)); // #333 from your style
+    cellFormat.setForeground(QColor(51, 51, 51));
 
-    QTableWidget *tableWidget = parent->findChild<QTableWidget*>();
-    for (int row = 0; row < tableWidget->rowCount(); ++row) {
+    for (const Chercheur &c : chercheurs) {
         table->appendRows(1);
+        int row = table->rows() - 1;
 
-        // Optional: Add special formatting for Histologie rows
-        if (tableWidget->item(row, 5) && tableWidget->item(row, 5)->text().contains("Histologie")) {
-            QTextTableCellFormat histoFormat;
-            histoFormat.setBackground(QColor(240, 230, 255)); // #f0e6ff from your style
-            histoFormat.setFont(QFont("Segoe UI", 9, QFont::Bold));
-            for (int col = 0; col < 7; col++) {
-                table->cellAt(row + 1, col).setFormat(histoFormat);
-            }
-        }
+        // ID
+        table->cellAt(row, 0).firstCursorPosition().insertText(QString::number(c.getId()));
 
-        for (int col = 0; col < 7; ++col) {
-            QTableWidgetItem *item = tableWidget->item(row, col);
-            QTextTableCell cell = table->cellAt(row + 1, col);
-            cell.setFormat(cellFormat);
+        // Nom
+        table->cellAt(row, 1).firstCursorPosition().insertText(c.getNom());
 
-            QString text = item ? item->text() : "";
-            if (col == 3) { // Fix email formatting
-                text = text.replace(" @", "@").replace("@ ", "@");
-            }
-            cell.firstCursorPosition().insertText(text);
-        }
+        // Prénom
+        table->cellAt(row, 2).firstCursorPosition().insertText(c.getPrenom());
+
+        // Email - ensure proper formatting
+        QString email = c.getEmail();
+        email = email.replace(" @", "@").replace("@ ", "@");
+        table->cellAt(row, 3).firstCursorPosition().insertText(email);
+
+        // Téléphone
+        table->cellAt(row, 4).firstCursorPosition().insertText(QString::number(c.getNumTlp()));
+
+        // Domaine
+        table->cellAt(row, 5).firstCursorPosition().insertText(c.getDomaineRecherche());
+
+        // Projet
+        table->cellAt(row, 6).firstCursorPosition().insertText(c.getCurrentProject());
     }
 
     // Add footer
     cursor.movePosition(QTextCursor::End);
     cursor.insertBlock();
-
     QTextBlockFormat footerFormat;
     footerFormat.setAlignment(Qt::AlignRight);
     QTextCharFormat footerTextFormat;
     footerTextFormat.setFont(QFont("Segoe UI", 8));
     footerTextFormat.setForeground(QColor(150, 150, 150));
-
     cursor.setBlockFormat(footerFormat);
-    cursor.insertText("Généré le " + QDate::currentDate().toString("dd/MM/yyyy"), footerTextFormat);
+    cursor.insertText("Generated on " + QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm"), footerTextFormat);
 
     // Generate PDF
     doc.print(&printer);
 
-    // Verify and open
+    // Open the generated file
     if (QFile::exists(finalFilePath)) {
-        QMessageBox::information(parent, "Succès", QString("PDF généré avec succès!\n\nFichier: %1").arg(finalFilePath));
         QDesktopServices::openUrl(QUrl::fromLocalFile(finalFilePath));
-    } else {
-        QMessageBox::warning(parent, "Erreur", "Le fichier PDF n'a pas été créé.");
     }
 }
 
