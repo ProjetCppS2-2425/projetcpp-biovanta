@@ -47,7 +47,7 @@ Todo::Todo(QWidget *parent)
 Todo::~Todo()
 {
     QFile file(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)){ //QIODevice::ReadWrite
+    if (!file.open(QIODevice::ReadWrite)){
         QMessageBox::information(nullptr,"error",file.errorString());
     }
     QTextStream out(&file);
@@ -57,7 +57,7 @@ Todo::~Todo()
     file.close();
 
     QFile file_2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile2.txt");
-    if (!file_2.open(QIODevice::WriteOnly | QIODevice::Truncate)){
+    if (!file_2.open(QIODevice::ReadWrite)){
         QMessageBox::information(nullptr,"error",file_2.errorString());
     }
     QTextStream outt(&file_2);
