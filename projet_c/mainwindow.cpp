@@ -173,19 +173,14 @@ void MainWindow::on_pushButton_supp_clicked(){
         bool test=C.supprimer(id);
 
          if (test){
-            Client temp;
-             Client* data = temp.fetch(id);
 
-            QString msg = QString ("%1").arg(data->getEmail());
-             QMessageBox::information(
-                 this,                   // Parent widget (e.g., your main window)
-                 "Client Information",   // Title
-                 msg                 // Formatted message
-                 );
+
+
              QMessageBox::information(nullptr, QObject::tr("OK"),
                                       QObject::tr("Suppression effectuée\n"
                                                   "Click Cancel to exit."), QMessageBox::Cancel);
             ui->tableView->setModel(C.afficher());
+              // ui->tableView->setModel(proxy);
              ui->radioButton_Ajouter->setAutoExclusive(false);
              ui->radioButton_Ajouter->setChecked(false);
              ui->radioButton_Ajouter->setAutoExclusive(true);
@@ -252,6 +247,7 @@ void MainWindow::on_pushButton_supp_clicked(){
                     bool test = C.modifier();
                     if (test) {
                         ui->tableView->setModel(C.afficher());
+
                         QMessageBox::information(this, "Succès", "Modification effectué avec succès !");
 
 
@@ -472,10 +468,10 @@ void MainWindow::on_pushButton_supp_clicked(){
         void MainWindow::on_CBtri_currentIndexChanged(int index)
         {
             if (ui->ASC->checkState()==Qt::Checked){
-                proxy->sort(index,Qt::AscendingOrder);
+                proxy->sort(index + 1,Qt::AscendingOrder);
             }
             else if (ui->DSC->checkState()==Qt::Checked){
-                proxy->sort(index,Qt::DescendingOrder);
+                proxy->sort(index + 1,Qt::DescendingOrder);
             }
         }
 

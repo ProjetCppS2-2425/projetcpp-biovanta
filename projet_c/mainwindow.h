@@ -26,6 +26,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+     QCollator collator;
     struct AjouterResult {
         Client Cajt;
         bool success;

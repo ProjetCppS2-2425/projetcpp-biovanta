@@ -47,7 +47,7 @@ Todo::Todo(QWidget *parent)
 Todo::~Todo()
 {
     QFile file(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile.txt");
-    if (!file.open(QIODevice::ReadWrite)){
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)){ //QIODevice::ReadWrite
         QMessageBox::information(nullptr,"error",file.errorString());
     }
     QTextStream out(&file);
@@ -57,7 +57,7 @@ Todo::~Todo()
     file.close();
 
     QFile file_2(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\toDoFile2.txt");
-    if (!file_2.open(QIODevice::ReadWrite)){
+    if (!file_2.open(QIODevice::WriteOnly | QIODevice::Truncate)){
         QMessageBox::information(nullptr,"error",file_2.errorString());
     }
     QTextStream outt(&file_2);
@@ -77,9 +77,31 @@ void Todo::on_btnAdd_clicked()
    // ui->txtTask->setFocus();
 }
 
-void Todo::on_Supp_clicked()
+
+
+
+void Todo::on_pushButton_clicked()
 {
     QListWidgetItem* item = ui->listWidget->takeItem(ui->listWidget->currentRow());
     delete item;
+}
+
+
+void Todo::on_pushButton_2_clicked()
+{
+    ui->listWidget->clear();
+}
+
+
+void Todo::on_pushButton_3_clicked()
+{
+    QListWidgetItem* item = ui->listWidget_2->takeItem(ui->listWidget_2->currentRow());
+    delete item;
+}
+
+
+void Todo::on_pushButton_4_clicked()
+{
+    ui->listWidget_2->clear();
 }
 

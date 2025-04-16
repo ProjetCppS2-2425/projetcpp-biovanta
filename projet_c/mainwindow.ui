@@ -1040,12 +1040,12 @@ color:#000000;
      </property>
      <item>
       <property name="text">
-       <string>ID</string>
+       <string>Nom Association</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Nom Association</string>
+       <string>Adresse</string>
       </property>
      </item>
      <item>

@@ -139,17 +139,56 @@ font-size: 17px;
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="Supp">
+  <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>240</x>
      <y>160</y>
-     <width>80</width>
-     <height>24</height>
+     <width>83</width>
+     <height>29</height>
     </rect>
    </property>
    <property name="text">
-    <string>Supprimer</string>
+    <string>delete</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>160</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Delete All</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_3">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>160</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_4">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>160</y>
+     <width>83</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Delete All</string>
    </property>
   </widget>
   <zorder>bg</zorder>
@@ -161,7 +200,10 @@ font-size: 17px;
   <zorder>label</zorder>
   <zorder>label_3</zorder>
   <zorder>logo</zorder>
-  <zorder>Supp</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>pushButton_2</zorder>
+  <zorder>pushButton_3</zorder>
+  <zorder>pushButton_4</zorder>
  </widget>
  <resources/>
  <connections/>
