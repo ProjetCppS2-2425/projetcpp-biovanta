@@ -119,24 +119,31 @@ QSqlQueryModel* Client::afficher()
 
     return model;
 }
-Client* Client::fetch(int id){
-    Client* C = new Client();
+Client Client::fetch(int id){
+   /* Client* C = new Client();
     QSqlQuery query;
     query.prepare("SELECT NOM_ASSOCIATION, ADRESSE, TYPE_ASSOCIATION, NOM_REP, EMAIL, ID_CONTRAT FROM CLIENT where ID_CLIENT=:ID_CLIENT");
     query.bindValue(":ID_CLIENT",id);
-    C->setIdClient(id);
-    QString nomA=query.value("NOM_ASSOCIATION").toString();
-    C->setNomA(nomA);
-    QString adr = query.value("ADRESSE").toString();
-    C->setAdresse(adr);
-    QString type = query.value("TYPE_ASSOCIATION").toString();
-    C->setTypeA(type);
-    QString Rep = query.value("NOM_REP").toString();
-    C->setNomR(Rep);
-    QString mail = query.value("EMAIL").toString() ;
-    C->setEmail(mail);
-    C->setIdContrat(query.value("ID_CONTRAT").toInt());
-    return C;
+    if (!query.exec()) {
+        qDebug() << "Query failed:" << query.lastError().text();
+        delete C;
+        return nullptr;
+    }
+    if (query.next()){
+        C->setIdClient(id);
+        QString nomA=query.value("NOM_ASSOCIATION").toString();
+        C->setNomA(nomA);
+        QString adr = query.value("ADRESSE").toString();
+        C->setAdresse(adr);
+        QString type = query.value("TYPE_ASSOCIATION").toString();
+        C->setTypeA(type);
+        QString Rep = query.value("NOM_REP").toString();
+        C->setNomR(Rep);
+        QString mail = query.value("EMAIL").toString() ;
+        C->setEmail(mail);
+        C->setIdContrat(query.value("ID_CONTRAT").toInt());
+    }else {delete C; return nullptr;}
+    return C;*/
 }
 /*bool Client::exists(int id) {
     QSqlQuery query;

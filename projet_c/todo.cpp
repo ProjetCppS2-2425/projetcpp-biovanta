@@ -9,6 +9,7 @@ Todo::Todo(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::Todo)
 {
+    //hello
     ui->setupUi(this);
     ui->logo->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\His-bg.jpg"));

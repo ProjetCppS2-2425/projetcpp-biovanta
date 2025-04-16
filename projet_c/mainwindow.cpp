@@ -173,7 +173,7 @@ void MainWindow::on_pushButton_supp_clicked(){
         bool test=C.supprimer(id);
 
          if (test){
-
+            // Client temp = C.fetch(id);
              QFile Suppfile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)+"\\supp.txt");
              if (!Suppfile.open(QIODevice::ReadWrite)){
                  QMessageBox::information(nullptr,"error",Suppfile.errorString());

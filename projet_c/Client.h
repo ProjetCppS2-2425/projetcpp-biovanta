@@ -43,7 +43,7 @@ public:
     void setEmail( QString &email);
     void setIdContrat(int id_contrat);
 
-    Client* fetch(int id);
+    Client fetch(int id);
     int SupAdress();
     string SupAdressname();
     int SecondSupAdress();
