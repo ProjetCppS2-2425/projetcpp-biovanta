@@ -18,6 +18,7 @@
 #include <QTextCharFormat>  // Pour le formatage des dates dans le calendrier
 #include <QMainWindow>
 #include <QPushButton>
+#include <QVBoxLayout>
 #include "equipement.h"
 
 QT_BEGIN_NAMESPACE
@@ -42,8 +43,43 @@ private:
     void remplirTableWidget();
     void refreshAlertCount();
 
+private:
+    class NotificationPopup : public QWidget {
+    public:
+        NotificationPopup(QWidget* parent = nullptr) : QWidget(parent) {
+            setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+            setAttribute(Qt::WA_TranslucentBackground);
+            setStyleSheet("background: transparent;");
 
+            QVBoxLayout* layout = new QVBoxLayout(this);
+            layout->setContentsMargins(5, 5, 5, 5);
 
+            contentWidget = new QWidget(this);
+            contentWidget->setStyleSheet(
+                "background-color: white;"
+                "border: 1px solid #ddd;"
+                "border-radius: 4px;"
+                "padding: 10px;"
+                );
+
+            layout->addWidget(contentWidget);
+        }
+
+        void setContent(QWidget* widget) {
+            QLayout* layout = contentWidget->layout();
+            if (layout) QWidget().setLayout(layout); // Clear existing layout
+
+            QVBoxLayout* newLayout = new QVBoxLayout(contentWidget);
+            newLayout->addWidget(widget);
+        }
+
+    private:
+        QWidget* contentWidget;
+    };
+
+    NotificationPopup* notificationPopup = nullptr;
+private slots:
+    void showAlertNotification();
 private:
     bool wasInAlertState = false;
     QLabel *notificationBadge;
@@ -57,7 +93,8 @@ private:
     QChartView *typeView;
     QCalendarWidget *calendarWidget;  // Déclaration du calendrier
     QPushButton *backButtonCalendar;
-
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 private slots:
     void on_tableWidget_3_itemClicked(QTableWidgetItem *item);
     void supp_3_clicked();

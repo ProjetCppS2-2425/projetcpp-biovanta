@@ -35,9 +35,6 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QFont>
-// Les includes existants plus :
-#include <QSqlQuery>        // Déjà présent normalement
-#include <QMessageBox>      // Déjà présent normalement
 #include <QDebug>           // Pour le débogage
 
 
@@ -112,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
     notificationTimer->start(6000); // Toutes les 5 minutes
     checkEquipmentStatus();
-    connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showEquipmentAlerts);
+   connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showAlertNotification);
 
     ui->tableWidget_3->setStyleSheet(
         "QTableWidget {"
@@ -1088,4 +1085,111 @@ void MainWindow::afficherDetailsEquipement(const QDate &date) {
     }
 
     QMessageBox::information(this, "📅 Détails des équipements", details);
+}
+
+void MainWindow::showAlertNotification()
+{
+    if (notificationPopup) {
+        notificationPopup->close();
+        delete notificationPopup;
+        notificationPopup = nullptr;
+        return;
+    }
+
+    QList<Equipement> alertes = Equipement::getEquipementsNonFonctionnels();
+
+    QWidget* content = new QWidget();
+    QVBoxLayout* mainLayout = new QVBoxLayout(content);
+    mainLayout->setAlignment(Qt::AlignTop);
+    mainLayout->setContentsMargins(5, 5, 5, 5); // Réduire les marges
+    mainLayout->setSpacing(5); // Réduire l'espace entre les éléments
+
+    if (alertes.isEmpty()) {
+        QLabel* label = new QLabel("Aucune alerte - Tous les équipements sont opérationnels", content);
+        label->setStyleSheet("font-size: 11px;"); // Taille de police réduite
+        mainLayout->addWidget(label);
+    } else {
+        QLabel* title = new QLabel(QString("Alertes (%1)").arg(alertes.count()), content);
+        title->setStyleSheet("font-weight: bold; color: #d9534f; font-size: 12px;"); // Taille réduite
+        mainLayout->addWidget(title);
+
+        foreach (const Equipement &e, alertes) {
+            QWidget* itemWidget = new QWidget(content);
+            itemWidget->setStyleSheet(
+                "margin-bottom: 5px;"
+                "padding-bottom: 5px;"
+                "border-bottom: 1px solid #eee;"
+                );
+
+            QHBoxLayout* itemLayout = new QHBoxLayout(itemWidget);
+            itemLayout->setContentsMargins(2, 2, 2, 2); // Marges internes réduites
+            itemLayout->setSpacing(5); // Espacement réduit
+
+            // Image réduite à 50x50
+            QLabel* imageLabel = new QLabel(itemWidget);
+            QByteArray imageData = e.getImageData();
+            if (!imageData.isEmpty()) {
+                QPixmap pixmap;
+                pixmap.loadFromData(imageData);
+                if (!pixmap.isNull()) {
+                    imageLabel->setPixmap(pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                    imageLabel->setFixedSize(50, 50);
+                }
+            }
+            imageLabel->setAlignment(Qt::AlignCenter);
+            itemLayout->addWidget(imageLabel);
+
+            // Texte avec police réduite
+            QString etatColor = e.getEtat().contains("maintenance", Qt::CaseInsensitive) ? "#f0ad4e" : "#d9534f";
+            QLabel* infoLabel = new QLabel(
+                QString("<b>%1</b> (ID: %2)<br>"
+                        "Type: %3<br>"
+                        "État: <span style='color: %4'>%5</span>")
+                    .arg(e.getNom())
+                    .arg(e.getId())
+                    .arg(e.getType())
+                    .arg(etatColor)
+                    .arg(e.getEtat()),
+                itemWidget
+                );
+            infoLabel->setStyleSheet("font-size: 11px;"); // Taille de police réduite
+            itemLayout->addWidget(infoLabel);
+
+            mainLayout->addWidget(itemWidget);
+        }
+    }
+
+    notificationPopup = new NotificationPopup(this);
+    notificationPopup->setStyleSheet(
+        "QWidget {"
+        "   background-color: white;"
+        "   border: 1px solid #ddd;"
+        "   border-radius: 4px;"
+        "   padding: 5px;" // Padding réduit
+        "}"
+        );
+    notificationPopup->setContent(content);
+    notificationPopup->adjustSize();
+
+    // Positionnement
+    QPoint pos = ui->noti->mapToGlobal(QPoint(
+        (ui->noti->width() - notificationPopup->width()) / 2,
+        ui->noti->height() + 5
+        ));
+    notificationPopup->move(pos);
+    notificationPopup->show();
+
+}
+bool MainWindow::eventFilter(QObject* obj, QEvent* event)
+{
+    if (notificationPopup && event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        if (!notificationPopup->geometry().contains(mouseEvent->globalPos())) {
+            notificationPopup->close();
+            delete notificationPopup;
+            notificationPopup = nullptr;
+            qApp->removeEventFilter(this);
+        }
+    }
+    return QMainWindow::eventFilter(obj, event);
 }
