@@ -11,6 +11,7 @@ CONFIG += c++17 console
 
 SOURCES += \
     Client.cpp \
+    arduino.cpp \
     connection.cpp \
     history.cpp \
     main.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     Client.h \
+    arduino.h \
     connection.h \
     history.h \
     mainwindow.h \

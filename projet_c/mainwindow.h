@@ -11,6 +11,7 @@
 #include <QtCharts>
 #include "qtstat.h"
 #include <QSortFilterProxyModel>
+#include "arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -69,6 +70,8 @@ private:
     Ui::MainWindow *ui;
     Client C;
     Qtstat *s;
+    QByteArray data;
+    Arduino A;
 
 };
 #endif // MAINWINDOW_H
