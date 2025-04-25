@@ -86,6 +86,29 @@ public:
     QComboBox *re;
     QPushButton *quit;
     QWidget *page_2;
+    QFrame *frame_2;
+    QLabel *label_4;
+    QLabel *label_11;
+    QLineEdit *emailline;
+    QPushButton *connectionButton;
+    QLabel *label_15;
+    QLineEdit *mdpline;
+    QLabel *label_16;
+    QLabel *label_17;
+    QPushButton *omdp;
+    QFrame *frame_3;
+    QLabel *logo1;
+    QLabel *label_19;
+    QWidget *page_3;
+    QFrame *frame_4;
+    QLineEdit *le_email_oub;
+    QPushButton *pb_valider_mdp_oub;
+    QLabel *label_22;
+    QLineEdit *le_code_oub;
+    QLabel *label_23;
+    QLabel *label_24;
+    QLineEdit *le_new_mdp_oub;
+    QPushButton *valid;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -93,7 +116,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1380, 732);
+        MainWindow->resize(1529, 732);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         stackedWidget = new QStackedWidget(centralwidget);
@@ -961,11 +984,229 @@ public:
         stackedWidget->addWidget(page);
         page_2 = new QWidget();
         page_2->setObjectName("page_2");
+        frame_2 = new QFrame(page_2);
+        frame_2->setObjectName("frame_2");
+        frame_2->setGeometry(QRect(40, 10, 741, 621));
+        frame_2->setMinimumSize(QSize(741, 0));
+        frame_2->setStyleSheet(QString::fromUtf8("QFrame#frame_2{\n"
+"    background-color: white;\n"
+"    border-radius: 10px;\n"
+"    padding: 20px;\n"
+"}\n"
+""));
+        frame_2->setFrameShape(QFrame::Shape::StyledPanel);
+        frame_2->setFrameShadow(QFrame::Shadow::Raised);
+        label_4 = new QLabel(frame_2);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(90, 169, 331, 51));
+        label_4->setStyleSheet(QString::fromUtf8("QLabel#label_4 {\n"
+"    font-size: 30px;\n"
+"    font-weight: bold;\n"
+"    color: #333;\n"
+"}\n"
+""));
+        label_11 = new QLabel(frame_2);
+        label_11->setObjectName("label_11");
+        label_11->setGeometry(QRect(90, 210, 591, 51));
+        label_11->setStyleSheet(QString::fromUtf8("QLabel#label_11 {\n"
+"    font-size: 20px;\n"
+"    font-weight: bold;\n"
+"    color: #2C8D7A;\n"
+"}\n"
+""));
+        emailline = new QLineEdit(frame_2);
+        emailline->setObjectName("emailline");
+        emailline->setGeometry(QRect(100, 300, 371, 51));
+        emailline->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}"));
+        connectionButton = new QPushButton(frame_2);
+        connectionButton->setObjectName("connectionButton");
+        connectionButton->setGeometry(QRect(100, 500, 371, 41));
+        connectionButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #2C8D7A;\n"
+"    color: white;\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;\n"
+"}\n"
+""));
+        label_15 = new QLabel(frame_2);
+        label_15->setObjectName("label_15");
+        label_15->setGeometry(QRect(140, 570, 321, 20));
+        label_15->setStyleSheet(QString::fromUtf8("color: black;"));
+        mdpline = new QLineEdit(frame_2);
+        mdpline->setObjectName("mdpline");
+        mdpline->setGeometry(QRect(100, 400, 371, 51));
+        mdpline->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}"));
+        mdpline->setEchoMode(QLineEdit::EchoMode::Password);
+        label_16 = new QLabel(frame_2);
+        label_16->setObjectName("label_16");
+        label_16->setGeometry(QRect(100, 270, 191, 20));
+        label_16->setStyleSheet(QString::fromUtf8("color: black;"));
+        label_17 = new QLabel(frame_2);
+        label_17->setObjectName("label_17");
+        label_17->setGeometry(QRect(100, 370, 191, 20));
+        label_17->setStyleSheet(QString::fromUtf8("color: black;"));
+        omdp = new QPushButton(frame_2);
+        omdp->setObjectName("omdp");
+        omdp->setGeometry(QRect(300, 460, 181, 31));
+        omdp->setStyleSheet(QString::fromUtf8("QPushButton#omdp {\n"
+"    background-color: transparent;\n"
+"    color: #E74C3C;  /* Rouge */\n"
+"    font-size: 13px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"    padding: 8px 15px;\n"
+"    text-align: left;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:hover {\n"
+"    color: #C0392B;  /* Rouge fonc\303\251 au survol */\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:pressed {\n"
+"    color: #A93226;  /* Encore plus fonc\303\251 au clic */\n"
+"}\n"
+"\n"
+"/* Ajouter une ic\303\264ne \303\240 gauche du texte */\n"
+"QPushButton#pushButton_8::before {\n"
+"    content: \"\342\217\273 \";  /* Ic\303\264ne de mise hors tension */\n"
+"    font-size: 18px;\n"
+"    margin-right: 8px;\n"
+"}\n"
+""));
+        frame_3 = new QFrame(page_2);
+        frame_3->setObjectName("frame_3");
+        frame_3->setGeometry(QRect(780, 10, 751, 621));
+        frame_3->setStyleSheet(QString::fromUtf8("QFrame#frame_3 {\n"
+"    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 #0E3A47, stop:1 #104F52);\n"
+"    border-radius: 10px;\n"
+"    padding: 40px;\n"
+"    color: white;\n"
+"}\n"
+""));
+        frame_3->setFrameShape(QFrame::Shape::StyledPanel);
+        frame_3->setFrameShadow(QFrame::Shadow::Raised);
+        logo1 = new QLabel(frame_3);
+        logo1->setObjectName("logo1");
+        logo1->setGeometry(QRect(170, 70, 461, 461));
+        logo1->setStyleSheet(QString::fromUtf8("QLabel#logo1 {\n"
+"    font-size: 30px;\n"
+"    font-weight: bold;\n"
+"    color: #333;\n"
+"}\n"
+""));
+        logo1->setPixmap(QPixmap(QString::fromUtf8("assets/logo2.png")));
+        label_19 = new QLabel(frame_3);
+        label_19->setObjectName("label_19");
+        label_19->setGeometry(QRect(200, 480, 421, 51));
+        label_19->setSizeIncrement(QSize(10, 0));
+        QFont font1;
+        font1.setBold(true);
+        label_19->setFont(font1);
+        label_19->setStyleSheet(QString::fromUtf8("QLabel#label_2 {\n"
+"    font-size: 30px;\n"
+"    font-weight: bold;\n"
+"    color: #333;\n"
+"}\n"
+""));
+        label_19->setTextFormat(Qt::TextFormat::RichText);
         stackedWidget->addWidget(page_2);
+        page_3 = new QWidget();
+        page_3->setObjectName("page_3");
+        frame_4 = new QFrame(page_3);
+        frame_4->setObjectName("frame_4");
+        frame_4->setGeometry(QRect(410, 0, 741, 621));
+        frame_4->setMinimumSize(QSize(741, 0));
+        frame_4->setStyleSheet(QString::fromUtf8("QFrame#frame_4{\n"
+"    background-color: white;\n"
+"    border-radius: 10px;\n"
+"    padding: 20px;\n"
+"}\n"
+""));
+        frame_4->setFrameShape(QFrame::Shape::StyledPanel);
+        frame_4->setFrameShadow(QFrame::Shadow::Raised);
+        le_email_oub = new QLineEdit(frame_4);
+        le_email_oub->setObjectName("le_email_oub");
+        le_email_oub->setGeometry(QRect(170, 180, 371, 51));
+        le_email_oub->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}"));
+        pb_valider_mdp_oub = new QPushButton(frame_4);
+        pb_valider_mdp_oub->setObjectName("pb_valider_mdp_oub");
+        pb_valider_mdp_oub->setGeometry(QRect(190, 500, 371, 41));
+        pb_valider_mdp_oub->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #2C8D7A;\n"
+"    color: white;\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;\n"
+"}\n"
+""));
+        label_22 = new QLabel(frame_4);
+        label_22->setObjectName("label_22");
+        label_22->setGeometry(QRect(200, 570, 321, 20));
+        label_22->setStyleSheet(QString::fromUtf8("color: black;"));
+        le_code_oub = new QLineEdit(frame_4);
+        le_code_oub->setObjectName("le_code_oub");
+        le_code_oub->setGeometry(QRect(160, 290, 371, 51));
+        le_code_oub->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}"));
+        le_code_oub->setEchoMode(QLineEdit::EchoMode::Password);
+        label_23 = new QLabel(frame_4);
+        label_23->setObjectName("label_23");
+        label_23->setGeometry(QRect(180, 130, 191, 20));
+        label_23->setStyleSheet(QString::fromUtf8("color: black;"));
+        label_24 = new QLabel(frame_4);
+        label_24->setObjectName("label_24");
+        label_24->setGeometry(QRect(160, 260, 191, 20));
+        label_24->setStyleSheet(QString::fromUtf8("color: black;"));
+        le_new_mdp_oub = new QLineEdit(frame_4);
+        le_new_mdp_oub->setObjectName("le_new_mdp_oub");
+        le_new_mdp_oub->setGeometry(QRect(160, 420, 371, 51));
+        le_new_mdp_oub->setStyleSheet(QString::fromUtf8("QLineEdit {\n"
+"    border: 1px solid #ccc;\n"
+"    border-radius: 5px;\n"
+"    padding: 8px;\n"
+"}"));
+        le_new_mdp_oub->setEchoMode(QLineEdit::EchoMode::Password);
+        valid = new QPushButton(frame_4);
+        valid->setObjectName("valid");
+        valid->setGeometry(QRect(570, 190, 121, 41));
+        valid->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #2C8D7A;\n"
+"    color: white;\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"    font-weight: bold;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;\n"
+"}\n"
+""));
+        stackedWidget->addWidget(page_3);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1380, 25));
+        menubar->setGeometry(QRect(0, 0, 1529, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -973,7 +1214,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1039,6 +1280,20 @@ public:
         pdfEmployes->setText(QString());
         stat->setText(QString());
         quit->setText(QCoreApplication::translate("MainWindow", "Annuler", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", " Bienvenue !", nullptr));
+        label_11->setText(QCoreApplication::translate("MainWindow", "Connectez-vous \303\240 votre compte Biovanta", nullptr));
+        connectionButton->setText(QCoreApplication::translate("MainWindow", "connection", nullptr));
+        label_15->setText(QCoreApplication::translate("MainWindow", " \302\251 2025 Biovanta ,Tous droits r\303\251serv\303\251s.", nullptr));
+        label_16->setText(QCoreApplication::translate("MainWindow", "Entrer votre email", nullptr));
+        label_17->setText(QCoreApplication::translate("MainWindow", "Entrer votre mot de passe ", nullptr));
+        omdp->setText(QCoreApplication::translate("MainWindow", "mot de pass oublier?", nullptr));
+        logo1->setText(QString());
+        label_19->setText(QCoreApplication::translate("MainWindow", "Biovanta \342\200\223 R\303\251volutionnez la Recherche, Simplifiez la Science.", nullptr));
+        pb_valider_mdp_oub->setText(QCoreApplication::translate("MainWindow", "login using code", nullptr));
+        label_22->setText(QCoreApplication::translate("MainWindow", " \302\251 2025 Biovanta ,Tous droits r\303\251serv\303\251s.", nullptr));
+        label_23->setText(QCoreApplication::translate("MainWindow", "Entrer votre email", nullptr));
+        label_24->setText(QCoreApplication::translate("MainWindow", "Entrer votre code", nullptr));
+        valid->setText(QCoreApplication::translate("MainWindow", "send", nullptr));
     } // retranslateUi
 
 };

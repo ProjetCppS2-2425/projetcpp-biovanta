@@ -1,7 +1,29 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QPixmap>
+#include <QCryptographicHash>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrl>
+#include <QByteArray>
+#include <QEventLoop>
+#include <QSslConfiguration>
+#include <QAuthenticator>
+#include <QIODevice>
+#include <QRandomGenerator>
+#include <QDateTime>
 #include <QIcon>
+#include <QPrinter>
+#include <QFileDialog>
+#include <QPdfWriter>
+#include <QTableWidgetItem>
+#include <QTextDocument>
+#include <QSortFilterProxyModel>
+#include <QComboBox>
+#include <QRandomGenerator>
+#include <QDateTime>
+#include <QCryptographicHash>
 #include <QMessageBox>
 #include <QSqlError>
 #include <QtCharts>
@@ -24,11 +46,22 @@
 #include <QHeaderView>
 #include <QSqlQueryModel>
 #include <QSortFilterProxyModel>
+#include <QRandomGenerator>
+#include <QDateTime>
+#include <QTimer>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    int ret=A.connect_arduino(); // lancer la connexion à arduino
+    switch(ret){
+    case(0):qDebug()<< "arduino is available and connected to : "<< A.getarduino_port_name();
+        break;
+    case(1):qDebug() << "arduino is available but not connected to :" <<A.getarduino_port_name();
+        break;
+    case(-1):qDebug() << "arduino is not available";
+    }
     QStringList headers;
     headers << "ID" << "Nom" << "Prénom" << "Email" << "Téléphone"
             << "Date Embauche" << "Poste" << "Salaire" << "Mot de passe";
@@ -47,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->test->setIcon(QPixmap("C:\\Users\\litai\\OneDrive\\Documents\\application\\assets\\teste.png"));
     ui->client->setIcon(QPixmap("C:\\Users\\litai\\OneDrive\\Documents\\application\\assets\\client.png"));
     ui->stat->setIcon(QPixmap("C:\\Users\\litai\\OneDrive\\Documents\\application\\assets\\st.png"));
+    ui->logo1->setPixmap(QPixmap("C:\\Users\\litai\\OneDrive\\Documents\\application\\assets\\logo2.png"));
     //ui->rechercheButton->setIcon(QPixmap("C:\\Users\\litai\\OneDrive\\Documents\\application\\assets\\search.png"));
     ui->table->setColumnCount(headers.size());
     ui->table->setHorizontalHeaderLabels(headers);
@@ -62,10 +96,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tri->addItem("Nom Z-A", "NOM DESC");
     ui->re->addItem("Nom");
     ui->re->addItem("Poste");
-    ui->re->addItem("Date d'embauche");
+    ui->re->addItem("ID");
     connect(ui->quit, &QPushButton::clicked, this, &MainWindow::on_quitButton_clicked);
     connect(ui->rechercher, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
+    QPushButton *connectionButton = ui->stackedWidget->findChild<QPushButton*>("connectionButton");
+    if (connectionButton) {
+        connect(connectionButton, &QPushButton::clicked, this, &MainWindow::verifyLoginAndSwitchPage);
+        qDebug() << "connectionButton signal connected to verifyLoginAndSwitchPage.";
+    } else {
+        qDebug() << "Error: connectionButton not found in the UI!";
+    }
 
+    ui->stackedWidget->setCurrentIndex(1);
+setupForgotPasswordPage();    // Start on the login page
+    mdpOubTentativesMap = QMap<QString, int>();
+    mdpOubBlocageMap = QMap<QString, QDateTime>();
     // Connect signal
     connect(ui->tri, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onTriComboBoxChanged);
@@ -77,9 +122,43 @@ MainWindow::MainWindow(QWidget *parent)
     }
 }
 
-void MainWindow::showEmployePage()
+void MainWindow::verifyLoginAndSwitchPage()
 {
-    stackedWidget->setCurrentIndex(1); // Switch to the employee interface (index 1)
+    QString email = ui->emailline->text().trimmed(); // Assuming your email QLineEdit is named 'emailline'
+    QString password = ui->mdpline->text();       // Assuming your password QLineEdit is named 'mdpline'
+
+    if (email.isEmpty() || password.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer votre email et votre mot de passe.");
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT ID FROM EMPLOYE WHERE EMAIL = :email AND MDP = :password");
+    query.bindValue(":email", email);
+    query.bindValue(":password", password);
+
+    if (query.exec()) {
+        if (query.next()) {
+            // Login successful, switch to the next page (assuming index 1)
+            ui->stackedWidget->setCurrentIndex(0);
+            qDebug() << "Login successful. Switched to page index 1.";
+            // Optionally, you can store the logged-in user's ID or other information here
+        } else {
+            // Login failed
+            QMessageBox::critical(this, "Erreur de Connexion", "Email ou mot de passe incorrect.");
+            qDebug() << "Login failed: Incorrect email or password.";
+        }
+    } else {
+        QMessageBox::critical(this, "Erreur de base de données", "Erreur lors de l'exécution de la requête: " + query.lastError().text());
+        qDebug() << "Database error:" << query.lastError().text();
+    }
+}
+
+// You might still have a separate switchToPage2() slot if needed for other purposes
+void MainWindow::switchToPage2()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+    qDebug() << "switchToPage2() called (for other reasons). Current index:" << ui->stackedWidget->currentIndex();
 }
 void MainWindow::refreshEmployeeTable()
 {
@@ -120,9 +199,6 @@ void MainWindow::refreshEmployeeTable()
         row++;
     }
 }
-
-
-
 
 void MainWindow::on_valider_clicked()
 {
@@ -328,8 +404,6 @@ void MainWindow::on_modifier_clicked()
     ui->mdp->setText(emp.getMdp());
 }
 
-
-
 void MainWindow::on_modification_clicked()
 {
     // NEW: More reliable row detection
@@ -525,7 +599,7 @@ void MainWindow::afficherStatistiquesEmployes()
     yAxis->setLabelFormat("%d");
     barChart->addAxis(yAxis, Qt::AlignLeft);
     barSeries->attachAxis(yAxis);
-barChart->setAnimationOptions(QChart::AllAnimations);
+    barChart->setAnimationOptions(QChart::AllAnimations);
     QChartView *barChartView = new QChartView(barChart);
     barChartView->setRenderHint(QPainter::Antialiasing);
     barChartView->setStyleSheet("border-radius: 8px; border: 1px solid #d1d9e6; background: white;");
@@ -728,11 +802,10 @@ void MainWindow::onSearchTextChanged(const QString &text)
         query.prepare(queryStr);
         query.bindValue(":search", "%" + text + "%");
     }
-    else if (criteria == "Prenom") {
-        queryStr += "Prenom LIKE :search";
+    else if (criteria == "ID") {
+        queryStr += "ID LIKE :search";
         query.prepare(queryStr);
         query.bindValue(":search", "%" + text + "%");
-
 
     } else {
         // Handle the case where the criteria is not one of the handled types
@@ -794,7 +867,304 @@ void MainWindow::on_quitButton_clicked()
     ui->rechercher->clear();
     refreshEmployeeTable(); // Réinitialise l'affichage
 }
+QString MainWindow::generateRandomCode(int length) {
+    const QString possibleCharacters("0123456789");
+    QString randomString;
+    for (int i = 0; i < length; ++i) {
+        int index = QRandomGenerator::global()->bounded(possibleCharacters.length());
+        randomString.append(possibleCharacters.at(index));
+    }
+    return randomString;
+}
+
+
+void MainWindow::on_pb_mdp_oub_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(2); // Switch to the "Forgot Password" page (index 2)
+
+    // 1. Read the email (already done in the previous step, assuming le_email_login exists)
+    QString email = ui->emailline->text();
+    ui->le_email_oub->setText(email);
+
+
+    // 2. Line edit for entering the code sent to the email (le_verification_code_oub)
+    ui->le_code_oub->setVisible(true); // Make the code input field visible
+    ui->le_code_oub->clear();        // Clear any previous text
+
+    // 3. Line edit for the change password (le_new_mdp_oub)
+    ui->le_new_mdp_oub->setVisible(true);        // Make the new password field visible
+    ui->le_new_mdp_oub->clear();                // Clear any previous text
+    ui->le_new_mdp_oub->setPlaceholderText("Nouveau mot de passe"); // Optional placeholder
+
+    // 4. Push button named "valider" (pb_valider_mdp_oub) to send the code
+    ui->pb_valider_mdp_oub->setText("Valider le code"); // Change button text to reflect its new action
+    ui->pb_valider_mdp_oub->setVisible(true);      // Make sure the button is visible
+
+    // You might want to hide the initial "Confirm" button if you had one
+    // ui->pb_confirm_email_oub->setVisible(false);
+}
+void MainWindow::on_pb_confirm_email_oub_clicked()
+{
+    QString email = ui->le_email_oub->text();
+
+    // Vérifier si cet email est bloqué
+    if (mdpOubBlocageMap.contains(email)) {
+        QDateTime blocage = mdpOubBlocageMap.value(email);
+        int secondsSinceBlocage = blocage.secsTo(QDateTime::currentDateTime());
+        if (secondsSinceBlocage < BLOCK_DURATION_SECONDS) {
+            QMessageBox::critical(this, "Blocage temporaire",
+                                  QString("Trop de tentatives. Veuillez patienter %1 secondes.").arg(BLOCK_DURATION_SECONDS - secondsSinceBlocage));
+            return;
+        } else {
+            mdpOubTentativesMap.remove(email);
+            mdpOubBlocageMap.remove(email);
+        }
+    }
+
+    if (email.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer votre email.");
+        mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+        if (mdpOubTentativesMap[email] >= MAX_TENTATIVES)
+            mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+        return;
+    }
+
+    if (verifyEmailAndSendOTP(email)) {
+        ui->le_email_oub->setVisible(false);
+        ui->le_code_oub->setVisible(true);
+        ui->le_code_oub->setVisible(true); // Assuming this is where you want to enter the new password eventually
+        ui->le_new_mdp_oub->setVisible(true);
+    } else {
+        // verifyEmailAndSendOTP handles its own error messages
+        mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+        if (mdpOubTentativesMap[email] >= MAX_TENTATIVES)
+            mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+    }
+}
+void MainWindow::on_pb_reset_password_oub_clicked()
+{
+    QString email = ui->le_email_oub->text();
+    QString enteredCode = ui->le_code_oub->text();
+    QString newPassword = ui->le_new_mdp_oub->text();
+
+    if (enteredCode.isEmpty() || newPassword.isEmpty()) {
+        QMessageBox::warning(this, "Erreur", "Veuillez entrer le code de vérification et le nouveau mot de passe.");
+        return;
+    }
+
+    if (otpStorage.contains(email) && otpStorage.value(email) == enteredCode) {
+        // Code is correct - proceed with password reset
+        QByteArray hashedNewPassword = QCryptographicHash::hash(newPassword.toUtf8(), QCryptographicHash::Sha256);
+        QString hashedNewMdp = hashedNewPassword.toHex();
+
+        QSqlDatabase db = QSqlDatabase::database();
+        if (db.isOpen()) {
+            QSqlQuery query(db);
+            query.prepare("UPDATE EMPLOYES SET MDP = :newMdp WHERE EMAIL_EMP = :email");
+            query.bindValue(":newMdp", hashedNewMdp);
+            query.bindValue(":email", email);
+
+            if (query.exec()) {
+                QMessageBox::information(this, "Succès", "Mot de passe mis à jour avec succès ! Veuillez vous reconnecter.");
+                ui->stackedWidget->setCurrentIndex(1); // Go back to login
+                // Clear fields and stored data:
+                ui->le_email_oub->clear();
+                ui->le_code_oub->clear();
+                ui->le_new_mdp_oub->clear();
+                otpStorage.remove(email); // Remove the used OTP
+                mdpOubTentativesMap.remove(email);
+                mdpOubBlocageMap.remove(email);
+            } else {
+                QMessageBox::critical(this, "Erreur", "Erreur lors de la mise à jour du mot de passe.");
+                qDebug() << "Database update error:" << query.lastError().text();
+            }
+        } else {
+            QMessageBox::critical(this, "Erreur", "Base de données non ouverte.");
+        }
+    } else {
+        QMessageBox::critical(this, "Erreur", "Code de vérification incorrect.");
+        mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+        if (mdpOubTentativesMap[email] >= MAX_TENTATIVES) {
+            mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+        }
+    }
+}
+bool MainWindow::verifyEmailAndSendOTP(const QString& email)
+{
+    QSqlDatabase db = QSqlDatabase::database(); // Get the default database connection
+    if (!db.isOpen()) {
+        QMessageBox::critical(this, "Database Error", "Database is not open.");
+        return false;
+    }
+
+    // 1. Verify if the email exists in the database
+    QSqlQuery checkQuery(db);
+    checkQuery.prepare("SELECT EMAIL_EMP FROM EMPLOYES WHERE EMAIL_EMP = :email");
+    checkQuery.bindValue(":email", email);
+
+    if (!checkQuery.exec()) {
+        qDebug() << "Database query error:" << checkQuery.lastError().text();
+        return false;
+    }
+
+    if (!checkQuery.next()) {
+        QMessageBox::warning(this, "Error", "Email address not found.");
+        return false;
+    }
+
+    // 2. Generate a new OTP
+    QString otp = generateRandomCode(8); // Generate an 8-digit OTP
+
+    // 3. Store the OTP temporarily
+    otpStorage[email] = otp;
+    qDebug() << "Generated OTP for" << email << ":" << otp;
+
+    // 4. Send the OTP to the provided email address
+    QString subject = "Your One-Time Password (OTP)";
+    QString body = "Your OTP for password reset is: " + otp + ". This code will be valid for a short time.";
+
+    if (sendEmail(email, subject, body)) {
+        QMessageBox::information(this, "OTP Sent", "A one-time password has been sent to your email address.");
+        return true;
+    } else {
+        QMessageBox::critical(this, "Error", "Failed to send OTP email.");
+        // Optionally, remove the stored OTP if sending fails
+        otpStorage.remove(email);
+        return false;
+    }
+}
+void MainWindow::on_pb_valider_mdp_oub_clicked()
+{
+    QString email = ui->le_email_oub->text();
+
+    // Vérifier si cet email est bloqué
+    if (mdpOubBlocageMap.contains(email)) {
+        QDateTime blocage = mdpOubBlocageMap.value(email);
+        int secondsSinceBlocage = blocage.secsTo(QDateTime::currentDateTime());
+        if (secondsSinceBlocage < BLOCK_DURATION_SECONDS) {
+            QMessageBox::critical(this, "Blocage temporaire",
+                                  QString("Trop de tentatives. Veuillez patienter %1 secondes.").arg(BLOCK_DURATION_SECONDS - secondsSinceBlocage));
+            return;
+        } else {
+            mdpOubTentativesMap.remove(email);
+            mdpOubBlocageMap.remove(email);
+        }
+    }
+
+    if (ui->pb_valider_mdp_oub->text() == "Confirm") {
+        // Phase 1: User enters email, we send the code
+        if (email.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Veuillez entrer votre email.");
+            mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+            if (mdpOubTentativesMap[email] >= MAX_TENTATIVES)
+                mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+            return;
+        }
+
+        storedVerificationCode_oub = generateRandomCode();
+        currentEmailForReset_oub = email;
+        QString subject = "Password Reset Code";
+        QString body = "Your password reset code is: " + storedVerificationCode_oub;
+
+        if (sendEmail(email, subject, body)) {
+            QMessageBox::information(this, "Code Sent", "Verification code sent to your email.");
+            ui->pb_valider_mdp_oub->setText("Reset Password"); // Change button text
+            ui->le_code_oub->setVisible(true); // Show the (misused) new password field
+        } else {
+            QMessageBox::critical(this, "Error", "Failed to send verification code.");
+            mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+            if (mdpOubTentativesMap[email] >= MAX_TENTATIVES)
+                mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+        }
+    } else if (ui->pb_valider_mdp_oub->text() == "Reset Password") {
+        // Phase 2: User enters verification code (in the password field!)
+        QString enteredCode = ui->le_code_oub->text(); // Misusing this field
+        if (enteredCode.isEmpty()) {
+            QMessageBox::warning(this, "Erreur", "Veuillez entrer le code de vérification.");
+            return;
+        }
+
+        if (enteredCode == storedVerificationCode_oub && email == currentEmailForReset_oub) {
+            // Code is correct - proceed with password reset
+            // In this simplified version, we're not asking for a *new* password, just verifying the code to "log in" (reset)
+            QMessageBox::information(this, "Success", "Verification successful! You are now logged in.");
+            ui->stackedWidget->setCurrentIndex(1); // Go back to login
+            // Clear fields:
+            ui->le_email_oub->clear();
+            ui->le_code_oub->clear();
+            ui->pb_valider_mdp_oub->setText("Confirm"); // Reset button text
+            // Clear stored code:
+            storedVerificationCode_oub = "";
+            currentEmailForReset_oub = "";
+
+        } else {
+            QMessageBox::critical(this, "Error", "Incorrect verification code.");
+            mdpOubTentativesMap[email] = mdpOubTentativesMap.value(email, 0) + 1;
+            if (mdpOubTentativesMap[email] >= MAX_TENTATIVES)
+                mdpOubBlocageMap[email] = QDateTime::currentDateTime();
+        }
+    }
+}
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+void MainWindow::setupForgotPasswordPage()
+{
+    connect(ui->omdp, &QPushButton::clicked,
+            this, &MainWindow::on_pb_mdp_oub_clicked);
+
+    // Initially set stackedWidget_2 to index 1 (assuming your login page is at index 1)
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+
+bool MainWindow::sendEmail(QString recipient, QString subject, QString body) {
+    QString smtpServer = "gmail.com";   // Replace with your SMTP server address
+    int smtpPort = 587;                             // Replace with your SMTP server port (e.g., 587 for TLS, 465 for SSL)
+    QString senderEmail = "your_email@example.com"; // Replace with your email address
+    QString senderPassword = "App password";      // Replace with your email password
+
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    QUrl url;
+    if (smtpPort == 465) {
+        url.setUrl(QString("https://%1:%2").arg(smtpServer).arg(smtpPort)); // For SSL, though direct SMTP over SSL might be needed
+    } else {
+        url.setUrl(QString("smtp://%1:%2").arg(smtpServer).arg(smtpPort));   // For STARTTLS
+    }
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    QByteArray postData;
+    postData.append(QString("EHLO %1\r\n").arg("localhost").toUtf8()); // Or your domain
+    if (!senderEmail.isEmpty() && !senderPassword.isEmpty()) {
+        postData.append(QString("AUTH LOGIN\r\n").toUtf8());
+        postData.append(QByteArray(senderEmail.toUtf8().toBase64() + "\r\n"));
+        postData.append(QByteArray(senderPassword.toUtf8().toBase64() + "\r\n"));
+    }
+    postData.append(QString("MAIL FROM:<%1>\r\n").arg(senderEmail).toUtf8());
+    postData.append(QString("RCPT TO:<%1>\r\n").arg(recipient).toUtf8());
+    postData.append(QString("DATA\r\n").toUtf8());
+    postData.append(QString("Subject: %1\r\n\r\n%2\r\n.\r\n").arg(subject).arg(body).toUtf8());
+    postData.append(QString("QUIT\r\n").toUtf8());
+
+    QNetworkReply *reply = manager->post(request, postData);
+    QEventLoop loop;
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    bool success = false;
+    if (reply->error() == QNetworkReply::NoError) {
+        qDebug() << "Email sent successfully to" << recipient;
+        success = true;
+    } else {
+        qDebug() << "Error sending email to" << recipient << ":" << reply->errorString();
+        // Optionally log the full reply for debugging:
+        // qDebug() << "Reply content:" << reply->readAll();
+    }
+
+    reply->deleteLater();
+    manager->deleteLater();
+    return success;
 }

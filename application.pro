@@ -1,4 +1,4 @@
-QT += core gui sql charts printsupport
+QT += core gui sql charts printsupport network serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,12 +10,14 @@ CONFIG += c++17 console
 
 
 SOURCES += \
+    arduino.cpp \
     connection.cpp \
     employe.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    arduino.h \
     connection.h \
     employe.h \
     mainwindow.h
@@ -25,7 +27,6 @@ HEADERS += \
 
 
 FORMS += \
-    mainwindow.ui
     mainwindow.ui
 
 

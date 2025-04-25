@@ -10,6 +10,7 @@
 #include <QSqlQueryModel>
 #include <QStackedWidget>
 #include "employe.h"
+#include "arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -44,17 +45,45 @@ private slots:
     void onSearchTextChanged(const QString &text);
 
     void on_quitButton_clicked();
-    void showEmployePage();
+    void switchToPage2();
+
+    void on_pb_mdp_oub_clicked();
+    void on_pb_confirm_email_oub_clicked();
+    void on_pb_reset_password_oub_clicked();
+    void on_pb_valider_mdp_oub_clicked();
 
 private:
     Ui::MainWindow *ui;
     QStackedWidget *stackedWidget;
 private:
-    void refreshEmployeeTable();// Declaration
+     void setupForgotPasswordPage();
+    void verifyLoginAndSwitchPage();
+    void verifyEmailAndSendOTP();
+    void verifyOTPAndSwitchPage();
+    QMap<QString, QString> otpStorage;
+    bool verifyEmailAndSendOTP(const QString& email);
+    void refreshEmployeeTable();
     QString currentSortColumn;
     QString currentSortOrder;
     void updateSearchQuery();
+    void showEmployePage();
     void populateTable(QSqlQuery &query);
+    QMap<QString, int> mdpOubTentativesMap;
+    QMap<QString, QDateTime> mdpOubBlocageMap;
+    QString storedOTP;
+    QString currentEmailForOTP;
+    QString generateRandomCode(int length = 6);
+    bool sendEmail(QString recipient, QString subject, QString body);
+    QString storedVerificationCode_oub;
+    QString currentEmailForReset_oub;
+    const int MAX_TENTATIVES = 3;
+    const int BLOCK_DURATION_SECONDS = 60;
+
+
+    QByteArray data;
+    Arduino A;
+
+
 
 
 };
