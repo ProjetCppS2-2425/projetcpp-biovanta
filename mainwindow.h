@@ -19,6 +19,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include "arduino.h"
+#include <QMessageBox>
 #include "equipement.h"
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +34,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     static Equipement getEquipementById(const QString &id);
-
+    // In mainwindow.h, add to private members:
+private slots:
+    void initArduinoConnection();
+    void readSerialData();
+private:
+    arduino arduino;
 private:
     QByteArray selectedImageData;
     QString selectedId;

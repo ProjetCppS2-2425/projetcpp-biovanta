@@ -18,10 +18,11 @@ private:
     int nbre_eq;
     QDate dateDebutDispo;
     QDate dateFinDispo;
+    QString resis_flamme;
 
 public:
     Equipement();
-   Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut = QDate(), QDate fin = QDate());
+   Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut = QDate(), QDate fin = QDate(), QString resis = "");
     bool ajouter();
     static QList<Equipement> afficher();
     bool modifier();
@@ -30,6 +31,8 @@ public:
     QDate getDateFinDispo() const { return dateFinDispo; }
     void setDateDebutDispo(const QDate &date) { dateDebutDispo = date; }
     void setDateFinDispo(const QDate &date) { dateFinDispo = date; }
+    QString getResisFlamme() const { return resis_flamme; }
+    void setResisFlamme(const QString &resis) { resis_flamme = resis; }
 
 
     bool existe(const QString &id);

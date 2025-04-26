@@ -7,7 +7,7 @@
 // Constructeurs
 Equipement::Equipement() {}
 
-Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut, QDate fin) {
+Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, QString type, QString dispo, int nombre, QDate debut, QDate fin, QString resis) {
     this->id_equipement = id;
     this->nom_eq = nom;
     this->etat = etat;
@@ -17,13 +17,15 @@ Equipement::Equipement(QString id, QString nom, QString etat, QByteArray image, 
     this->nbre_eq = nombre;
     this->dateDebutDispo = debut;
     this->dateFinDispo = fin;
+    this->resis_flamme =resis;
 }
 
 
 bool Equipement::ajouter() {
     QSqlQuery query;
-    query.prepare("INSERT INTO Equipement (id_equipement, nom_eq, etat, image, type, disponibilite, nbre_eq, date_debut, date_fin) "
-                  "VALUES (:id, :nom, :etat, :img, :type, :dispo, :nbre, :debut, :fin)");
+    query.prepare("INSERT INTO Equipement (id_equipement, nom_eq, etat, image, type, disponibilite, nbre_eq, date_debut, date_fin, resis_flamme) "
+                  "VALUES (:id, :nom, :etat, :img, :type, :dispo, :nbre, :debut, :fin, :resis)");
+    query.bindValue(":resis", resis_flamme);
     query.bindValue(":id", id_equipement);
     query.bindValue(":nom", nom_eq);
     query.bindValue(":etat", etat);
@@ -42,7 +44,6 @@ bool Equipement::ajouter() {
     return true;
 }
 
-
 QList<Equipement> Equipement::afficher() {
     QList<Equipement> liste;
     QSqlQuery query("SELECT * FROM EQUIPEMENT");
@@ -55,10 +56,11 @@ QList<Equipement> Equipement::afficher() {
             query.value("image").toByteArray(),
             query.value("type").toString(),
             query.value("disponibilite").toString(),
-            query.value("nbre_eq").toInt()
+            query.value("nbre_eq").toInt(),
+            query.value("date_debut").toDate(),
+            query.value("date_fin").toDate(),
+            query.value("resis_flamme").toString()
             );
-        e.setDateDebutDispo(query.value("date_debut").toDate());
-        e.setDateFinDispo(query.value("date_fin").toDate());
         liste.append(e);
     }
     return liste;
@@ -83,6 +85,7 @@ bool Equipement::modifier() {
                   "nbre_eq = :nbre, "
                   "date_debut = :debut, "
                   "date_fin = :fin "
+                  "resis_flamme = :resis "
                   "WHERE id_equipement = :id");
 
     query.bindValue(":id", id_equipement);
@@ -94,6 +97,7 @@ bool Equipement::modifier() {
     query.bindValue(":nbre", nbre_eq);
     query.bindValue(":debut", dateDebutDispo);
     query.bindValue(":fin", dateFinDispo);
+    query.bindValue(":resis", resis_flamme);
 
     if (!query.exec()) {
         qDebug() << "Erreur lors de la modification :" << query.lastError().text();
@@ -217,4 +221,3 @@ int Equipement::countEquipementsParEtat(const QString &etatRecherche) {
     }
     return 0;
 }
-

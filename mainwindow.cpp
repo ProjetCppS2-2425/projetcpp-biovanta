@@ -35,7 +35,7 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QFont>
-#include <QDebug>           // Pour le débogage
+#include "arduino.h"
 
 
 
@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    initArduinoConnection();
     connect(ui->supp_3, &QPushButton::clicked, this, &MainWindow::supp_3_clicked);
     isModifying = false;
     connect(ui->ok_3, &QPushButton::clicked, this, &MainWindow::on_ok_3_clicked);
@@ -75,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     QList<Equipement> liste = Equipement::afficher();
-    afficherEquipements(liste); // Appeler avec l'argument liste
+    afficherEquipements(liste);
     notificationBadge = new QLabel(ui->noti);
     notificationBadge->setObjectName("notificationBadge");
     notificationBadge->setStyleSheet(
@@ -107,7 +108,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     notificationTimer = new QTimer(this);
     connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
-    notificationTimer->start(6000); // Toutes les 5 minutes
+    notificationTimer->start(6000);
     checkEquipmentStatus();
    connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showAlertNotification);
 
@@ -137,16 +138,13 @@ MainWindow::MainWindow(QWidget *parent)
     if (!QSqlDatabase::database().isOpen()) {
         QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir la base de données !");
     }
-// Garantir que page_liste est affichée au démarrage
     QTimer::singleShot(0, this, [this]() {
         ui->stackedWidget->setCurrentWidget(ui->page_liste);
     });
-    // Initialiser les vues de graphiques
     etatView = new QChartView(ui->page_stats);
     dispoView = new QChartView(ui->page_stats);
     typeView = new QChartView(ui->page_stats);
 
-    // Configurer la mise en page de la page des statistiques
     QVBoxLayout *statsLayout = new QVBoxLayout(ui->page_stats);
 
     QLabel *statsTitle = new QLabel("Statistiques des Équipements");
@@ -158,7 +156,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     statsLayout->addWidget(statsTitle);
 
-    // Configurer la disposition des graphiques
     QGridLayout *chartsLayout = new QGridLayout();
     chartsLayout->addWidget(etatView, 0, 0);
     chartsLayout->addWidget(dispoView, 0, 1);
@@ -166,7 +163,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     statsLayout->addLayout(chartsLayout);
 
-    // Ajouter un bouton Retour
     QPushButton *backButton = new QPushButton("Retour à la liste");
     backButton->setStyleSheet("QPushButton { background-color: #02767F; color: white; padding: 8px; border-radius: 4px; }");
     connect(backButton, &QPushButton::clicked, [this]() {
@@ -180,14 +176,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->calendarWidget, &QCalendarWidget::clicked, this, &MainWindow::afficherDetailsEquipement);
      calendarWidget = ui->calendarWidget;
-    // Connexion du bouton calendrier
+
      connect(ui->calen, &QPushButton::clicked, this, [this]() {
          ui->stackedWidget->setCurrentWidget(ui->calender_page);
          afficherDisponibiliteSurCalendrier();
      });
      connect(calendarWidget, &QCalendarWidget::currentPageChanged,
              this, &MainWindow::afficherDisponibiliteSurCalendrier);
-     // Création du bouton de retour
+
      backButtonCalendar = new QPushButton("Retour", ui->calender_page);
      backButtonCalendar->setGeometry(20, 10, 121, 41);
      backButtonCalendar->setStyleSheet(
@@ -250,6 +246,7 @@ void MainWindow::on_pushButton_12_clicked() {
             QString etat = ui->comboBox_13->currentText();
             QString dispo = ui->comboBox_14->currentText();
             int nbre = ui->spinBox_3->value();
+            QString resis = ui->comboBox_16->currentText();
             QRegularExpression nomRegex("^[A-Za-z\\s]+$");
             if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
                 QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
@@ -274,7 +271,7 @@ void MainWindow::on_pushButton_12_clicked() {
                 QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
                 return;
             }
-            Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin);
+            Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin, resis);
             if (equip.modifier()) {
                 QMessageBox::information(this, "Succès", "Équipement modifié avec succès.");
                 actualiserTableau();
@@ -296,6 +293,7 @@ void MainWindow::on_pushButton_12_clicked() {
         QString etat = ui->comboBox_13->currentText();
         QString dispo = ui->comboBox_14->currentText();
         int nbre = ui->spinBox_3->value();
+        QString resis = ui->comboBox_16->currentText();
         QRegularExpression nomRegex("^[A-Za-z\\s]+$");
         if (nom.isEmpty() || !nomRegex.match(nom).hasMatch()) {
             QMessageBox::warning(this, "Erreur", "Le nom de l'équipement ne peut contenir que des lettres et des espaces.");
@@ -317,7 +315,7 @@ void MainWindow::on_pushButton_12_clicked() {
             QMessageBox::warning(this, "Erreur", "Le nombre d'équipements doit être supérieur à zéro.");
             return;
         }
-        Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin);
+        Equipement equip(id, nom, etat, selectedImageData, type, dispo, nbre, dateDebut, dateFin, resis);
         if (equip.ajouter()) {
             QMessageBox::information(this, "Succès", "Équipement ajouté avec succès.");
             actualiserTableau();
@@ -349,7 +347,7 @@ void MainWindow::on_pushButton_11_clicked() {
 
 void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
     ui->tableWidget_3->setRowCount(liste.size());
-    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
+   QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre", "Résistance feu"};
     ui->tableWidget_3->setHorizontalHeaderLabels(headers);
     ui->tableWidget_3->setUpdatesEnabled(false);
 
@@ -378,6 +376,7 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
         ui->tableWidget_3->setItem(i, 4, new QTableWidgetItem(e.getEtat()));
         ui->tableWidget_3->setItem(i, 5, new QTableWidgetItem(e.getDispo()));
         ui->tableWidget_3->setItem(i, 6, new QTableWidgetItem(QString::number(e.getNombre())));
+        ui->tableWidget_3->setItem(i, 7, new QTableWidgetItem(e.getResisFlamme()));
     }
     ui->tableWidget_3->setUpdatesEnabled(true);
     ui->tableWidget_3->resizeColumnsToContents();
@@ -387,8 +386,8 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
 
 void MainWindow::actualiserTableau() {
     ui->tableWidget_3->clear();
-    ui->tableWidget_3->setColumnCount(7);
-    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre"};
+    ui->tableWidget_3->setColumnCount(8);
+    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre" , "Résistance feu"};
     ui->tableWidget_3->setHorizontalHeaderLabels(headers);
     QList<Equipement> liste = Equipement::afficher();
     ui->tableWidget_3->setRowCount(liste.size());
@@ -410,6 +409,7 @@ void MainWindow::actualiserTableau() {
         ui->tableWidget_3->setItem(i, 4, new QTableWidgetItem(liste[i].getEtat()));
         ui->tableWidget_3->setItem(i, 5, new QTableWidgetItem(liste[i].getDispo()));
         ui->tableWidget_3->setItem(i, 6, new QTableWidgetItem(QString::number(liste[i].getNombre())));
+        ui->tableWidget_3->setItem(i, 7, new QTableWidgetItem(liste[i].getResisFlamme()));
     }
 }
 
@@ -468,6 +468,7 @@ void MainWindow::chargerEquipement() {
     ui->comboBox_13->setCurrentText(equip.getEtat());
     ui->comboBox_14->setCurrentText(equip.getDispo());
     ui->spinBox_3->setValue(equip.getNombre());
+    ui->comboBox_16->setCurrentText(equip.getResisFlamme());
 
     QByteArray imageData = equip.getImageData();
     if (!imageData.isEmpty()) {
@@ -495,6 +496,7 @@ void MainWindow::reinitialiserFormulaire() {
     ui->comboBox_15->setCurrentIndex(0);
     ui->comboBox_13->setCurrentIndex(0);
     ui->comboBox_14->setCurrentIndex(0);
+    ui->comboBox_16->setCurrentIndex(0); // ou une autre valeur par défaut
     ui->spinBox_3->setValue(1);
     selectedImageData.clear();
     if (ui->labelImage_3) {
@@ -808,7 +810,7 @@ void MainWindow::onTriDeclenche() {
         if (etatLower.contains("fonctionnel") && !etatLower.contains("pas")) return 1;
         if (etatLower.contains("maintenance")) return 2;
         if (etatLower.contains("pas fonctionnel")) return 3;
-        return 4; // Pour les autres états non prévus
+        return 4;
     };
 
     auto comparer = [critere, ascendant, getEtatPriority](const Equipement& a, const Equipement& b) {
@@ -991,20 +993,20 @@ void MainWindow::refreshAlertCount()
 
 
 void MainWindow::afficherDisponibiliteSurCalendrier() {
-    // Réinitialiser toutes les mises en forme
+
     calendarWidget->setDateTextFormat(QDate(), QTextCharFormat());
 
     QList<Equipement> equipements = Equipement::afficher();
 
-    // Format pour les périodes disponibles (bleu)
+
     QTextCharFormat formatDisponible;
-    formatDisponible.setBackground(QColor(100, 149, 237)); // Bleu moyen
+    formatDisponible.setBackground(QColor(100, 149, 237));
     formatDisponible.setForeground(Qt::white);
     formatDisponible.setFontWeight(QFont::Bold);
     formatDisponible.setProperty(QTextFormat::FullWidthSelection, true);
     formatDisponible.setToolTip("Disponible");
 
-    // Format pour les périodes non disponibles (rouge clair)
+
     QTextCharFormat formatNonDisponible;
     formatNonDisponible.setBackground(QColor(255, 182, 193)); // Rouge clair
     formatNonDisponible.setForeground(Qt::black);
@@ -1184,7 +1186,7 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
     if (notificationPopup && event->type() == QEvent::MouseButtonPress) {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-        if (!notificationPopup->geometry().contains(mouseEvent->globalPos())) {
+        if (!notificationPopup->geometry().contains(mouseEvent->globalPosition().toPoint())) {
             notificationPopup->close();
             delete notificationPopup;
             notificationPopup = nullptr;
@@ -1192,4 +1194,39 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
         }
     }
     return QMainWindow::eventFilter(obj, event);
+}
+void MainWindow::initArduinoConnection()
+{
+    int status = arduino.connect_arduino();
+
+    if(status == 0) {
+        connect(arduino.getserial(), &QSerialPort::readyRead, this, &MainWindow::readSerialData);
+        ui->label_23->setText("Arduino connecté");
+        ui->label_23->setStyleSheet("color: green;");
+    } else {
+        QString errorMsg = "Erreur de connexion Arduino (";
+        errorMsg += (status == -1) ? "Non détecté" : "Port inaccessible";
+        errorMsg += ") - Voir la console pour détails";
+
+        ui->label_23->setText(errorMsg);
+        ui->label_23->setStyleSheet("color: red;");
+        qDebug() << errorMsg;
+    }
+}
+void MainWindow::readSerialData()
+{
+    while(arduino.getserial()->canReadLine()) {
+        QString message = QString::fromUtf8(arduino.getserial()->readLine()).trimmed();
+
+        qDebug() << "Reçu:" << message; // Debug
+
+        if(message == "FLAMME_DETECTEE") {
+            ui->label_23->setText("🔥 DANGER : Flamme détectée");
+            ui->label_23->setStyleSheet("color: red; font-weight: bold;");
+        }
+        else if(message == "PAS_DE_FLAMME") {
+            ui->label_23->setText("✅ Sécurité : Aucune flamme");
+            ui->label_23->setStyleSheet("color: green; font-weight: bold;");
+        }
+    }
 }
