@@ -49,6 +49,7 @@ private:
     void reinitialiserFormulaire();
     void remplirTableWidget();
     void refreshAlertCount();
+    void handleFlameDetection(const QString &equipId);
 
 private:
     class NotificationPopup : public QWidget {

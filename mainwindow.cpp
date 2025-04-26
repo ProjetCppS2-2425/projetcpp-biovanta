@@ -1195,38 +1195,73 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
     }
     return QMainWindow::eventFilter(obj, event);
 }
-void MainWindow::initArduinoConnection()
-{
+void MainWindow::initArduinoConnection() {
     int status = arduino.connect_arduino();
 
     if(status == 0) {
-        connect(arduino.getserial(), &QSerialPort::readyRead, this, &MainWindow::readSerialData);
-        ui->label_23->setText("Arduino connecté");
+        connect(arduino.getserial(), &QSerialPort::readyRead,
+                this, &MainWindow::readSerialData);
+        ui->label_23->setText("Arduino connecté sur " + arduino.getarduino_port_name());
         ui->label_23->setStyleSheet("color: green;");
     } else {
-        QString errorMsg = "Erreur de connexion Arduino (";
-        errorMsg += (status == -1) ? "Non détecté" : "Port inaccessible";
-        errorMsg += ") - Voir la console pour détails";
-
+        QString errorMsg = "Erreur de connexion: ";
+        if(status == -1) {
+            errorMsg += "Aucun port série disponible";
+        } else if(status == 1) {
+            errorMsg += "Impossible d'ouvrir le port " + arduino.getarduino_port_name();
+        }
         ui->label_23->setText(errorMsg);
         ui->label_23->setStyleSheet("color: red;");
-        qDebug() << errorMsg;
     }
 }
-void MainWindow::readSerialData()
-{
+void MainWindow::readSerialData() {
     while(arduino.getserial()->canReadLine()) {
         QString message = QString::fromUtf8(arduino.getserial()->readLine()).trimmed();
 
-        qDebug() << "Reçu:" << message; // Debug
+        qDebug() << "Reçu:" << message;
 
         if(message == "FLAMME_DETECTEE") {
             ui->label_23->setText("🔥 DANGER : Flamme détectée");
             ui->label_23->setStyleSheet("color: red; font-weight: bold;");
+
+            // Vérifier tous les équipements non résistants au feu
+            QSqlQuery query("SELECT id_equipement FROM EQUIPEMENT WHERE LOWER(resis_flamme) = 'pas resistible'");
+            while (query.next()) {
+                QString equipId = query.value(0).toString();
+                handleFlameDetection(equipId);
+            }
         }
         else if(message == "PAS_DE_FLAMME") {
             ui->label_23->setText("✅ Sécurité : Aucune flamme");
             ui->label_23->setStyleSheet("color: green; font-weight: bold;");
+        }
+    }
+}
+
+void MainWindow::handleFlameDetection(const QString &equipId) {
+    // Vérifier si l'équipement est "pas resistible"
+    QSqlQuery query;
+    query.prepare("SELECT resis_flamme FROM EQUIPEMENT WHERE id_equipement = :id");
+    query.bindValue(":id", equipId);
+
+    if (query.exec() && query.next()) {
+        QString resistance = query.value(0).toString().toLower();
+
+        if (resistance == "pas resistible") {
+            // Mettre à jour l'état de l'équipement
+            QSqlQuery updateQuery;
+            updateQuery.prepare("UPDATE EQUIPEMENT SET etat = 'Pas fonctionnel (incendie)' WHERE id_equipement = :id");
+            updateQuery.bindValue(":id", equipId);
+
+            if (updateQuery.exec()) {
+                qDebug() << "État de l'équipement" << equipId << "mis à jour suite à la détection de flamme";
+
+                // Actualiser l'affichage
+                actualiserTableau();
+                checkEquipmentStatus(); // Mettre à jour les notifications
+            } else {
+                qDebug() << "Erreur lors de la mise à jour de l'état:" << updateQuery.lastError().text();
+            }
         }
     }
 }

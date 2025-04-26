@@ -76,15 +76,15 @@ bool Equipement::supprimer(const QString &id) {
 
 bool Equipement::modifier() {
     QSqlQuery query;
-    query.prepare("UPDATE Equipement SET "
-                  "nom_eq = :nom, "
+    query.prepare("UPDATE Equipement "
+                  "SET nom_eq = :nom, "
                   "type = :type, "
                   "etat = :etat, "
                   "disponibilite = :dispo, "
                   "image = :img, "
                   "nbre_eq = :nbre, "
                   "date_debut = :debut, "
-                  "date_fin = :fin "
+                  "date_fin = :fin, "
                   "resis_flamme = :resis "
                   "WHERE id_equipement = :id");
 
@@ -100,10 +100,11 @@ bool Equipement::modifier() {
     query.bindValue(":resis", resis_flamme);
 
     if (!query.exec()) {
-        qDebug() << "Erreur lors de la modification :" << query.lastError().text();
+        qDebug() << "Erreur SQL:" << query.lastError().text();
+        qDebug() << "Requête:" << query.lastQuery();
         return false;
     }
-    return query.numRowsAffected() > 0;
+    return true;
 }
 
 
