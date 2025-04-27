@@ -6,6 +6,7 @@ CONFIG += c++17
 QT += charts
 QT += network
 
+QT += serialport
 
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -13,6 +14,7 @@ QT += network
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    arduinomanager.cpp \
     chatbot.cpp \
     connection.cpp \
     geminiapi.cpp \
@@ -23,6 +25,7 @@ SOURCES += \
     vaccin_ui.cpp
 
 HEADERS += \
+    arduinomanager.h \
     chatbot.h \
     connection.h \
     geminiapi.h \

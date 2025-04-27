@@ -95,6 +95,7 @@ public:
     QCheckBox *checkBox_2;
     QPushButton *pushButton_6;
     QLineEdit *vaccin_id_input;
+    QLabel *labelFan;
     QWidget *tab_2;
     QStackedWidget *stackedWidget;
     QWidget *page_3;
@@ -630,6 +631,9 @@ public:
         vaccin_id_input = new QLineEdit(groupBox_2);
         vaccin_id_input->setObjectName("vaccin_id_input");
         vaccin_id_input->setGeometry(QRect(64, 120, 71, 31));
+        labelFan = new QLabel(tab);
+        labelFan->setObjectName("labelFan");
+        labelFan->setGeometry(QRect(310, 30, 291, 16));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName("tab_2");
@@ -770,6 +774,7 @@ public:
         checkBox->setText(QCoreApplication::translate("MainWindow", "ASC", nullptr));
         checkBox_2->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
         pushButton_6->setText(QCoreApplication::translate("MainWindow", "Refresh", nullptr));
+        labelFan->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         sendButton_2->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
         bg_3->setText(QString());

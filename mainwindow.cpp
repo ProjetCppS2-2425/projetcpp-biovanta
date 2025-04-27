@@ -3,11 +3,16 @@
 #include "chatbot.h"
 #include "vaccin.h"
 
+#include <QTimer>
 
 #include<QMessageBox>
 #include <QPrinter>
 #include <QPainter>
 #include <QFileDialog>
+#include "arduinomanager.h"
+#include <QSerialPort>
+
+ArduinoManager *arduino;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,6 +20,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    arduino = new ArduinoManager(this);
+    arduino->start();
+
+    connect(arduino, &ArduinoManager::fanStatusChanged, this, [=](const QString &status) {
+        if (status == "FAN_ON")
+            ui->labelFan->setText("Ventilateur en marche");
+        else
+            ui->labelFan->setText("Ventilateur arrêté");
+    });
     statistique s;
     QChartView *chart = s.genererStatistiques();
     chart->setParent(ui->label);
@@ -47,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->sendButton_2,
         this
     );
+
 
 }
 
@@ -127,8 +143,8 @@ void MainWindow::on_pushButton_7_clicked()
             QString message = "Un vaccin a été ajouté sous le nom : " + nom +
                               ". Il expirera dans " + QString::number(jours_restants) + " jour(s).";
 
-            //  Envoi du SMS
-           // vac.sendSMS("+21650256940", message);
+             //Envoi du SMS
+            //vac.sendSMS("+21650256940", message);
 
             clearInputs();
         } else {
@@ -348,4 +364,3 @@ void MainWindow::on_pushButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1); // Page 3 (index 2)
 }
-

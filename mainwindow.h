@@ -2,12 +2,14 @@
 #define MAINWINDOW_H
 #include <QPixmap>
 #include <QIcon>
+#include <QSerialPort>
 
 #include <QMainWindow>
 #include "vaccin.h"
 #include "statistique.h"
-
+#include "arduinomanager.h"
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
 class MainWindow;
 }
@@ -60,12 +62,16 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+    void verifierTempEtMettreAJour();
+    void lireDonneesArduino() ;
 
 private:
     Ui::MainWindow *ui;
     vaccin vac;
     bool ASC = false;
     bool DSC = false;
+    ArduinoManager *arduino;
+    QSerialPort *serial;
 
 protected:
     void showEvent(QShowEvent *event) override;
