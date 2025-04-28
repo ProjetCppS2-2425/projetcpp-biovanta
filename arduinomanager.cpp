@@ -4,7 +4,7 @@
 ArduinoManager::ArduinoManager(QObject *parent) : QObject(parent), serial(new QSerialPort(this)) {}
 
 void ArduinoManager::start() {
-    serial->setPortName("COM4"); // À adapter selon ton port
+    serial->setPortName("COM5"); // À adapter selon ton port
     serial->setBaudRate(QSerialPort::Baud9600);
     if (serial->open(QIODevice::ReadOnly)) {
         connect(serial, &QSerialPort::readyRead, this, &ArduinoManager::readData);
