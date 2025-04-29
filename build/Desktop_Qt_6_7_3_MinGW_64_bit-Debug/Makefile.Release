@@ -390,6 +390,20 @@ release/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayout.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qgridlayout.h \
+		../../arduino.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPort \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialport.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qproperty.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qpropertyprivate.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportglobal.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qtserialportexports.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPortInfo \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportinfo.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/QDebug \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../equipement.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/QString \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlQuery \
@@ -1084,6 +1098,20 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayout.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qgridlayout.h \
+		../../arduino.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPort \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialport.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qproperty.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qpropertyprivate.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportglobal.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qtserialportexports.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPortInfo \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportinfo.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/QDebug \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../equipement.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/QString \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlQuery \
@@ -1099,12 +1127,7 @@ release/main.o: ../../main.cpp ../../mainwindow.h \
 		../../connection.h \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlDatabase \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlError \
-		C:/Qt/6.7.3/mingw_64/include/QtSql/qsqlerror.h \
-		C:/Qt/6.7.3/mingw_64/include/QtCore/QDebug \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialogbuttonbox.h
+		C:/Qt/6.7.3/mingw_64/include/QtSql/qsqlerror.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\..\main.cpp
 
 release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
@@ -1377,6 +1400,20 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayout.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qgridlayout.h \
+		../../arduino.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPort \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialport.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qproperty.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/qpropertyprivate.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportglobal.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qtserialportexports.h \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/QSerialPortInfo \
+		C:/Qt/6.7.3/mingw_64/include/QtSerialPort/qserialportinfo.h \
+		C:/Qt/6.7.3/mingw_64/include/QtCore/QDebug \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
+		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		../../equipement.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/QString \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlQuery \
@@ -1413,10 +1450,6 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qstatusbar.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QTableWidget \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QWidget \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QMessageBox \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qmessagebox.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialog.h \
-		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/QFile \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qfile.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qfiledevice.h \
@@ -1442,7 +1475,6 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/qsqlrecord.h \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/QSqlError \
 		C:/Qt/6.7.3/mingw_64/include/QtSql/qsqlerror.h \
-		C:/Qt/6.7.3/mingw_64/include/QtCore/QDebug \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QSystemTrayIcon \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/qsystemtrayicon.h \
 		C:/Qt/6.7.3/mingw_64/include/QtWidgets/QHBoxLayout \
@@ -1518,8 +1550,6 @@ release/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qpointer.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qpluginloader.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qprocess.h \
-		C:/Qt/6.7.3/mingw_64/include/QtCore/qproperty.h \
-		C:/Qt/6.7.3/mingw_64/include/QtCore/qpropertyprivate.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qpropertyanimation.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qvariantanimation.h \
 		C:/Qt/6.7.3/mingw_64/include/QtCore/qqueue.h \

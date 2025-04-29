@@ -50,6 +50,7 @@ public:
     QPushButton *noti;
     QLabel *notificationBadge;
     QPushButton *calen;
+    QLabel *label_23;
     QStackedWidget *stackedWidget;
     QWidget *page_stats;
     QWidget *page_liste;
@@ -71,7 +72,6 @@ public:
     QPushButton *pushButton_10;
     QRadioButton *radioButton_9;
     QRadioButton *radioButton_10;
-    QLabel *label_23;
     QGroupBox *groupBox;
     QLabel *label_29;
     QLineEdit *lineEdit_8;
@@ -266,7 +266,7 @@ public:
         logout->setPixmap(QPixmap(QString::fromUtf8("../application/logout.png")));
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
-        frame->setGeometry(QRect(150, 0, 1391, 61));
+        frame->setGeometry(QRect(150, 0, 1391, 81));
         frame->setStyleSheet(QString::fromUtf8("#frame {\n"
 "    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #dee2e6;;\n"
@@ -337,6 +337,13 @@ public:
         icon7.addFile(QString::fromUtf8("calend.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         calen->setIcon(icon7);
         calen->setIconSize(QSize(60, 60));
+        label_23 = new QLabel(frame);
+        label_23->setObjectName("label_23");
+        label_23->setGeometry(QRect(610, 10, 241, 41));
+        notificationBadge->raise();
+        label_23->raise();
+        noti->raise();
+        calen->raise();
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
         stackedWidget->setGeometry(QRect(150, 60, 1381, 561));
@@ -631,9 +638,6 @@ public:
         radioButton_10 = new QRadioButton(groupBox_2);
         radioButton_10->setObjectName("radioButton_10");
         radioButton_10->setGeometry(QRect(590, 90, 110, 24));
-        label_23 = new QLabel(groupBox_2);
-        label_23->setObjectName("label_23");
-        label_23->setGeometry(QRect(-380, 210, 581, 91));
         groupBox_6->raise();
         tableWidget_3->raise();
         label_25->raise();
@@ -648,7 +652,6 @@ public:
         pushButton_10->raise();
         radioButton_9->raise();
         radioButton_10->raise();
-        label_23->raise();
         groupBox = new QGroupBox(page_liste);
         groupBox->setObjectName("groupBox");
         groupBox->setGeometry(QRect(10, 20, 381, 461));
@@ -807,6 +810,7 @@ public:
         noti->setText(QString());
         notificationBadge->setText(QString());
         calen->setText(QString());
+        label_23->setText(QString());
         groupBox_2->setTitle(QString());
         QTableWidgetItem *___qtablewidgetitem = tableWidget_3->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement ", nullptr));
@@ -860,7 +864,6 @@ public:
         pushButton_10->setText(QString());
         radioButton_9->setText(QCoreApplication::translate("MainWindow", "ASC", nullptr));
         radioButton_10->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
-        label_23->setText(QString());
         groupBox->setTitle(QString());
         label_29->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement", nullptr));
         label_30->setText(QCoreApplication::translate("MainWindow", "Nom de l'\303\251quipement", nullptr));
