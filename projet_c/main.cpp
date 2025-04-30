@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     {
         w->show();
         w->display();
+        w->checkDatabaseForUID();
         QObject::connect(w,&MainWindow::ajouterResultReady,h,&History::on_ajouter_performed);
         QMessageBox::information(nullptr, QObject::tr("database is open"),
                                  QObject::tr("connection successful.\n"

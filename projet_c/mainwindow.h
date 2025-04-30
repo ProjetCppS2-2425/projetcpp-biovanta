@@ -41,6 +41,7 @@ public:
         bool success;
     };
     QSortFilterProxyModel * proxy;
+    void checkDatabaseForUID();
 
 public slots:
     void on_radioButton_Ajouter_toggled(bool checked);

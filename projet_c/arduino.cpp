@@ -60,10 +60,10 @@ int Arduino::close_arduino()
 QByteArray Arduino::read_from_arduino()
 {
     if(serial->isReadable()){
-        data=serial->readAll(); //récupérer les données reçues
-
-        return data;
-    }
+        data=serial->readAll();
+        qDebug() << "Raw data (hex):" << data.toHex();
+        return data;        //récupérer les données reçues
+    }    
 }
 
 

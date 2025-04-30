@@ -28,6 +28,7 @@
 #include <QTextStream>
 #include <QStandardPaths>
 #include "arduino.h"
+#include <QString>
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -65,12 +66,36 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->DSC, &QCheckBox::toggled, this, &MainWindow::on_CBtri_currentIndexChanged);
     //ui->debug->setText(QString::number(C.countClients()));
     //ui->debug->setText( c.check_data_base() ? "true" : "false");
+    //connect(A.getserial(), &QSerialPort::readyRead, this, &MainWindow::checkDatabaseForUID);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::checkDatabaseForUID()
+{
+    QSqlQuery query;
+    QByteArray temp =A.read_from_arduino();
+    QString uid = QString::fromUtf8(temp);
+    query.prepare("SELECT NOM, PRENOM FROM EMPLOYEE WHERE U_ID = :uid");
+    query.bindValue(":uid", uid);
+    qDebug() << temp<<"temp = ";
+    if (query.exec()) {
+        if (query.next()) {
+            QString nom = query.value(0).toString();
+            QString prenom = query.value(1).toString();
+            QString employee = nom + " " + prenom;
+            qDebug() << "RFID UID" << uid << "********************found in the database. Granting access to:**************" << employee;
+            A.write_to_arduino(("NAME:" + employee + "\n").toUtf8());
+        } else {
+            qDebug() << "RFID UID" << uid << "not found in the database. Denying access.";
+            QString denied = "DENIED\n";
+             A.write_to_arduino(denied.toUtf8());
+        }
+    }
+}
+
 void MainWindow::display(){
      proxy = new QSortFilterProxyModel(this);
     proxy->setSourceModel(C.afficher());
