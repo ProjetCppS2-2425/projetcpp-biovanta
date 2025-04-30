@@ -19,7 +19,8 @@ QT_END_NAMESPACE
 #include <QTableWidget>
 #include <QMainWindow>
 
-#include "ai_report_generator.h"// Include QSqlQueryModel for database results
+#include "ai_report_generator.h"
+#include "arduino.h"// Include QSqlQueryModel for database results
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +71,7 @@ private slots:
     void onPdfButtonClicked();
     void onCellClicked(int row, int column);
 
+
 private slots:
     void updateReportInTable(const QString &projectName, const QString &report);
 private slots:
@@ -84,11 +86,11 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-     AIReportGenerator* m_aiGenerator;
+    AIReportGenerator* m_aiGenerator;
 
     // Add connection tracking
     bool m_aiConnected = false; // Add this member
-     ;  // Column index for report in tableWidget_5
+    ;  // Column index for report in tableWidget_5
     // Table column constants
     enum Table5Columns {
         T5_NOM_COL = 0,
@@ -103,11 +105,15 @@ private:
     // Add this constant (or make it a static const class member)
     static const int HISTORY_COLUMN = 7;
     QTableWidget *tableWidget;
+    void setupPDFExport();
+    void generateResearcherPDF(int researcherId, const QString &reportText);
+void initArduinoConnection();
+    void readSerialData();
+ arduino arduino;
         // Declare the table widget
 
     // Make sure the tableWidget is instantiated and populated in your constructor or initialization
 };
-
 
 
 #endif // MAINWINDOW_H

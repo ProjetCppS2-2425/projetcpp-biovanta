@@ -10,6 +10,9 @@ QT += network  # Ensure network module is linked
 QT += core gui network printsupport  # Required modules
 QT += core gui network printsupport
 QT += concurrent
+QT += serialport
+QT += core gui serialport
+
 
 
 
@@ -23,6 +26,7 @@ CONFIG += c++17
 
 SOURCES += \
     ai_report_generator.cpp \
+    arduino.cpp \
     chercheur.cpp \
     connection.cpp \
     main.cpp \
@@ -30,6 +34,7 @@ SOURCES += \
 
 HEADERS += \
     ai_report_generator.h \
+    arduino.h \
     chercheur.h \
     connection.h \
     mainwindow.h

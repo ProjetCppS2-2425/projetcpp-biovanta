@@ -64,6 +64,7 @@ private:
     QString projet_en_cours;
     static QHash<int, QList<QPair<QString, QDateTime>>> projectHistory;
     void initProjectJson();
+     QString fullProjectJson;
 
 
 
@@ -104,20 +105,28 @@ public:
     static QList<Chercheur> getChercheursSorted(const QString& sortBy, bool ascending);
  QString getCurrentProject() const;
     QString getFullProjectJson() const { return projet_en_cours; }
-    QString getFormattedHistory() const;
-    QString cleanProjectName(const QString &project) const;
+
 
     void updateProjectHistory(const QString &newProject);
      void cleanCurrentProject();
     static void generatePDF(const QString& filePath, const QList<Chercheur>& chercheurs);
 
-
         // ...
 
     // Function to display search results in a QTableWidget
 
+public:
+    // ... existing public methods ...
 
+    // Add these methods for creation date and history handling
+    QString getCreationDate() const;
+    QString getFormattedHistory() const;
 
+    // Method to set creation date (used when adding new researcher)
+    void setCreationDate(const QString &date);
+
+    // Method to get clean project name (if not already present)
+    QString cleanProjectName(const QString &project) const;
 
 
 

@@ -15,6 +15,9 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/* Style global des boutons */
+background-color: rgb(240, 248, 255); /* Very light blue */
+
+
 QPushButton {
     background-color: #34495E;  /* Bleu foncé */
     color: white;
@@ -58,7 +61,7 @@ QPushButton#btnEquipement:checked {
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>131</width>
+      <width>141</width>
       <height>651</height>
      </rect>
     </property>
@@ -91,22 +94,6 @@ QPushButton#btnEquipement:checked {
 }
 </string>
     </property>
-    <widget class="QLabel" name="logo">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>81</width>
-       <height>111</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../../../Documents/projet_c/application/logo1.png</pixmap>
-     </property>
-    </widget>
     <widget class="QPushButton" name="emp1">
      <property name="geometry">
       <rect>
@@ -115,6 +102,21 @@ QPushButton#btnEquipement:checked {
        <width>141</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
      </property>
      <property name="text">
       <string>employées</string>
@@ -165,6 +167,21 @@ QPushButton:hover {
        <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+     </property>
      <property name="text">
       <string>vaccins</string>
      </property>
@@ -189,7 +206,19 @@ QPushButton:hover {
       </rect>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
      </property>
      <property name="text">
       <string>équipements</string>
@@ -208,6 +237,21 @@ QPushButton:hover {
        <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+     </property>
      <property name="text">
       <string>clients</string>
      </property>
@@ -220,7 +264,7 @@ QPushButton:hover {
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>560</y>
+       <y>550</y>
        <width>111</width>
        <height>31</height>
       </rect>
@@ -265,6 +309,9 @@ QPushButton#pushButton_8::before {
        <height>31</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #2C3E50;</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -276,10 +323,13 @@ QPushButton#pushButton_8::before {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>570</y>
-       <width>63</width>
-       <height>20</height>
+       <y>549</y>
+       <width>31</width>
+       <height>41</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #2C3E50;</string>
      </property>
      <property name="text">
       <string/>
@@ -288,14 +338,17 @@ QPushButton#pushButton_8::before {
       <pixmap>../../../Documents/projet_c/projet_c/logout.png</pixmap>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="logo1">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>40</y>
+       <y>50</y>
        <width>111</width>
        <height>91</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #2C3E50;</string>
      </property>
      <property name="text">
       <string/>
@@ -304,6 +357,48 @@ QPushButton#pushButton_8::before {
       <pixmap>../../../Documents/projet_c/projet_c/logo1.png</pixmap>
      </property>
     </widget>
+    <widget class="QPushButton" name="eq_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>350</y>
+       <width>141</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+     </property>
+     <property name="text">
+      <string>test biologique</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../../Documents/projet_c/projet_c/equipement.png</normaloff>../../../Documents/projet_c/projet_c/equipement.png</iconset>
+     </property>
+    </widget>
+    <zorder>emp1</zorder>
+    <zorder>chercheur</zorder>
+    <zorder>vac</zorder>
+    <zorder>eq</zorder>
+    <zorder>client</zorder>
+    <zorder>pushButton_8</zorder>
+    <zorder>logout</zorder>
+    <zorder>label_3</zorder>
+    <zorder>eq_2</zorder>
+    <zorder>logo1</zorder>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -328,10 +423,47 @@ QPushButton#pushButton_8::before {
       <height>571</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">/* Style global des boutons */
+QPushButton {
+    background-color: #34495E;  /* Bleu foncé */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    text-align: left;
+}
+
+QPushButton:hover {
+    background-color: #1ABC9C; /* Vert */
+}
+
+QPushButton:checked {
+    background-color: #16A085; /* Vert foncé */
+}
+
+/* Spécifique au bouton &quot;Équipement&quot; */
+QPushButton#btnEquipement {
+    background-color: white;  /* Couleur de fond blanche */
+    color: #34495E;  /* Texte bleu foncé */
+}
+
+QPushButton#btnEquipement:hover {
+    background-color: #1ABC9C; /* Vert */
+    color: white;  /* Texte blanc */
+}
+
+QPushButton#btnEquipement:checked {
+    background-color: #16A085; /* Vert foncé */
+    color: white;  /* Texte blanc */
+}
+</string>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="page_5">
+    <widget class="QWidget" name="widget_2">
      <widget class="QPushButton" name="test">
       <property name="geometry">
        <rect>
@@ -355,9 +487,9 @@ QPushButton#pushButton_8::before {
      <widget class="QGroupBox" name="groupBox_12">
       <property name="geometry">
        <rect>
-        <x>330</x>
+        <x>340</x>
         <y>10</y>
-        <width>1041</width>
+        <width>1021</width>
         <height>571</height>
        </rect>
       </property>
@@ -585,7 +717,7 @@ QGroupBox {
       <widget class="QPushButton" name="stat_4">
        <property name="geometry">
         <rect>
-         <x>660</x>
+         <x>700</x>
          <y>80</y>
          <width>81</width>
          <height>31</height>
@@ -666,7 +798,7 @@ QGroupBox {
         <rect>
          <x>20</x>
          <y>130</y>
-         <width>1001</width>
+         <width>981</width>
          <height>411</height>
         </rect>
        </property>
@@ -697,7 +829,7 @@ QGroupBox {
        <widget class="QPushButton" name="supp_6">
         <property name="geometry">
          <rect>
-          <x>930</x>
+          <x>900</x>
           <y>10</y>
           <width>41</width>
           <height>41</height>
@@ -738,7 +870,7 @@ QPushButton {
          <rect>
           <x>670</x>
           <y>20</y>
-          <width>251</width>
+          <width>211</width>
           <height>20</height>
          </rect>
         </property>
@@ -817,6 +949,11 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
           <string>Historique</string>
          </property>
         </column>
+        <column>
+         <property name="text">
+          <string>Rapport</string>
+         </property>
+        </column>
        </widget>
       </widget>
       <widget class="QLineEdit" name="S1_4">
@@ -861,6 +998,32 @@ QPushButton:pressed {
         <string>AI RAPPORT</string>
        </property>
       </widget>
+      <widget class="QLabel" name="label_23">
+       <property name="geometry">
+        <rect>
+         <x>820</x>
+         <y>90</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <zorder>stat_4</zorder>
+      <zorder>label_49</zorder>
+      <zorder>filtrage_4</zorder>
+      <zorder>tri_4</zorder>
+      <zorder>label_50</zorder>
+      <zorder>pdf_4</zorder>
+      <zorder>ok_4</zorder>
+      <zorder>ASC_4</zorder>
+      <zorder>DSC_4</zorder>
+      <zorder>groupBox_14</zorder>
+      <zorder>S1_4</zorder>
+      <zorder>btn_goToStats</zorder>
+      <zorder>label_23</zorder>
      </widget>
      <widget class="QGroupBox" name="groupBox_15">
       <property name="geometry">
@@ -1001,15 +1164,99 @@ QPushButton:pressed {
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>301</width>
+         <width>261</width>
          <height>21</height>
         </rect>
        </property>
        <property name="palette">
         <palette>
-         <active/>
-         <inactive/>
-         <disabled/>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>248</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
         </palette>
        </property>
        <property name="font">
@@ -1171,44 +1418,28 @@ QPushButton:pressed {
     </widget>
     <widget class="QWidget" name="page_6"/>
     <widget class="QWidget" name="page_7">
+     <widget class="QPushButton" name="backButton">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>10</y>
+        <width>93</width>
+        <height>29</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>backButton</string>
+      </property>
+     </widget>
      <widget class="QTableWidget" name="tableWidget_5">
       <property name="geometry">
        <rect>
-        <x>75</x>
-        <y>101</y>
-        <width>521</width>
-        <height>231</height>
+        <x>970</x>
+        <y>230</y>
+        <width>256</width>
+        <height>192</height>
        </rect>
       </property>
-      <row>
-       <property name="text">
-        <string>4</string>
-       </property>
-      </row>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <column>
-       <property name="text">
-        <string>nom</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>project en cours</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>rapport</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>id</string>
-       </property>
-      </column>
      </widget>
     </widget>
    </widget>

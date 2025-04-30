@@ -668,67 +668,112 @@ void Chercheur::updateProjectHistory(const QString &newProject) {
     QJsonObject json = doc.object();
     QString current = cleanProjectName(json["current"].toString());
 
-    if (current != newProject && !current.isEmpty()) {
+    // Only add to history if:
+    // 1. The project is actually changing
+    // 2. The current project isn't empty
+    // 3. The new project isn't empty
+    if (current != newProject && !current.isEmpty() && !newProject.isEmpty()) {
         QJsonArray history = json["history"].toArray();
 
-        history.prepend(QJsonObject{
-            {"date", QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss")},
-            {"project", current} // Store already cleaned name
-        });
+        // Create a detailed history entry with timestamp and action type
+        QJsonObject historyEntry;
+        historyEntry["date"] = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+        historyEntry["project"] = current;
+        historyEntry["action"] = (current == "None" || current.isEmpty()) ? "Added" : "Modified";
 
-        // Keep last 10 entries
-        while (history.size() > 10) history.removeLast();
+        history.prepend(historyEntry);
+
+        // Keep last 15 entries (adjust as needed)
+        while (history.size() > 15) history.removeLast();
         json["history"] = history;
     }
 
+    // Update current project
     json["current"] = newProject;
     projet_en_cours = QJsonDocument(json).toJson(QJsonDocument::Compact);
 }
-QString Chercheur::getCurrentProject() const {
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
-    return doc.object()["current"].toString();
+// Get the creation date from JSON data
+QString Chercheur::getCreationDate() const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    if (doc.isNull() || !doc.object().contains("creation_date")) {
+        return "Date inconnue";  // Return "Unknown date" if not found
+    }
+    return doc.object()["creation_date"].toString();
 }
-QString Chercheur::getFormattedHistory() const {
-    if (projet_en_cours.isEmpty()) {
-        return "No history available";
+
+// Set the creation date in JSON data
+void Chercheur::setCreationDate(const QString &date)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    QJsonObject data = doc.object();
+    data["creation_date"] = date;
+    fullProjectJson = QJsonDocument(data).toJson();
+}
+
+// Get formatted history string for display
+QString Chercheur::getFormattedHistory() const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    if (doc.isNull()) {
+        return "Aucun historique disponible";  // "No history available"
     }
 
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8(), &error);
+    QJsonObject data = doc.object();
+    QString historyText;
 
-    if (error.error != QJsonParseError::NoError || !doc.isObject()) {
-        return "Invalid project data";
-    }
+    // Format creation date
+    QString creationDate = QDateTime::fromString(data["creation_date"].toString(), Qt::ISODate)
+                               .toString("dd/MM/yyyy 'à' HH:mm");
+    historyText += QString("🕒 Créé le: %1\n\n").arg(creationDate);
 
-    QJsonObject json = doc.object();
-    QString current = json["current"].toString();
-    QJsonArray history = json["history"].toArray();
+    // Add project history if available
+    if (data.contains("projects")) {
+        historyText += "📂 Historique des projets:\n";
+        QJsonArray historyArray = data["projects"].toObject()["history"].toArray();
 
-    QString result;
-    result += "<b>Current Project:</b> " + cleanProjectName(current) + "<br><br>";
-    result += "<b>History:</b>";
-
-    for (const QJsonValue& item : history) {
-        if (item.isObject()) {
-            QJsonObject obj = item.toObject();
-            result += QString("<br>• %1: %2")
-                          .arg(obj["date"].toString())
-                          .arg(cleanProjectName(obj["project"].toString()));
+        for (const QJsonValue &entry : historyArray) {
+            QJsonObject projectEntry = entry.toObject();
+            QString date = QDateTime::fromString(projectEntry["date"].toString(), Qt::ISODate)
+                               .toString("dd/MM/yyyy");
+            QString projectName = cleanProjectName(projectEntry["project"].toString());
+            historyText += QString("• %1 - %2\n").arg(date, projectName);
         }
     }
 
-    return result;
+    return historyText;
 }
 
-QString Chercheur::cleanProjectName(const QString &project) const {
-    if (project.isEmpty()) return "None";
-    if (!project.startsWith("{")) return project;
-
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(project.toUtf8(), &error);
-    if (error.error == QJsonParseError::NoError && doc.isObject()) {
-        QString clean = doc.object()["current"].toString();
-        return clean.isEmpty() ? "Invalid" : clean;
+// Helper method to clean project names
+QString Chercheur::cleanProjectName(const QString &project) const
+{
+    if (project.isEmpty() || project == "null" || project == "None") {
+        return "Aucun projet";
     }
-    return "Invalid";
+    return project;
+}
+QString Chercheur::getCurrentProject() const
+{
+    // Parse the JSON data
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    if (doc.isNull()) {
+        return "Aucun projet";  // Return "No project" if JSON is invalid
+    }
+
+    QJsonObject data = doc.object();
+
+    // First try to get from projects->current structure
+    if (data.contains("projects")) {
+        QJsonObject projects = data["projects"].toObject();
+        if (projects.contains("current")) {
+            QString project = projects["current"].toString();
+            return cleanProjectName(project);
+        }
+    }
+    // Fallback to direct "current" field (old structure)
+    else if (data.contains("current")) {
+        return cleanProjectName(data["current"].toString());
+    }
+
+    return "Aucun projet";  // Default if no project found
 }
