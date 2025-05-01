@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
+** Form generated from reading UI file 'equipement1.ui'
 **
 ** Created by: Qt User Interface Compiler version 6.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_MAINWINDOW_H
-#define UI_MAINWINDOW_H
+#ifndef UI_EQUIPEMENT1_H
+#define UI_EQUIPEMENT1_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
@@ -50,6 +50,7 @@ public:
     QPushButton *noti;
     QLabel *notificationBadge;
     QPushButton *calen;
+    QLabel *label_23;
     QStackedWidget *stackedWidget;
     QWidget *page_stats;
     QWidget *page_liste;
@@ -93,6 +94,8 @@ public:
     QDateEdit *dateEditDebut;
     QLabel *label_2;
     QDateEdit *dateEditFin;
+    QLabel *res;
+    QComboBox *comboBox_16;
     QLabel *bg;
     QGroupBox *groupBox_3;
     QRadioButton *radioButton_11;
@@ -334,6 +337,13 @@ public:
         icon7.addFile(QString::fromUtf8("calend.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         calen->setIcon(icon7);
         calen->setIconSize(QSize(60, 60));
+        label_23 = new QLabel(frame);
+        label_23->setObjectName("label_23");
+        label_23->setGeometry(QRect(610, 10, 241, 41));
+        notificationBadge->raise();
+        label_23->raise();
+        noti->raise();
+        calen->raise();
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
         stackedWidget->setGeometry(QRect(150, 60, 1381, 561));
@@ -451,8 +461,8 @@ public:
 "\n"
 ""));
         tableWidget_3 = new QTableWidget(groupBox_2);
-        if (tableWidget_3->columnCount() < 7)
-            tableWidget_3->setColumnCount(7);
+        if (tableWidget_3->columnCount() < 8)
+            tableWidget_3->setColumnCount(8);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         tableWidget_3->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
@@ -467,28 +477,30 @@ public:
         tableWidget_3->setHorizontalHeaderItem(5, __qtablewidgetitem5);
         QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
         tableWidget_3->setHorizontalHeaderItem(6, __qtablewidgetitem6);
+        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
+        tableWidget_3->setHorizontalHeaderItem(7, __qtablewidgetitem7);
         if (tableWidget_3->rowCount() < 8)
             tableWidget_3->setRowCount(8);
-        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
-        tableWidget_3->setItem(0, 0, __qtablewidgetitem7);
         QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        tableWidget_3->setItem(0, 1, __qtablewidgetitem8);
+        tableWidget_3->setItem(0, 0, __qtablewidgetitem8);
         QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        tableWidget_3->setItem(0, 4, __qtablewidgetitem9);
+        tableWidget_3->setItem(0, 1, __qtablewidgetitem9);
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        tableWidget_3->setItem(0, 5, __qtablewidgetitem10);
+        tableWidget_3->setItem(0, 4, __qtablewidgetitem10);
         QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
-        tableWidget_3->setItem(0, 6, __qtablewidgetitem11);
+        tableWidget_3->setItem(0, 5, __qtablewidgetitem11);
         QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
-        tableWidget_3->setItem(1, 0, __qtablewidgetitem12);
+        tableWidget_3->setItem(0, 6, __qtablewidgetitem12);
         QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        tableWidget_3->setItem(1, 1, __qtablewidgetitem13);
+        tableWidget_3->setItem(1, 0, __qtablewidgetitem13);
         QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
-        tableWidget_3->setItem(1, 4, __qtablewidgetitem14);
+        tableWidget_3->setItem(1, 1, __qtablewidgetitem14);
         QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
-        tableWidget_3->setItem(1, 5, __qtablewidgetitem15);
+        tableWidget_3->setItem(1, 4, __qtablewidgetitem15);
         QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
-        tableWidget_3->setItem(1, 6, __qtablewidgetitem16);
+        tableWidget_3->setItem(1, 5, __qtablewidgetitem16);
+        QTableWidgetItem *__qtablewidgetitem17 = new QTableWidgetItem();
+        tableWidget_3->setItem(1, 6, __qtablewidgetitem17);
         tableWidget_3->setObjectName("tableWidget_3");
         tableWidget_3->setGeometry(QRect(110, 190, 741, 281));
         tableWidget_3->setStyleSheet(QString::fromUtf8("tableWidget->setStyleSheet(\n"
@@ -513,7 +525,7 @@ public:
 ");\n"
 ""));
         tableWidget_3->setRowCount(8);
-        tableWidget_3->setColumnCount(7);
+        tableWidget_3->setColumnCount(8);
         label_25 = new QLabel(groupBox_2);
         label_25->setObjectName("label_25");
         label_25->setGeometry(QRect(190, 30, 101, 20));
@@ -653,35 +665,35 @@ public:
 ""));
         label_29 = new QLabel(groupBox);
         label_29->setObjectName("label_29");
-        label_29->setGeometry(QRect(30, 50, 131, 20));
+        label_29->setGeometry(QRect(30, 40, 131, 20));
         lineEdit_8 = new QLineEdit(groupBox);
         lineEdit_8->setObjectName("lineEdit_8");
-        lineEdit_8->setGeometry(QRect(210, 50, 91, 26));
+        lineEdit_8->setGeometry(QRect(210, 40, 91, 26));
         label_30 = new QLabel(groupBox);
         label_30->setObjectName("label_30");
-        label_30->setGeometry(QRect(20, 90, 151, 20));
+        label_30->setGeometry(QRect(20, 80, 151, 20));
         label_31 = new QLabel(groupBox);
         label_31->setObjectName("label_31");
-        label_31->setGeometry(QRect(50, 180, 63, 20));
+        label_31->setGeometry(QRect(30, 160, 63, 20));
         pushButton_11 = new QPushButton(groupBox);
         pushButton_11->setObjectName("pushButton_11");
-        pushButton_11->setGeometry(QRect(190, 170, 111, 41));
+        pushButton_11->setGeometry(QRect(190, 150, 111, 41));
         label_32 = new QLabel(groupBox);
         label_32->setObjectName("label_32");
-        label_32->setGeometry(QRect(40, 230, 63, 20));
+        label_32->setGeometry(QRect(40, 210, 63, 20));
         comboBox_13 = new QComboBox(groupBox);
         comboBox_13->addItem(QString());
         comboBox_13->addItem(QString());
         comboBox_13->addItem(QString());
         comboBox_13->addItem(QString());
         comboBox_13->setObjectName("comboBox_13");
-        comboBox_13->setGeometry(QRect(190, 230, 111, 26));
+        comboBox_13->setGeometry(QRect(190, 210, 111, 26));
         label_33 = new QLabel(groupBox);
         label_33->setObjectName("label_33");
-        label_33->setGeometry(QRect(30, 280, 131, 20));
+        label_33->setGeometry(QRect(30, 250, 131, 20));
         label_34 = new QLabel(groupBox);
         label_34->setObjectName("label_34");
-        label_34->setGeometry(QRect(20, 320, 171, 20));
+        label_34->setGeometry(QRect(20, 290, 171, 20));
         pushButton_12 = new QPushButton(groupBox);
         pushButton_12->setObjectName("pushButton_12");
         pushButton_12->setGeometry(QRect(40, 400, 91, 31));
@@ -699,34 +711,42 @@ public:
         comboBox_14->addItem(QString());
         comboBox_14->addItem(QString());
         comboBox_14->setObjectName("comboBox_14");
-        comboBox_14->setGeometry(QRect(190, 280, 121, 26));
+        comboBox_14->setGeometry(QRect(190, 250, 121, 26));
         spinBox_3 = new QSpinBox(groupBox);
         spinBox_3->setObjectName("spinBox_3");
-        spinBox_3->setGeometry(QRect(240, 320, 42, 26));
+        spinBox_3->setGeometry(QRect(240, 290, 42, 26));
         lineEdit_9 = new QLineEdit(groupBox);
         lineEdit_9->setObjectName("lineEdit_9");
-        lineEdit_9->setGeometry(QRect(210, 90, 91, 26));
+        lineEdit_9->setGeometry(QRect(210, 80, 91, 26));
         label_36 = new QLabel(groupBox);
         label_36->setObjectName("label_36");
-        label_36->setGeometry(QRect(30, 130, 91, 20));
+        label_36->setGeometry(QRect(30, 120, 91, 20));
         comboBox_15 = new QComboBox(groupBox);
         comboBox_15->addItem(QString());
         comboBox_15->addItem(QString());
         comboBox_15->addItem(QString());
         comboBox_15->setObjectName("comboBox_15");
-        comboBox_15->setGeometry(QRect(190, 130, 131, 26));
+        comboBox_15->setGeometry(QRect(190, 110, 131, 26));
         label = new QLabel(groupBox);
         label->setObjectName("label");
-        label->setGeometry(QRect(10, 360, 71, 21));
+        label->setGeometry(QRect(10, 330, 71, 21));
         dateEditDebut = new QDateEdit(groupBox);
         dateEditDebut->setObjectName("dateEditDebut");
-        dateEditDebut->setGeometry(QRect(90, 360, 110, 26));
+        dateEditDebut->setGeometry(QRect(90, 330, 110, 26));
         label_2 = new QLabel(groupBox);
         label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(210, 360, 63, 20));
+        label_2->setGeometry(QRect(200, 340, 63, 20));
         dateEditFin = new QDateEdit(groupBox);
         dateEditFin->setObjectName("dateEditFin");
-        dateEditFin->setGeometry(QRect(260, 360, 110, 26));
+        dateEditFin->setGeometry(QRect(260, 330, 110, 26));
+        res = new QLabel(groupBox);
+        res->setObjectName("res");
+        res->setGeometry(QRect(20, 370, 161, 20));
+        comboBox_16 = new QComboBox(groupBox);
+        comboBox_16->addItem(QString());
+        comboBox_16->addItem(QString());
+        comboBox_16->setObjectName("comboBox_16");
+        comboBox_16->setGeometry(QRect(200, 370, 111, 26));
         bg = new QLabel(page_liste);
         bg->setObjectName("bg");
         bg->setGeometry(QRect(-10, -70, 1411, 631));
@@ -769,7 +789,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -790,6 +810,7 @@ public:
         noti->setText(QString());
         notificationBadge->setText(QString());
         calen->setText(QString());
+        label_23->setText(QString());
         groupBox_2->setTitle(QString());
         QTableWidgetItem *___qtablewidgetitem = tableWidget_3->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement ", nullptr));
@@ -805,19 +826,21 @@ public:
         ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = tableWidget_3->horizontalHeaderItem(6);
         ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "nombre", nullptr));
+        QTableWidgetItem *___qtablewidgetitem7 = tableWidget_3->horizontalHeaderItem(7);
+        ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
 
         const bool __sortingEnabled = tableWidget_3->isSortingEnabled();
         tableWidget_3->setSortingEnabled(false);
-        QTableWidgetItem *___qtablewidgetitem7 = tableWidget_3->item(1, 0);
-        ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "01245", nullptr));
-        QTableWidgetItem *___qtablewidgetitem8 = tableWidget_3->item(1, 1);
-        ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "Microscopes optiques", nullptr));
-        QTableWidgetItem *___qtablewidgetitem9 = tableWidget_3->item(1, 4);
-        ___qtablewidgetitem9->setText(QCoreApplication::translate("MainWindow", "marche ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem10 = tableWidget_3->item(1, 5);
-        ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "disponible", nullptr));
-        QTableWidgetItem *___qtablewidgetitem11 = tableWidget_3->item(1, 6);
-        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "5", nullptr));
+        QTableWidgetItem *___qtablewidgetitem8 = tableWidget_3->item(1, 0);
+        ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "01245", nullptr));
+        QTableWidgetItem *___qtablewidgetitem9 = tableWidget_3->item(1, 1);
+        ___qtablewidgetitem9->setText(QCoreApplication::translate("MainWindow", "Microscopes optiques", nullptr));
+        QTableWidgetItem *___qtablewidgetitem10 = tableWidget_3->item(1, 4);
+        ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "marche ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem11 = tableWidget_3->item(1, 5);
+        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "disponible", nullptr));
+        QTableWidgetItem *___qtablewidgetitem12 = tableWidget_3->item(1, 6);
+        ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "5", nullptr));
         tableWidget_3->setSortingEnabled(__sortingEnabled);
 
         label_25->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
@@ -849,7 +872,7 @@ public:
         label_32->setText(QCoreApplication::translate("MainWindow", "Etat ", nullptr));
         comboBox_13->setItemText(0, QCoreApplication::translate("MainWindow", "Fonctionnel ", nullptr));
         comboBox_13->setItemText(1, QCoreApplication::translate("MainWindow", "pas Fonctionnel ", nullptr));
-        comboBox_13->setItemText(2, QCoreApplication::translate("MainWindow", "Nouvel \303\251l\303\251ment", nullptr));
+        comboBox_13->setItemText(2, QCoreApplication::translate("MainWindow", "pas fonctionnel incendie", nullptr));
         comboBox_13->setItemText(3, QCoreApplication::translate("MainWindow", "En maintenance", nullptr));
 
         label_33->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
@@ -867,6 +890,10 @@ public:
 
         label->setText(QCoreApplication::translate("MainWindow", "dateDebut", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "dateFin", nullptr));
+        res->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
+        comboBox_16->setItemText(0, QCoreApplication::translate("MainWindow", "resistible", nullptr));
+        comboBox_16->setItemText(1, QCoreApplication::translate("MainWindow", "pas resistible", nullptr));
+
         bg->setText(QString());
         groupBox_3->setTitle(QString());
         radioButton_11->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
@@ -881,4 +908,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_MAINWINDOW_H
+#endif // UI_EQUIPEMENT1_H

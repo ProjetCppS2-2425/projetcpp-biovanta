@@ -266,7 +266,7 @@ public:
         logout->setPixmap(QPixmap(QString::fromUtf8("../application/logout.png")));
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
-        frame->setGeometry(QRect(150, 0, 1391, 81));
+        frame->setGeometry(QRect(150, 0, 1391, 61));
         frame->setStyleSheet(QString::fromUtf8("#frame {\n"
 "    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #dee2e6;;\n"

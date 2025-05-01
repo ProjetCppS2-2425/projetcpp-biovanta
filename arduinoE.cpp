@@ -1,4 +1,4 @@
-#include "arduino.h"
+#include "arduinoE.h"
 #include <QDebug>
 
 arduino::arduino()

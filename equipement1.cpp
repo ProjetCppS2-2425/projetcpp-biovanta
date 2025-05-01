@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "equipement1.h"
+#include "ui_equipement1.h"
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QFile>
@@ -35,7 +35,7 @@
 #include <QLabel>
 #include <QGroupBox>
 #include <QFont>
-#include "arduino.h"
+#include "arduinoE.h"
 
 
 
@@ -200,11 +200,11 @@ MainWindow::MainWindow(QWidget *parent)
          "}"
          );
 
-     // Si vous avez une icône
+
      backButtonCalendar->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\back.png"));
      backButtonCalendar->setIconSize(QSize(20, 20));
 
-     // Connexion du signal
+
      connect(backButtonCalendar, &QPushButton::clicked, this, [this]() {
          ui->stackedWidget->setCurrentWidget(ui->page_liste);
      });
@@ -716,34 +716,30 @@ void MainWindow::on_ok_3_clicked() {
     QString valeur = ui->lineEdit_7->text().trimmed();
 
     if (valeur.isEmpty()) {
-        QMessageBox::warning(this, "Erreur", "Veuillez entrer une valeur de recherche.");
+        if (!QApplication::activeModalWidget()) { // Empêche double affichage
+            QMessageBox::warning(this, "Erreur", "Veuillez entrer une valeur de recherche.");
+        }
         return;
     }
 
-    QString queryStr;
+    QMap<QString, QString> critereToColumn = {
+        {"type", "type"},
+        {"id équipement", "TRIM(id_equipement)"},
+        {"disponibilité", "disponibilite"}
+    };
 
-    if (critere == "type") {
-        queryStr = "SELECT * FROM EQUIPEMENT WHERE type LIKE :valeur";
-    }
-    else if (critere == "id équipement") {
-        queryStr = "SELECT * FROM EQUIPEMENT WHERE TRIM(id_equipement) LIKE :valeur";
-    }
-    else if (critere == "disponibilité") {
-        queryStr = "SELECT * FROM EQUIPEMENT WHERE disponibilite LIKE :valeur";
-    }
-    else {
+    if (!critereToColumn.contains(critere)) {
         QMessageBox::warning(this, "Erreur", "Critère de recherche invalide.");
         return;
     }
 
+    QString column = critereToColumn.value(critere);
+    QString queryStr = QString("SELECT * FROM EQUIPEMENT WHERE %1 LIKE :valeur").arg(column);
+
     QSqlQuery query;
     query.prepare(queryStr);
+    query.bindValue(":valeur", "%" + valeur + "%"); // Recherche partielle pour tous
 
-    if (critere == "type" || critere == "disponibilité") {
-        query.bindValue(":valeur", "%" + valeur + "%");
-    } else {
-        query.bindValue(":valeur", valeur);
-    }
     qDebug() << "Requête exécutée : " << queryStr << " avec valeur = " << valeur;
 
     if (!query.exec()) {
@@ -761,6 +757,7 @@ void MainWindow::on_ok_3_clicked() {
         ui->tableWidget_3->setItem(row, 1, new QTableWidgetItem(query.value("nom_eq").toString()));
 
         QByteArray imageData = query.value("image").toByteArray();
+        QTableWidgetItem *imgItem = new QTableWidgetItem;
         if (!imageData.isEmpty()) {
             QPixmap pixmap;
             if (pixmap.loadFromData(imageData)) {
@@ -778,14 +775,19 @@ void MainWindow::on_ok_3_clicked() {
         ui->tableWidget_3->setItem(row, 4, new QTableWidgetItem(query.value("etat").toString()));
         ui->tableWidget_3->setItem(row, 5, new QTableWidgetItem(query.value("disponibilite").toString()));
         ui->tableWidget_3->setItem(row, 6, new QTableWidgetItem(query.value("nbre_eq").toString()));
-
+        ui->tableWidget_3->setItem(row, 7, new QTableWidgetItem(query.value("resis_flamme").toString()));
         row++;
     }
 
+    // Vérification de la présence de résultats
     if (row == 0) {
-        QMessageBox::information(this, "Information", "Aucun résultat trouvé.");
+        if (!QApplication::activeModalWidget()) { // Empêche l'affichage multiple du message
+            QMessageBox::information(this, "Information", "Aucun résultat trouvé.");
+        }
     }
 }
+
+
 void MainWindow::on_pushButton_10_clicked()
 {
     QList<Equipement> liste = Equipement::afficher();
