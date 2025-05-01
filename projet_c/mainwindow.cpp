@@ -80,7 +80,7 @@ void MainWindow::checkDatabaseForUID()
     QString uid = QString::fromUtf8(temp);
     query.prepare("SELECT NOM, PRENOM FROM EMPLOYEE WHERE U_ID = :uid");
     query.bindValue(":uid", uid);
-    qDebug() << temp<<"temp = ";
+    //qDebug() << temp<<"temp = ";
     if (query.exec()) {
         if (query.next()) {
             QString nom = query.value(0).toString();
