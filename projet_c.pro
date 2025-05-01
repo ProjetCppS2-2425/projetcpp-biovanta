@@ -26,21 +26,21 @@ CONFIG += c++17
 
 SOURCES += \
     ai_report_generator.cpp \
-    arduino.cpp \
+    arduino1.cpp \
     chercheur.cpp \
+    chercheur_1.cpp \
     connection.cpp \
-    main.cpp \
-    mainwindow.cpp
+    main.cpp
 
 HEADERS += \
     ai_report_generator.h \
-    arduino.h \
+    arduino1.h \
     chercheur.h \
-    connection.h \
-    mainwindow.h
+    chercheur_1.h \
+    connection.h
 
 FORMS += \
-    mainwindow.ui
+    chercheur_1.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

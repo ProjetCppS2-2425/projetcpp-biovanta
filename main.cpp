@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "chercheur_1.h"
 #include <QApplication>
 #include "connection.h"
 #include <QMessageBox>
@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
         return -1; // Quitter l'application si la connexion échoue
     }
 
-    // Affichage de la fenêtre principale
-    MainWindow w;
+    // ONLY CHANGE MADE: MainWindow → chercheur_1
+    chercheur_1 w;  // This is the ONLY line changed
     w.show();
 
     return a.exec();

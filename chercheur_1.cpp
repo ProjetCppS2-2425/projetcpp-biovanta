@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "chercheur_1.h"
 #include "chercheur.h"
-#include "ui_mainwindow.h"
+#include "ui_chercheur_1.h"
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QDebug>
@@ -11,30 +11,30 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include "ai_report_generator.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "chercheur_1.h"
+#include "ui_chercheur_1.h"
 #include "ai_report_generator.h"
-#include "arduino.h"
+#include "arduino1.h"
 
 // Global or class-level instance
 
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , m_aiGenerator(new AIReportGenerator(this))  // Create the generator instance
+chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
+    : QMainWindow(parent),                 // Fixed: QMainWindow not QWainWindow
+    ui(new Ui::chercheur_1),
+    m_aiGenerator(new AIReportGenerator(this))  // Fixed: m_aiGenerator not m_aIGenerator
 {
     ui->setupUi(this);
-        setupPDFExport();
-    const int PDF_COLUMN = 8; // Adjust based on your column count
-    ui->tableWidget_4->setColumnCount(PDF_COLUMN + 1);
+
+    // PDF Export Setup
+    const int PDF_COLUMN = 8;  // Fixed spelling: COLUMN not COLUNN
+    ui->tableWidget_4->setColumnCount(PDF_COLUMN + 1);  // Fixed: tableWidget_4 not tab1ewidget_d
     ui->tableWidget_4->setHorizontalHeaderItem(PDF_COLUMN, new QTableWidgetItem("Rapport"));
 
-    // Connect the AI report signal to your update slot
+    // Connect AI signal
     connect(m_aiGenerator, &AIReportGenerator::reportGenerated,
-            this, &MainWindow::updateReportInTable);
-
+            this, &chercheur_1::updateReportInTable);
     // Optional: connect a button
 
 
@@ -54,22 +54,15 @@ MainWindow::MainWindow(QWidget *parent)
     // Example: Add prefix to project name in tableWidget_5
 
     // In MainWindow constructor (mainwindow.cpp)
+    // CORRECTED VERSION:
     ui->filtrage_4->clear();
-    ui->filtrage_4->addItems({"ID", "Nom", "Email", "Projet En Cours"});  // Now includes "ID"
-    connect(ui->btn_goToStats, &QPushButton::clicked, this, [=](){
-        ui->stackedWidget->setCurrentIndex(2);  // Go to Page 1
+    ui->filtrage_4->addItems(QStringList() << "ID" << "Nom" << "Email" << "Projet En Cours");// Now includes "ID"
+
+    connect(ui->btn_goToStats, &QPushButton::clicked, this, [this]() {
+        ui->stackedWidget->setCurrentIndex(2);  // Go to Page 2 (index 2 typically means page 3)
     });
-    // Example: "View Reports" button click
 
 
-    // ---- Initialize recommendation widget FIRST ----
-    // Add this column (typically in your table setup code)
-
-
-
-    // Connect the cell click signal
-
-    // Connections
 
     ui->tableWidget_4->setStyleSheet(
         "QTableWidget {"
@@ -96,19 +89,16 @@ MainWindow::MainWindow(QWidget *parent)
         "}"
         );
 
-    // Initialize table
+
 
     ui->S1_4->setPlaceholderText("Rechercher...");
-    // When populating table rows:
-
-    // Set up panel
 
     connect(ui->btn_goToStats, &QPushButton::clicked, this, [=](){
         ui->stackedWidget->setCurrentIndex(2);  // Go to Page 1
 
     });
 
-    connect(ui->tableWidget_4, &QTableWidget::cellClicked, this, &MainWindow::onCellClicked);
+    connect(ui->tableWidget_4, &QTableWidget::cellClicked, this, &chercheur_1::onCellClicked);
 
     ui->logo1->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logout.png"));
@@ -125,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Replace whatever displays the current project with:
 
     // Connect search
-    connect(ui->ok_4, &QPushButton::clicked, this, &MainWindow::on_searchButton_clicked);
+    connect(ui->ok_4, &QPushButton::clicked, this, &chercheur_1::on_searchButton_clicked);
 
 
     // UI setup
@@ -136,10 +126,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_4->setSelectionMode(QAbstractItemView::SingleSelection);
 
     // Connect signals
-    connect(ui->supp_6, &QPushButton::clicked, this, &MainWindow::onSuppButtonClicked);
-    connect(ui->pushButton_9, &QPushButton::clicked, this, &MainWindow::pushButton_2_clicked);
-    connect(ui->stat_4, &QPushButton::clicked, this, &MainWindow::on_stat_clicked);
-    connect(ui->pdf_4, &QPushButton::clicked, this, &MainWindow::onPdfButtonClicked);
+    connect(ui->supp_6, &QPushButton::clicked, this, &chercheur_1::onSuppButtonClicked);
+    connect(ui->pushButton_9, &QPushButton::clicked, this, &chercheur_1::pushButton_2_clicked);
+    connect(ui->stat_4, &QPushButton::clicked, this, &chercheur_1::on_stat_clicked);
+    connect(ui->pdf_4, &QPushButton::clicked, this, &chercheur_1::onPdfButtonClicked);
 
     ui->tri_4->clear();
     ui->tri_4->addItems({"ID", "Nom", "Domaine"}); // Exact order matters!
@@ -149,7 +139,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ASC_4->setChecked(true);
 
     // Connect sort button (assuming it's named 'triButton')
-    connect(ui->tri_4, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::onTriClicked);
+    connect(ui->tri_4, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &::chercheur_1::onTriClicked);
     // In MainWindow constructor
     connect(ui->ASC_4, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) ui->DSC_4->setChecked(false);
@@ -173,12 +163,11 @@ MainWindow::MainWindow(QWidget *parent)
     onTriClicked();
 }
 
-MainWindow::~MainWindow()
+chercheur_1::~chercheur_1()
 {
     delete ui;
 }
-
-void MainWindow::pushButton_2_clicked()
+void chercheur_1::pushButton_2_clicked()
 {
     if (ui->radioButton_5->isChecked()) {  // Add operation
         // Input validation
@@ -342,24 +331,24 @@ void MainWindow::pushButton_2_clicked()
         }
     }
 }
-void MainWindow::refreshTable()
+void chercheur_1::refreshTable()
 {
     // Clear both tables while preserving headers
     ui->tableWidget_4->setRowCount(0);
+    ui->tableWidget_5->setRowCount(0);  // Added missing clear for tableWidget_5
 
     ui->tableWidget_5->setMinimumSize(800, 600);
     QList<Chercheur> chercheurs = Chercheur::afficher();
 
-    // Configure selection behavior, etc.
+    // Configure selection behavior
     ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_5->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     for (int row = 0; row < chercheurs.size(); ++row) {
         const Chercheur &c = chercheurs[row];
-        // Get a cleaned version of the current project name
         QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
 
-        // ===== Populate Main Researcher Table (tableWidget_4) =====
+        // === Populate Main Table (tableWidget_4) ===
         ui->tableWidget_4->insertRow(row);
         ui->tableWidget_4->setItem(row, 0, new QTableWidgetItem(QString::number(c.getId())));
         ui->tableWidget_4->setItem(row, 1, new QTableWidgetItem(c.getNom()));
@@ -370,59 +359,43 @@ void MainWindow::refreshTable()
         ui->tableWidget_4->setItem(row, 6, new QTableWidgetItem(cleanProjectName));
         addHistoryIcon(row, c.getId());
 
-        // ===== Populate AI Report Table (tableWidget_5) =====
+        // === Populate Report Table (tableWidget_5) ===
         ui->tableWidget_5->insertRow(row);
-
-        // Column 0: Researcher ID
         QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(c.getId()));
         idItem->setTextAlignment(Qt::AlignCenter);
         ui->tableWidget_5->setItem(row, 0, idItem);
-
-        // Column 1: Researcher Name
         ui->tableWidget_5->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-
-        // Column 2: Current Project Name
         ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(cleanProjectName));
 
-        // Column 3: AI-generated Report Text
-        for (int row = 0; row < chercheurs.size(); ++row) {
-            const Chercheur &c = chercheurs[row];
-            // ... existing column population ...
+        // Add PDF button
+        QPushButton *pdfBtn = new QPushButton("📄");
+        pdfBtn->setToolTip("Générer PDF");
+        pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
 
-            // Add PDF button in last column
-            QPushButton *pdfBtn = new QPushButton("📄");
-            pdfBtn->setToolTip("Générer PDF");
-            pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
-
-            connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
-                // Find the matching report in tableWidget_5
-                for (int r = 0; r < ui->tableWidget_5->rowCount(); ++r) {
-                    if (ui->tableWidget_5->item(r, 0)->text().toInt() == c.getId()) {
-                        QString report = ui->tableWidget_5->item(r, 3)->text();
-                        generateResearcherPDF(c.getId(), report);
-                        break;
-                    }
+        connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
+            for (int r = 0; r < ui->tableWidget_5->rowCount(); ++r) {
+                if (ui->tableWidget_5->item(r, 0)->text().toInt() == c.getId()) {
+                    QString report = ui->tableWidget_5->item(r, 3)->text();
+                    generateResearcherPDF(c.getId(), report);
+                    break;
                 }
-            });
-
-            ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
+            }
+        });
+        ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
     }
 
-    // Auto-resize columns for tableWidget_4 and tableWidget_5
+    // Auto-resize columns
     ui->tableWidget_4->resizeColumnsToContents();
+    ui->tableWidget_5->resizeColumnsToContents();
 
-    // Ensure a minimum width for readability
+    // Set minimum widths
     for (int col = 0; col < ui->tableWidget_4->columnCount(); ++col) {
         if (ui->tableWidget_4->columnWidth(col) < 80)
             ui->tableWidget_4->setColumnWidth(col, 80);
     }
-    // Set a specific width for the report column (e.g., column 3)
-
-    ui->tableWidget_4->viewport()->update();
-
 }
-}
-void MainWindow::onSuppButtonClicked()
+
+void chercheur_1::onSuppButtonClicked()
 {
     int selectedRow = ui->tableWidget_4->currentRow();
     if (selectedRow == -1) {
@@ -440,7 +413,7 @@ void MainWindow::onSuppButtonClicked()
     }
 }
 
-void MainWindow::clearFields()
+void chercheur_1::clearFields()
 {
     ui->lineEdit_1->clear();
     ui->lineEdit_19->clear();
@@ -452,7 +425,7 @@ void MainWindow::clearFields()
     ui->radioButton_5->setChecked(true);
     ui->lineEdit_1->setFocus();
 }
-void MainWindow::on_searchButton_clicked() {
+void chercheur_1::on_searchButton_clicked() {
     QString searchTerm = ui->S1_4->text().trimmed();
     QString filter = ui->filtrage_4->currentText();
 
@@ -485,7 +458,7 @@ void MainWindow::on_searchButton_clicked() {
     }
 }
 // In MainWindow.cpp
-void MainWindow::onTriClicked() {
+void chercheur_1::onTriClicked() {
     if (!ui->ASC_4->isChecked() && !ui->DSC_4->isChecked()) {
         ui->ASC_4->setChecked(true);
     }
@@ -521,12 +494,12 @@ void MainWindow::onTriClicked() {
             .arg(ascending ? "Croissant" : "Décroissant"),
         3000);
 }
-void MainWindow::on_stat_clicked()
+void chercheur_1::on_stat_clicked()
 {
     Chercheur c;
     c.afficherStatistiques(ui->stackedWidget); // Pass the stacked widget instead of 'this'
 }
-void MainWindow::onPdfButtonClicked() {
+void chercheur_1::onPdfButtonClicked() {
     // Ask user where to save the PDF
     QString filePath = QFileDialog::getSaveFileName(
         this,
@@ -541,7 +514,7 @@ void MainWindow::onPdfButtonClicked() {
 
     }
 }
-void MainWindow::showResearcherHistory(int row)
+void chercheur_1::showResearcherHistory(int row)
 {
     if (row < 0 || row >= ui->tableWidget_4->rowCount()) return;
 
@@ -555,53 +528,76 @@ void MainWindow::showResearcherHistory(int row)
         QVBoxLayout *mainLayout = new QVBoxLayout(&historyDialog);
 
         // Header with researcher info
-        QLabel *header = new QLabel(QString("Historique de %1 %2").arg(c.getPrenom(), c.getNom()));
-        header->setStyleSheet("font-size: 16px; font-weight: bold;");
+        QLabel *header = new QLabel(QString("Historique de %1 %2 (ID: %3)")
+                                        .arg(c.getPrenom())
+                                        .arg(c.getNom())
+                                        .arg(id));
+        header->setStyleSheet("font-size: 16px; font-weight: bold; color: #2C3E50;");
         mainLayout->addWidget(header);
 
         // Creation date
-        QString creationDate = QDateTime::fromString(c.getCreationDate(), Qt::ISODate)
-                                   .toString("dd/MM/yyyy à HH:mm");
-        QLabel *createdLabel = new QLabel(QString("Ajouté le: %1").arg(creationDate));
-        createdLabel->setStyleSheet("font-size: 12px; color: #555;");
+        QString creationDate = c.getCreationDate();
+        QLabel *createdLabel = new QLabel(QString("🕒 Ajouté le: %1").arg(creationDate));
+        createdLabel->setStyleSheet("font-size: 12px; color: #555; margin-top: 5px;");
         mainLayout->addWidget(createdLabel);
 
+        // Current project
+        QString currentProject = c.getCurrentProject();
+        QLabel *currentLabel = new QLabel(QString("📌 Projet actuel: %1").arg(currentProject));
+        currentLabel->setStyleSheet("font-size: 12px; color: #27ae60; margin-top: 5px;");
+        mainLayout->addWidget(currentLabel);
+
         // Project history section
-        QLabel *projectsHeader = new QLabel("Projets:");
-        projectsHeader->setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 15px;");
+        QLabel *projectsHeader = new QLabel("📜 Historique des projets:");
+        projectsHeader->setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 15px; color: #2C3E50;");
         mainLayout->addWidget(projectsHeader);
 
         QTextEdit *historyText = new QTextEdit();
         historyText->setReadOnly(true);
-        historyText->setStyleSheet("border: 1px solid #ddd; border-radius: 4px;");
+        historyText->setStyleSheet(R"(
+            QTextEdit {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 8px;
+                background-color: #f9f9f9;
+                font-size: 12px;
+            }
+        )");
 
-        // Format project history with proper dates
-        QString formattedHistory;
-        QJsonObject jsonData = QJsonDocument::fromJson(c.getFullProjectJson().toUtf8()).object();
-        QJsonArray historyArray = jsonData["projects"].toObject()["history"].toArray();
-
-        for (const QJsonValue &entry : historyArray) {
-            QJsonObject projectEntry = entry.toObject();
-            QString projectName = projectEntry["project"].toString();
-            QString entryDate = QDateTime::fromString(projectEntry["date"].toString(), Qt::ISODate)
-                                    .toString("dd/MM/yyyy");
-
-            formattedHistory += QString("• %1 - %2\n").arg(entryDate, projectName);
+        // Get formatted history
+        QString formattedHistory = c.getFormattedHistory();
+        if (formattedHistory.isEmpty()) {
+            formattedHistory = "Aucun historique de projet disponible.";
         }
-
         historyText->setText(formattedHistory);
         mainLayout->addWidget(historyText);
 
+        // Close button
         QPushButton *closeButton = new QPushButton("Fermer");
+        closeButton->setStyleSheet(R"(
+            QPushButton {
+                background-color: #2C3E50;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background-color: #34495E;
+            }
+        )");
         connect(closeButton, &QPushButton::clicked, &historyDialog, &QDialog::accept);
         mainLayout->addWidget(closeButton, 0, Qt::AlignRight);
 
         historyDialog.exec();
+    } else {
+        QMessageBox::warning(this, "Erreur", "Impossible de charger les données du chercheur.");
     }
 }
 
 
-void MainWindow::onCellClicked(int row, int column)
+void chercheur_1::onCellClicked(int row, int column)
 {
     if (column == HISTORY_COLUMN) {
         // Retrieve the researcher id stored in the history icon cell's UserRole
@@ -615,7 +611,7 @@ void MainWindow::onCellClicked(int row, int column)
 
 
 
-void MainWindow::updateReportInTable(const QString &projectName, const QString &report)
+void chercheur_1::updateReportInTable(const QString &projectName, const QString &report)
 {
     // Iterate through the rows of tableWidget_5
     for (int row = 0; row < ui->tableWidget_5->rowCount(); ++row) {
@@ -633,7 +629,7 @@ void MainWindow::updateReportInTable(const QString &projectName, const QString &
 }
 
 
-void MainWindow::generateHistoryPDF(int researcherId)
+void chercheur_1::generateHistoryPDF(int researcherId)
 {
     // Fetch researcher data using the provided ID
     Chercheur c;
@@ -744,7 +740,7 @@ void MainWindow::generateHistoryPDF(int researcherId)
     QMessageBox::information(this, "Succès", QString("Historique PDF généré avec succès!\n\nFichier: %1").arg(filePath));
     QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }
-void MainWindow::addHistoryIcon(int row, int researcherId)
+void chercheur_1::addHistoryIcon(int row, int researcherId)
 {
     QTableWidgetItem *historyIcon = new QTableWidgetItem("📜");
     historyIcon->setTextAlignment(Qt::AlignCenter);
@@ -753,7 +749,7 @@ void MainWindow::addHistoryIcon(int row, int researcherId)
     historyIcon->setData(Qt::UserRole, researcherId);
     ui->tableWidget_4->setItem(row, HISTORY_COLUMN, historyIcon);
 }
-void MainWindow::setupPDFExport()
+void chercheur_1::setupPDFExport()
 {
     // Add PDF column as the last column
     const int PDF_COLUMN = 7; // Assuming history is column 7, make PDF column 8
@@ -764,7 +760,7 @@ void MainWindow::setupPDFExport()
     ui->tableWidget_4->setHorizontalHeaderItem(PDF_COLUMN, pdfHeader);
 }
 
-void MainWindow::generateResearcherPDF(int researcherId, const QString &reportText)
+void chercheur_1::generateResearcherPDF(int researcherId, const QString &reportText)
 {
     // Find researcher info from tableWidget_4
     QString researcherName, currentProject;
@@ -822,9 +818,9 @@ void MainWindow::generateResearcherPDF(int researcherId, const QString &reportTe
         QMessageBox::information(this, "Succès", "Rapport PDF généré avec succès!");
     }
 }
-void MainWindow::initArduinoConnection()
+void chercheur_1::initArduinoConnection()
 {
-    qDebug() << "=== Initializing Arduino Connection ===";
+    qDebug();
 
     // Check available ports
     qDebug() << "Available ports:";
@@ -848,10 +844,10 @@ void MainWindow::initArduinoConnection()
         }
 
         connect(arduino.getserial(), &QSerialPort::readyRead,
-                this, &MainWindow::readSerialData);
+                this, &chercheur_1::readSerialData);
     }
 }
-void MainWindow::readSerialData()
+void chercheur_1::readSerialData()
 {
     // Check if data is actually available
     if(!arduino.getserial()->bytesAvailable()) {

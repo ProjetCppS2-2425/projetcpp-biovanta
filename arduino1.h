@@ -1,5 +1,5 @@
-#ifndef ARDUINO_H
-#define ARDUINO_H
+#ifndef ARDUINO1_H
+#define ARDUINO1_H
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QDebug>
@@ -23,4 +23,4 @@ private:
     QByteArray data;  // contenant les données lues à partir d'Arduino
 };
 
-#endif // ARDUINO_H
+#endif // ARDUINO1_H

@@ -44,7 +44,7 @@
 #include <QTextTableCell>
 #include <QTextDocument>
 #include <QTextCursor>
-#include "mainwindow.h"  // Include MainWindow header to use MainWindow class
+#include "chercheur_1.h"  // Include MainWindow header to use MainWindow class
 
 #include <QFileDialog>
 #include <QPushButton>
