@@ -11,6 +11,7 @@ class AIReportGenerator : public QObject
 public:
     explicit AIReportGenerator(QObject *parent = nullptr);
     void requestProjectReport(const QString& projectName);
+    void errorOccurred(const QString &errorMessage);
 
 signals:
     void reportGenerated(const QString& projectName, const QString& report);
@@ -18,6 +19,10 @@ signals:
 private:
     QNetworkAccessManager m_networkManager;
     QString parseGoogleResponse(QNetworkReply* reply);
+    // In ai_report_generator.h
+signals:
+
+    void reportError(const QString& errorMessage);
 };
 
 #endif // AI_REPORT_GENERATOR_H

@@ -15,7 +15,8 @@ QT += core gui serialport
 
 QT += uitools
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    try.ui
     FORMS +=
     QT += widgets uitools
 
@@ -29,21 +30,19 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    87.cpp \
     ai_report_generator.cpp \
     arduino1.cpp \
     chercheur.cpp \
     chercheur_1.cpp \
-    main.cpp \
-    mainwindow.cpp
+    connection.cpp \
+    po.cpp
 
 HEADERS += \
-    87.h \
     ai_report_generator.h \
     arduino1.h \
     chercheur.h \
     chercheur_1.h \
-    mainwindow.h
+    connection.h
 
 FORMS += \
     chercheur_1.ui
