@@ -20,7 +20,7 @@ SOURCES += \
     connection.cpp \
     equipement.cpp \
     equipement1.cpp \
-    main.cpp
+    mainE.cpp
 HEADERS += \
     arduinoE.h \
     connection.h \
