@@ -5,9 +5,6 @@ release/chercheur_1.o
 release/connection.o
 release/equipement.o
 release/equipement1.o
-release/main.o
-release/mainwindow.o
 release/moc_ai_report_generator.o
 release/moc_chercheur_1.o
 release/moc_equipement1.o
-release/moc_mainwindow.o

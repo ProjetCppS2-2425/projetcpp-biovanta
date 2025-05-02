@@ -590,7 +590,7 @@ public:
         test->setIcon(icon5);
         groupBox_12 = new QGroupBox(widget_2);
         groupBox_12->setObjectName("groupBox_12");
-        groupBox_12->setGeometry(QRect(360, 10, 1021, 571));
+        groupBox_12->setGeometry(QRect(350, 10, 1001, 571));
         QFont font;
         font.setPointSize(12);
         font.setBold(true);
@@ -754,7 +754,7 @@ public:
         DSC_4->setGeometry(QRect(590, 90, 91, 24));
         groupBox_14 = new QGroupBox(groupBox_12);
         groupBox_14->setObjectName("groupBox_14");
-        groupBox_14->setGeometry(QRect(20, 130, 981, 411));
+        groupBox_14->setGeometry(QRect(20, 130, 941, 411));
         label_51 = new QLabel(groupBox_14);
         label_51->setObjectName("label_51");
         label_51->setGeometry(QRect(20, 10, 161, 31));
@@ -766,7 +766,7 @@ public:
         label_51->setFont(font1);
         supp_6 = new QPushButton(groupBox_14);
         supp_6->setObjectName("supp_6");
-        supp_6->setGeometry(QRect(900, 10, 41, 41));
+        supp_6->setGeometry(QRect(860, 10, 41, 41));
         supp_6->setStyleSheet(QString::fromUtf8("\n"
 "QPushButton {\n"
 "        background-color: #cbddf5; /* Rouge */\n"
@@ -787,7 +787,7 @@ public:
         supp_6->setIconSize(QSize(25, 25));
         label_52 = new QLabel(groupBox_14);
         label_52->setObjectName("label_52");
-        label_52->setGeometry(QRect(670, 20, 211, 20));
+        label_52->setGeometry(QRect(630, 20, 211, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -821,7 +821,7 @@ public:
         if (tableWidget_4->rowCount() < 7)
             tableWidget_4->setRowCount(7);
         tableWidget_4->setObjectName("tableWidget_4");
-        tableWidget_4->setGeometry(QRect(20, 60, 941, 311));
+        tableWidget_4->setGeometry(QRect(20, 60, 871, 311));
         S1_4 = new QLineEdit(groupBox_12);
         S1_4->setObjectName("S1_4");
         S1_4->setGeometry(QRect(192, 30, 361, 26));
@@ -842,7 +842,7 @@ public:
         label_23->raise();
         bg = new QLabel(widget_2);
         bg->setObjectName("bg");
-        bg->setGeometry(QRect(-8, 0, 1551, 561));
+        bg->setGeometry(QRect(-8, 0, 1551, 791));
         bg->setPixmap(QPixmap(QString::fromUtf8("../../projet_c 22/projet_c/bg.jpg")));
         groupBox_15 = new QGroupBox(widget_2);
         groupBox_15->setObjectName("groupBox_15");
@@ -862,7 +862,7 @@ public:
         radioButton_6->setGeometry(QRect(180, 20, 110, 24));
         groupBox_11 = new QGroupBox(widget_2);
         groupBox_11->setObjectName("groupBox_11");
-        groupBox_11->setGeometry(QRect(30, 10, 311, 491));
+        groupBox_11->setGeometry(QRect(20, 10, 311, 491));
         groupBox_11->setAutoFillBackground(false);
         groupBox_11->setStyleSheet(QString::fromUtf8("QGroupBox {\n"
 "    border: 2px solid #02767F; /* Couleur turquoise pour la bordure */\n"

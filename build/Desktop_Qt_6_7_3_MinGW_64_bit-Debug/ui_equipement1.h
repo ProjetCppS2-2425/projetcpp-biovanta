@@ -32,25 +32,10 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_equipement1
+class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QWidget *sidebare;
-    QLabel *logo;
-    QPushButton *emp1;
-    QPushButton *ChercheurButton;
-    QPushButton *vac;
-    QPushButton *EquipementButton;
-    QPushButton *client;
-    QPushButton *test;
-    QPushButton *pushButton_8;
-    QLabel *logout;
-    QFrame *frame;
-    QPushButton *noti;
-    QLabel *notificationBadge;
-    QPushButton *calen;
-    QLabel *label_23;
     QStackedWidget *stackedWidget;
     QWidget *page_stats;
     QWidget *page_liste;
@@ -102,251 +87,34 @@ public:
     QRadioButton *radioButton_12;
     QWidget *calender_page;
     QCalendarWidget *calendarWidget;
+    QWidget *sidebare;
+    QLabel *logo;
+    QPushButton *emp1;
+    QPushButton *chercheur;
+    QPushButton *vac;
+    QPushButton *eq;
+    QPushButton *client;
+    QPushButton *test;
+    QPushButton *pushButton_8;
+    QLabel *logout;
+    QFrame *frame;
+    QPushButton *noti;
+    QLabel *notificationBadge;
+    QPushButton *calen;
+    QLabel *label_23;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *equipement1)
+    void setupUi(QMainWindow *MainWindow)
     {
-        if (equipement1->objectName().isEmpty())
-            equipement1->setObjectName("equipement1");
-        equipement1->resize(1536, 670);
-        equipement1->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
-"QPushButton {\n"
-"    background-color: #34495E;  /* Bleu fonc\303\251 */\n"
-"    color: white;\n"
-"    font-size: 14px;\n"
-"    font-weight: bold;\n"
-"    padding: 10px;\n"
-"    border: none;\n"
-"    text-align: left;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"}\n"
-"\n"
-"/* Sp\303\251cifique au bouton \"\303\211quipement\" */\n"
-"QPushButton#btnEquipement {\n"
-"    background-color: white;  /* Couleur de fond blanche */\n"
-"    color: #34495E;  /* Texte bleu fonc\303\251 */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-"\n"
-"\n"
-""));
-        centralwidget = new QWidget(equipement1);
+        if (MainWindow->objectName().isEmpty())
+            MainWindow->setObjectName("MainWindow");
+        MainWindow->resize(1493, 744);
+        centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        sidebare = new QWidget(centralwidget);
-        sidebare->setObjectName("sidebare");
-        sidebare->setGeometry(QRect(10, -9, 141, 651));
-        sidebare->setStyleSheet(QString::fromUtf8("#sidebare {\n"
-"    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
-"    border-right: 2px solid #1A252F;\n"
-"}QPushButton:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"}\n"
-"\n"
-"/* Sp\303\251cifique au bouton \"\303\211quipement\" */\n"
-"QPushButton#btnEquipement {\n"
-"    background-color: white;  /* Couleur de fond blanche */\n"
-"    color: #34495E;  /* Texte bleu fonc\303\251 */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-""));
-        logo = new QLabel(sidebare);
-        logo->setObjectName("logo");
-        logo->setGeometry(QRect(20, 20, 111, 111));
-        logo->setPixmap(QPixmap(QString::fromUtf8("../application/logo1.png")));
-        emp1 = new QPushButton(sidebare);
-        emp1->setObjectName("emp1");
-        emp1->setGeometry(QRect(0, 150, 141, 41));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8("empe.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        emp1->setIcon(icon);
-        ChercheurButton = new QPushButton(sidebare);
-        ChercheurButton->setObjectName("ChercheurButton");
-        ChercheurButton->setGeometry(QRect(0, 200, 141, 41));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8("cher.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        ChercheurButton->setIcon(icon1);
-        vac = new QPushButton(sidebare);
-        vac->setObjectName("vac");
-        vac->setGeometry(QRect(0, 250, 141, 41));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8("vaccin.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        vac->setIcon(icon2);
-        vac->setIconSize(QSize(20, 20));
-        EquipementButton = new QPushButton(sidebare);
-        EquipementButton->setObjectName("EquipementButton");
-        EquipementButton->setGeometry(QRect(0, 300, 141, 41));
-        EquipementButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
-"    color: white;               /* Texte en blanc */\n"
-"    border-radius: 5px;         /* Bords arrondis */\n"
-"    padding: 10px;              /* Espacement interne */\n"
-"    font-weight: bold;          /* Texte en gras */\n"
-"    border: none;               /* Supprimer la bordure */\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
-"}"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8("equipement.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        EquipementButton->setIcon(icon3);
-        client = new QPushButton(sidebare);
-        client->setObjectName("client");
-        client->setGeometry(QRect(0, 400, 141, 41));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8("client.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        client->setIcon(icon4);
-        test = new QPushButton(sidebare);
-        test->setObjectName("test");
-        test->setGeometry(QRect(0, 350, 151, 41));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8("teste.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        test->setIcon(icon5);
-        pushButton_8 = new QPushButton(sidebare);
-        pushButton_8->setObjectName("pushButton_8");
-        pushButton_8->setGeometry(QRect(30, 560, 111, 31));
-        pushButton_8->setStyleSheet(QString::fromUtf8("QPushButton#pushButton_8 {\n"
-"    background-color: transparent;\n"
-"    color: #E74C3C;  /* Rouge */\n"
-"    font-size: 13px;\n"
-"    font-weight: bold;\n"
-"    border: none;\n"
-"    padding: 8px 15px;\n"
-"    text-align: left;\n"
-"}\n"
-"\n"
-"QPushButton#pushButton_8:hover {\n"
-"    color: #C0392B;  /* Rouge fonc\303\251 au survol */\n"
-"}\n"
-"\n"
-"QPushButton#pushButton_8:pressed {\n"
-"    color: #A93226;  /* Encore plus fonc\303\251 au clic */\n"
-"}\n"
-"\n"
-"/* Ajouter une ic\303\264ne \303\240 gauche du texte */\n"
-"QPushButton#pushButton_8::before {\n"
-"    content: \"\342\217\273 \";  /* Ic\303\264ne de mise hors tension */\n"
-"    font-size: 18px;\n"
-"    margin-right: 8px;\n"
-"}\n"
-""));
-        logout = new QLabel(sidebare);
-        logout->setObjectName("logout");
-        logout->setGeometry(QRect(10, 560, 31, 31));
-        logout->setPixmap(QPixmap(QString::fromUtf8("../application/logout.png")));
-        frame = new QFrame(centralwidget);
-        frame->setObjectName("frame");
-        frame->setGeometry(QRect(150, 0, 1391, 61));
-        frame->setStyleSheet(QString::fromUtf8("#frame {\n"
-"    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
-"    border-right: 2px solid #dee2e6;;\n"
-"}QPushButton:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"}\n"
-"\n"
-"QPushButton:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"}\n"
-"\n"
-"/* Sp\303\251cifique au bouton \"\303\211quipement\" */\n"
-"QPushButton#btnEquipement {\n"
-"    background-color: white;  /* Couleur de fond blanche */\n"
-"    color: #34495E;  /* Texte bleu fonc\303\251 */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:hover {\n"
-"    background-color: #1ABC9C; /* Vert */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-"\n"
-"QPushButton#btnEquipement:checked {\n"
-"    background-color: #16A085; /* Vert fonc\303\251 */\n"
-"    color: white;  /* Texte blanc */\n"
-"}\n"
-""));
-        frame->setFrameShape(QFrame::Shape::StyledPanel);
-        frame->setFrameShadow(QFrame::Shadow::Raised);
-        noti = new QPushButton(frame);
-        noti->setObjectName("noti");
-        noti->setGeometry(QRect(70, 10, 61, 41));
-        noti->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
-"    color: white;               /* Texte en blanc */\n"
-"    border-radius: 5px;         /* Bords arrondis */\n"
-"    padding: 10px;              /* Espacement interne */\n"
-"    font-weight: bold;          /* Texte en gras */\n"
-"    border: none;               /* Supprimer la bordure */\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
-"}"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8("notif.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        noti->setIcon(icon6);
-        noti->setIconSize(QSize(42, 42));
-        notificationBadge = new QLabel(frame);
-        notificationBadge->setObjectName("notificationBadge");
-        notificationBadge->setGeometry(QRect(90, 10, 41, 20));
-        calen = new QPushButton(frame);
-        calen->setObjectName("calen");
-        calen->setGeometry(QRect(170, 10, 51, 41));
-        calen->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
-"    color: white;               /* Texte en blanc */\n"
-"    border-radius: 5px;         /* Bords arrondis */\n"
-"    padding: 10px;              /* Espacement interne */\n"
-"    font-weight: bold;          /* Texte en gras */\n"
-"    border: none;               /* Supprimer la bordure */\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
-"}"));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8("calend.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        calen->setIcon(icon7);
-        calen->setIconSize(QSize(60, 60));
-        label_23 = new QLabel(frame);
-        label_23->setObjectName("label_23");
-        label_23->setGeometry(QRect(610, 10, 241, 41));
-        notificationBadge->raise();
-        label_23->raise();
-        noti->raise();
-        calen->raise();
         stackedWidget = new QStackedWidget(centralwidget);
         stackedWidget->setObjectName("stackedWidget");
-        stackedWidget->setGeometry(QRect(150, 60, 1381, 561));
+        stackedWidget->setGeometry(QRect(140, 80, 1381, 561));
         page_stats = new QWidget();
         page_stats->setObjectName("page_stats");
         stackedWidget->addWidget(page_stats);
@@ -552,9 +320,9 @@ public:
 "    text-align: center; /* Centrage du texte si besoin */\n"
 "}\n"
 ""));
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8("pdf1.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pdf_3->setIcon(icon8);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("pdf1.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pdf_3->setIcon(icon);
         pdf_3->setIconSize(QSize(21, 21));
         stat_3 = new QPushButton(groupBox_2);
         stat_3->setObjectName("stat_3");
@@ -564,16 +332,16 @@ public:
 "    text-align: center; /* Centrage du texte si besoin */\n"
 "}\n"
 ""));
-        QIcon icon9;
-        icon9.addFile(QString::fromUtf8("st.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        stat_3->setIcon(icon9);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("st.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        stat_3->setIcon(icon1);
         stat_3->setIconSize(QSize(21, 21));
         ok_3 = new QPushButton(groupBox_2);
         ok_3->setObjectName("ok_3");
         ok_3->setGeometry(QRect(650, 20, 61, 51));
-        QIcon icon10;
-        icon10.addFile(QString::fromUtf8("search.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        ok_3->setIcon(icon10);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8("search.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        ok_3->setIcon(icon2);
         ok_3->setIconSize(QSize(40, 40));
         groupBox_6 = new QGroupBox(groupBox_2);
         groupBox_6->setObjectName("groupBox_6");
@@ -604,9 +372,9 @@ public:
 "    QPushButton:pressed {\n"
 "        background-color: #cc0000;  /* Rouge fonc\303\251 au clic */\n"
 "    }"));
-        QIcon icon11;
-        icon11.addFile(QString::fromUtf8("effacer.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        supp_3->setIcon(icon11);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("effacer.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        supp_3->setIcon(icon3);
         supp_3->setIconSize(QSize(25, 25));
         label_28 = new QLabel(groupBox_6);
         label_28->setObjectName("label_28");
@@ -628,9 +396,9 @@ public:
         pushButton_10 = new QPushButton(groupBox_2);
         pushButton_10->setObjectName("pushButton_10");
         pushButton_10->setGeometry(QRect(740, 30, 51, 41));
-        QIcon icon12;
-        icon12.addFile(QString::fromUtf8("loading-arrow.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
-        pushButton_10->setIcon(icon12);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("loading-arrow.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        pushButton_10->setIcon(icon4);
         pushButton_10->setIconSize(QSize(30, 30));
         radioButton_9 = new QRadioButton(groupBox_2);
         radioButton_9->setObjectName("radioButton_9");
@@ -778,132 +546,327 @@ public:
         calendarWidget->setObjectName("calendarWidget");
         calendarWidget->setGeometry(QRect(60, 80, 1201, 461));
         stackedWidget->addWidget(calender_page);
-        equipement1->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(equipement1);
+        sidebare = new QWidget(centralwidget);
+        sidebare->setObjectName("sidebare");
+        sidebare->setGeometry(QRect(0, 11, 141, 651));
+        sidebare->setStyleSheet(QString::fromUtf8("#sidebare {\n"
+"    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
+"    border-right: 2px solid #1A252F;\n"
+"}QPushButton:hover {\n"
+"    background-color: #1ABC9C; /* Vert */\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"    background-color: #16A085; /* Vert fonc\303\251 */\n"
+"}\n"
+"\n"
+"/* Sp\303\251cifique au bouton \"\303\211quipement\" */\n"
+"QPushButton#btnEquipement {\n"
+"    background-color: white;  /* Couleur de fond blanche */\n"
+"    color: #34495E;  /* Texte bleu fonc\303\251 */\n"
+"}\n"
+"\n"
+"QPushButton#btnEquipement:hover {\n"
+"    background-color: #1ABC9C; /* Vert */\n"
+"    color: white;  /* Texte blanc */\n"
+"}\n"
+"\n"
+"QPushButton#btnEquipement:checked {\n"
+"    background-color: #16A085; /* Vert fonc\303\251 */\n"
+"    color: white;  /* Texte blanc */\n"
+"}\n"
+""));
+        logo = new QLabel(sidebare);
+        logo->setObjectName("logo");
+        logo->setGeometry(QRect(20, 20, 111, 111));
+        logo->setPixmap(QPixmap(QString::fromUtf8("../application/logo1.png")));
+        emp1 = new QPushButton(sidebare);
+        emp1->setObjectName("emp1");
+        emp1->setGeometry(QRect(0, 150, 141, 41));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8("empe.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        emp1->setIcon(icon5);
+        chercheur = new QPushButton(sidebare);
+        chercheur->setObjectName("chercheur");
+        chercheur->setGeometry(QRect(0, 200, 141, 41));
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8("cher.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        chercheur->setIcon(icon6);
+        vac = new QPushButton(sidebare);
+        vac->setObjectName("vac");
+        vac->setGeometry(QRect(0, 250, 141, 41));
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8("vaccin.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        vac->setIcon(icon7);
+        vac->setIconSize(QSize(20, 20));
+        eq = new QPushButton(sidebare);
+        eq->setObjectName("eq");
+        eq->setGeometry(QRect(0, 300, 141, 41));
+        eq->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}"));
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8("equipement.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        eq->setIcon(icon8);
+        client = new QPushButton(sidebare);
+        client->setObjectName("client");
+        client->setGeometry(QRect(0, 400, 141, 41));
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8("client.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        client->setIcon(icon9);
+        test = new QPushButton(sidebare);
+        test->setObjectName("test");
+        test->setGeometry(QRect(0, 350, 151, 41));
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8("teste.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        test->setIcon(icon10);
+        pushButton_8 = new QPushButton(sidebare);
+        pushButton_8->setObjectName("pushButton_8");
+        pushButton_8->setGeometry(QRect(30, 560, 111, 31));
+        pushButton_8->setStyleSheet(QString::fromUtf8("QPushButton#pushButton_8 {\n"
+"    background-color: transparent;\n"
+"    color: #E74C3C;  /* Rouge */\n"
+"    font-size: 13px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"    padding: 8px 15px;\n"
+"    text-align: left;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:hover {\n"
+"    color: #C0392B;  /* Rouge fonc\303\251 au survol */\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:pressed {\n"
+"    color: #A93226;  /* Encore plus fonc\303\251 au clic */\n"
+"}\n"
+"\n"
+"/* Ajouter une ic\303\264ne \303\240 gauche du texte */\n"
+"QPushButton#pushButton_8::before {\n"
+"    content: \"\342\217\273 \";  /* Ic\303\264ne de mise hors tension */\n"
+"    font-size: 18px;\n"
+"    margin-right: 8px;\n"
+"}\n"
+""));
+        logout = new QLabel(sidebare);
+        logout->setObjectName("logout");
+        logout->setGeometry(QRect(10, 560, 31, 31));
+        logout->setPixmap(QPixmap(QString::fromUtf8("../application/logout.png")));
+        frame = new QFrame(centralwidget);
+        frame->setObjectName("frame");
+        frame->setGeometry(QRect(140, 20, 1391, 61));
+        frame->setStyleSheet(QString::fromUtf8("#frame {\n"
+"    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
+"    border-right: 2px solid #dee2e6;;\n"
+"}QPushButton:hover {\n"
+"    background-color: #1ABC9C; /* Vert */\n"
+"}\n"
+"\n"
+"QPushButton:checked {\n"
+"    background-color: #16A085; /* Vert fonc\303\251 */\n"
+"}\n"
+"\n"
+"/* Sp\303\251cifique au bouton \"\303\211quipement\" */\n"
+"QPushButton#btnEquipement {\n"
+"    background-color: white;  /* Couleur de fond blanche */\n"
+"    color: #34495E;  /* Texte bleu fonc\303\251 */\n"
+"}\n"
+"\n"
+"QPushButton#btnEquipement:hover {\n"
+"    background-color: #1ABC9C; /* Vert */\n"
+"    color: white;  /* Texte blanc */\n"
+"}\n"
+"\n"
+"QPushButton#btnEquipement:checked {\n"
+"    background-color: #16A085; /* Vert fonc\303\251 */\n"
+"    color: white;  /* Texte blanc */\n"
+"}\n"
+""));
+        frame->setFrameShape(QFrame::Shape::StyledPanel);
+        frame->setFrameShadow(QFrame::Shadow::Raised);
+        noti = new QPushButton(frame);
+        noti->setObjectName("noti");
+        noti->setGeometry(QRect(70, 10, 61, 41));
+        noti->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}"));
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8("notif.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        noti->setIcon(icon11);
+        noti->setIconSize(QSize(42, 42));
+        notificationBadge = new QLabel(frame);
+        notificationBadge->setObjectName("notificationBadge");
+        notificationBadge->setGeometry(QRect(90, 10, 41, 20));
+        calen = new QPushButton(frame);
+        calen->setObjectName("calen");
+        calen->setGeometry(QRect(170, 10, 51, 41));
+        calen->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}"));
+        QIcon icon12;
+        icon12.addFile(QString::fromUtf8("calend.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        calen->setIcon(icon12);
+        calen->setIconSize(QSize(60, 60));
+        label_23 = new QLabel(frame);
+        label_23->setObjectName("label_23");
+        label_23->setGeometry(QRect(610, 10, 241, 41));
+        notificationBadge->raise();
+        label_23->raise();
+        noti->raise();
+        calen->raise();
+        MainWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1536, 26));
-        equipement1->setMenuBar(menubar);
-        statusbar = new QStatusBar(equipement1);
+        menubar->setGeometry(QRect(0, 0, 1493, 26));
+        MainWindow->setMenuBar(menubar);
+        statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
-        equipement1->setStatusBar(statusbar);
+        MainWindow->setStatusBar(statusbar);
 
-        retranslateUi(equipement1);
+        retranslateUi(MainWindow);
 
         stackedWidget->setCurrentIndex(1);
 
 
-        QMetaObject::connectSlotsByName(equipement1);
+        QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *equipement1)
+    void retranslateUi(QMainWindow *MainWindow)
     {
-        equipement1->setWindowTitle(QCoreApplication::translate("equipement1", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        groupBox_2->setTitle(QString());
+        QTableWidgetItem *___qtablewidgetitem = tableWidget_3->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidget_3->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Nom ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget_3->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "image ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem3 = tableWidget_3->horizontalHeaderItem(3);
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "type", nullptr));
+        QTableWidgetItem *___qtablewidgetitem4 = tableWidget_3->horizontalHeaderItem(4);
+        ___qtablewidgetitem4->setText(QCoreApplication::translate("MainWindow", "\303\251tat", nullptr));
+        QTableWidgetItem *___qtablewidgetitem5 = tableWidget_3->horizontalHeaderItem(5);
+        ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem6 = tableWidget_3->horizontalHeaderItem(6);
+        ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "nombre", nullptr));
+        QTableWidgetItem *___qtablewidgetitem7 = tableWidget_3->horizontalHeaderItem(7);
+        ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
+
+        const bool __sortingEnabled = tableWidget_3->isSortingEnabled();
+        tableWidget_3->setSortingEnabled(false);
+        QTableWidgetItem *___qtablewidgetitem8 = tableWidget_3->item(1, 0);
+        ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "01245", nullptr));
+        QTableWidgetItem *___qtablewidgetitem9 = tableWidget_3->item(1, 1);
+        ___qtablewidgetitem9->setText(QCoreApplication::translate("MainWindow", "Microscopes optiques", nullptr));
+        QTableWidgetItem *___qtablewidgetitem10 = tableWidget_3->item(1, 4);
+        ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "marche ", nullptr));
+        QTableWidgetItem *___qtablewidgetitem11 = tableWidget_3->item(1, 5);
+        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "disponible", nullptr));
+        QTableWidgetItem *___qtablewidgetitem12 = tableWidget_3->item(1, 6);
+        ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "5", nullptr));
+        tableWidget_3->setSortingEnabled(__sortingEnabled);
+
+        label_25->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
+        comboBox_11->setItemText(0, QCoreApplication::translate("MainWindow", "type", nullptr));
+        comboBox_11->setItemText(1, QCoreApplication::translate("MainWindow", "id \303\251quipement ", nullptr));
+        comboBox_11->setItemText(2, QCoreApplication::translate("MainWindow", "disponibilit\303\251", nullptr));
+
+        comboBox_12->setItemText(0, QCoreApplication::translate("MainWindow", "\303\251tat", nullptr));
+        comboBox_12->setItemText(1, QCoreApplication::translate("MainWindow", "nbre d'\303\251quipement", nullptr));
+        comboBox_12->setItemText(2, QCoreApplication::translate("MainWindow", "nom d'\303\251quipement", nullptr));
+
+        label_26->setText(QCoreApplication::translate("MainWindow", "Tri par :", nullptr));
+        pdf_3->setText(QString());
+        stat_3->setText(QString());
+        ok_3->setText(QString());
+        groupBox_6->setTitle(QString());
+        label_27->setText(QCoreApplication::translate("MainWindow", "  Listes ", nullptr));
+        supp_3->setText(QString());
+        label_28->setText(QCoreApplication::translate("MainWindow", " supprimer un \303\251quipement :", nullptr));
+        labelImage_3->setText(QString());
+        pushButton_10->setText(QString());
+        radioButton_9->setText(QCoreApplication::translate("MainWindow", "ASC", nullptr));
+        radioButton_10->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
+        groupBox->setTitle(QString());
+        label_29->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement", nullptr));
+        label_30->setText(QCoreApplication::translate("MainWindow", "Nom de l'\303\251quipement", nullptr));
+        label_31->setText(QCoreApplication::translate("MainWindow", "Image", nullptr));
+        pushButton_11->setText(QCoreApplication::translate("MainWindow", "choisir image", nullptr));
+        label_32->setText(QCoreApplication::translate("MainWindow", "Etat ", nullptr));
+        comboBox_13->setItemText(0, QCoreApplication::translate("MainWindow", "Fonctionnel ", nullptr));
+        comboBox_13->setItemText(1, QCoreApplication::translate("MainWindow", "pas Fonctionnel ", nullptr));
+        comboBox_13->setItemText(2, QCoreApplication::translate("MainWindow", "pas fonctionnel incendie", nullptr));
+        comboBox_13->setItemText(3, QCoreApplication::translate("MainWindow", "En maintenance", nullptr));
+
+        label_33->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
+        label_34->setText(QCoreApplication::translate("MainWindow", "Nombre de l'\303\251quipement ", nullptr));
+        pushButton_12->setText(QCoreApplication::translate("MainWindow", "valider", nullptr));
+        pushButton_13->setText(QCoreApplication::translate("MainWindow", "Annuler", nullptr));
+        label_35->setText(QCoreApplication::translate("MainWindow", " Ajout ", nullptr));
+        comboBox_14->setItemText(0, QCoreApplication::translate("MainWindow", "disponible", nullptr));
+        comboBox_14->setItemText(1, QCoreApplication::translate("MainWindow", "pas disponible", nullptr));
+
+        label_36->setText(QCoreApplication::translate("MainWindow", "type", nullptr));
+        comboBox_15->setItemText(0, QCoreApplication::translate("MainWindow", "Appareil de laboratoire", nullptr));
+        comboBox_15->setItemText(1, QCoreApplication::translate("MainWindow", "Appareil de diagnostic", nullptr));
+        comboBox_15->setItemText(2, QCoreApplication::translate("MainWindow", "R\303\251frig\303\251ration et Stockage des Vaccins", nullptr));
+
+        label->setText(QCoreApplication::translate("MainWindow", "dateDebut", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "dateFin", nullptr));
+        res->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
+        comboBox_16->setItemText(0, QCoreApplication::translate("MainWindow", "resistible", nullptr));
+        comboBox_16->setItemText(1, QCoreApplication::translate("MainWindow", "pas resistible", nullptr));
+
+        bg->setText(QString());
+        groupBox_3->setTitle(QString());
+        radioButton_11->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
+        radioButton_12->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
         logo->setText(QString());
-        emp1->setText(QCoreApplication::translate("equipement1", "employ\303\251es", nullptr));
-        ChercheurButton->setText(QCoreApplication::translate("equipement1", "chercheurs", nullptr));
-        vac->setText(QCoreApplication::translate("equipement1", "vaccins", nullptr));
-        EquipementButton->setText(QCoreApplication::translate("equipement1", "\303\251quipements", nullptr));
-        client->setText(QCoreApplication::translate("equipement1", "clients", nullptr));
-        test->setText(QCoreApplication::translate("equipement1", "tests biologiques", nullptr));
-        pushButton_8->setText(QCoreApplication::translate("equipement1", "D\303\251connexion", nullptr));
+        emp1->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
+        chercheur->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
+        vac->setText(QCoreApplication::translate("MainWindow", "vaccins", nullptr));
+        eq->setText(QCoreApplication::translate("MainWindow", "\303\251quipements", nullptr));
+        client->setText(QCoreApplication::translate("MainWindow", "clients", nullptr));
+        test->setText(QCoreApplication::translate("MainWindow", "tests biologiques", nullptr));
+        pushButton_8->setText(QCoreApplication::translate("MainWindow", "D\303\251connexion", nullptr));
         logout->setText(QString());
         noti->setText(QString());
         notificationBadge->setText(QString());
         calen->setText(QString());
         label_23->setText(QString());
-        groupBox_2->setTitle(QString());
-        QTableWidgetItem *___qtablewidgetitem = tableWidget_3->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QCoreApplication::translate("equipement1", "Id \303\251quipement ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem1 = tableWidget_3->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QCoreApplication::translate("equipement1", "Nom ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem2 = tableWidget_3->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QCoreApplication::translate("equipement1", "image ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem3 = tableWidget_3->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QCoreApplication::translate("equipement1", "type", nullptr));
-        QTableWidgetItem *___qtablewidgetitem4 = tableWidget_3->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QCoreApplication::translate("equipement1", "\303\251tat", nullptr));
-        QTableWidgetItem *___qtablewidgetitem5 = tableWidget_3->horizontalHeaderItem(5);
-        ___qtablewidgetitem5->setText(QCoreApplication::translate("equipement1", "Disponibilit\303\251 ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem6 = tableWidget_3->horizontalHeaderItem(6);
-        ___qtablewidgetitem6->setText(QCoreApplication::translate("equipement1", "nombre", nullptr));
-        QTableWidgetItem *___qtablewidgetitem7 = tableWidget_3->horizontalHeaderItem(7);
-        ___qtablewidgetitem7->setText(QCoreApplication::translate("equipement1", "resistance_eq_feu", nullptr));
-
-        const bool __sortingEnabled = tableWidget_3->isSortingEnabled();
-        tableWidget_3->setSortingEnabled(false);
-        QTableWidgetItem *___qtablewidgetitem8 = tableWidget_3->item(1, 0);
-        ___qtablewidgetitem8->setText(QCoreApplication::translate("equipement1", "01245", nullptr));
-        QTableWidgetItem *___qtablewidgetitem9 = tableWidget_3->item(1, 1);
-        ___qtablewidgetitem9->setText(QCoreApplication::translate("equipement1", "Microscopes optiques", nullptr));
-        QTableWidgetItem *___qtablewidgetitem10 = tableWidget_3->item(1, 4);
-        ___qtablewidgetitem10->setText(QCoreApplication::translate("equipement1", "marche ", nullptr));
-        QTableWidgetItem *___qtablewidgetitem11 = tableWidget_3->item(1, 5);
-        ___qtablewidgetitem11->setText(QCoreApplication::translate("equipement1", "disponible", nullptr));
-        QTableWidgetItem *___qtablewidgetitem12 = tableWidget_3->item(1, 6);
-        ___qtablewidgetitem12->setText(QCoreApplication::translate("equipement1", "5", nullptr));
-        tableWidget_3->setSortingEnabled(__sortingEnabled);
-
-        label_25->setText(QCoreApplication::translate("equipement1", "rechercher :", nullptr));
-        comboBox_11->setItemText(0, QCoreApplication::translate("equipement1", "type", nullptr));
-        comboBox_11->setItemText(1, QCoreApplication::translate("equipement1", "id \303\251quipement ", nullptr));
-        comboBox_11->setItemText(2, QCoreApplication::translate("equipement1", "disponibilit\303\251", nullptr));
-
-        comboBox_12->setItemText(0, QCoreApplication::translate("equipement1", "\303\251tat", nullptr));
-        comboBox_12->setItemText(1, QCoreApplication::translate("equipement1", "nbre d'\303\251quipement", nullptr));
-        comboBox_12->setItemText(2, QCoreApplication::translate("equipement1", "nom d'\303\251quipement", nullptr));
-
-        label_26->setText(QCoreApplication::translate("equipement1", "Tri par :", nullptr));
-        pdf_3->setText(QString());
-        stat_3->setText(QString());
-        ok_3->setText(QString());
-        groupBox_6->setTitle(QString());
-        label_27->setText(QCoreApplication::translate("equipement1", "  Listes ", nullptr));
-        supp_3->setText(QString());
-        label_28->setText(QCoreApplication::translate("equipement1", " supprimer un \303\251quipement :", nullptr));
-        labelImage_3->setText(QString());
-        pushButton_10->setText(QString());
-        radioButton_9->setText(QCoreApplication::translate("equipement1", "ASC", nullptr));
-        radioButton_10->setText(QCoreApplication::translate("equipement1", "DSC", nullptr));
-        groupBox->setTitle(QString());
-        label_29->setText(QCoreApplication::translate("equipement1", "Id \303\251quipement", nullptr));
-        label_30->setText(QCoreApplication::translate("equipement1", "Nom de l'\303\251quipement", nullptr));
-        label_31->setText(QCoreApplication::translate("equipement1", "Image", nullptr));
-        pushButton_11->setText(QCoreApplication::translate("equipement1", "choisir image", nullptr));
-        label_32->setText(QCoreApplication::translate("equipement1", "Etat ", nullptr));
-        comboBox_13->setItemText(0, QCoreApplication::translate("equipement1", "Fonctionnel ", nullptr));
-        comboBox_13->setItemText(1, QCoreApplication::translate("equipement1", "pas Fonctionnel ", nullptr));
-        comboBox_13->setItemText(2, QCoreApplication::translate("equipement1", "pas fonctionnel incendie", nullptr));
-        comboBox_13->setItemText(3, QCoreApplication::translate("equipement1", "En maintenance", nullptr));
-
-        label_33->setText(QCoreApplication::translate("equipement1", "Disponibilit\303\251 ", nullptr));
-        label_34->setText(QCoreApplication::translate("equipement1", "Nombre de l'\303\251quipement ", nullptr));
-        pushButton_12->setText(QCoreApplication::translate("equipement1", "valider", nullptr));
-        pushButton_13->setText(QCoreApplication::translate("equipement1", "Annuler", nullptr));
-        label_35->setText(QCoreApplication::translate("equipement1", " Ajout ", nullptr));
-        comboBox_14->setItemText(0, QCoreApplication::translate("equipement1", "disponible", nullptr));
-        comboBox_14->setItemText(1, QCoreApplication::translate("equipement1", "pas disponible", nullptr));
-
-        label_36->setText(QCoreApplication::translate("equipement1", "type", nullptr));
-        comboBox_15->setItemText(0, QCoreApplication::translate("equipement1", "Appareil de laboratoire", nullptr));
-        comboBox_15->setItemText(1, QCoreApplication::translate("equipement1", "Appareil de diagnostic", nullptr));
-        comboBox_15->setItemText(2, QCoreApplication::translate("equipement1", "R\303\251frig\303\251ration et Stockage des Vaccins", nullptr));
-
-        label->setText(QCoreApplication::translate("equipement1", "dateDebut", nullptr));
-        label_2->setText(QCoreApplication::translate("equipement1", "dateFin", nullptr));
-        res->setText(QCoreApplication::translate("equipement1", "resistance_eq_feu", nullptr));
-        comboBox_16->setItemText(0, QCoreApplication::translate("equipement1", "resistible", nullptr));
-        comboBox_16->setItemText(1, QCoreApplication::translate("equipement1", "pas resistible", nullptr));
-
-        bg->setText(QString());
-        groupBox_3->setTitle(QString());
-        radioButton_11->setText(QCoreApplication::translate("equipement1", "Ajouter", nullptr));
-        radioButton_12->setText(QCoreApplication::translate("equipement1", "Modifier", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class equipement1: public Ui_equipement1 {};
+    class MainWindow: public Ui_MainWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE

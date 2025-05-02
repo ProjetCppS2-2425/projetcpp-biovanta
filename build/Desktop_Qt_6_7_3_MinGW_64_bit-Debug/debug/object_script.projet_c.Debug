@@ -5,9 +5,6 @@ debug/chercheur_1.o
 debug/connection.o
 debug/equipement.o
 debug/equipement1.o
-debug/main.o
-debug/mainwindow.o
 debug/moc_ai_report_generator.o
 debug/moc_chercheur_1.o
 debug/moc_equipement1.o
-debug/moc_mainwindow.o

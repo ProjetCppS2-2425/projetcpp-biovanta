@@ -13,13 +13,6 @@ QT += concurrent
 QT += serialport
 QT += core gui serialport
 
-QT += uitools
-FORMS += \
-    mainwindow.ui \
-    try.ui
-    FORMS +=
-    QT += widgets uitools
-
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -35,7 +28,7 @@ SOURCES += \
     chercheur.cpp \
     chercheur_1.cpp \
     connection.cpp \
-    po.cpp
+    main.cpp
 
 HEADERS += \
     ai_report_generator.h \
