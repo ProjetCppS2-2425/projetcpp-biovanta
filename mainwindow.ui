@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1456</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>-50</x>
+      <y>10</y>
+      <width>1351</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="QWidget" name="sidebare" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>-40</y>
+        <width>141</width>
+        <height>651</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#sidebare {
+    background-color: #2C3E50; /* Couleur bleu foncé */
+    border-right: 2px solid #1A252F;
+}QPushButton:hover {
+    background-color: #1ABC9C; /* Vert */
+}
+
+QPushButton:checked {
+    background-color: #16A085; /* Vert foncé */
+}
+
+/* Spécifique au bouton &quot;Équipement&quot; */
+QPushButton#btnEquipement {
+    background-color: white;  /* Couleur de fond blanche */
+    color: #34495E;  /* Texte bleu foncé */
+}
+
+QPushButton#btnEquipement:hover {
+    background-color: #1ABC9C; /* Vert */
+    color: white;  /* Texte blanc */
+}
+
+QPushButton#btnEquipement:checked {
+    background-color: #16A085; /* Vert foncé */
+    color: white;  /* Texte blanc */
+}
+</string>
+      </property>
+      <widget class="QPushButton" name="emp1">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>150</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>employées</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/empe.png</normaloff>../../../Documents/projet_c/projet_c/empe.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ChercheurButton">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>200</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>chercheurs</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/cher.png</normaloff>../../../Documents/projet_c/projet_c/cher.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="vac">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>250</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>vaccins</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/vaccin.png</normaloff>../../../Documents/projet_c/projet_c/vaccin.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="EquipementButton">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>300</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>équipements</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/equipement.png</normaloff>../../../Documents/projet_c/projet_c/equipement.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="client">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>400</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>clients</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/client.png</normaloff>../../../Documents/projet_c/projet_c/client.png</iconset>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_8">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>550</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton#pushButton_8 {
+    background-color: transparent;
+    color: #E74C3C;  /* Rouge */
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    text-align: left;
+}
+
+QPushButton#pushButton_8:hover {
+    color: #C0392B;  /* Rouge foncé au survol */
+}
+
+QPushButton#pushButton_8:pressed {
+    color: #A93226;  /* Encore plus foncé au clic */
+}
+
+/* Ajouter une icône à gauche du texte */
+QPushButton#pushButton_8::before {
+    content: &quot;⏻ &quot;;  /* Icône de mise hors tension */
+    font-size: 18px;
+    margin-right: 8px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Déconnexion</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="logout">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>560</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #2C3E50;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../../Documents/projet_c/application/logout.png</pixmap>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>549</y>
+         <width>31</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #2C3E50;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../../Documents/projet_c/projet_c/logout.png</pixmap>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="eq_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>350</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+       </property>
+       <property name="text">
+        <string>test biologique</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../../../Documents/projet_c/projet_c/equipement.png</normaloff>../../../Documents/projet_c/projet_c/equipement.png</iconset>
+       </property>
+      </widget>
+      <widget class="QWidget" name="sidebare_2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>360</y>
+         <width>141</width>
+         <height>651</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#sidebare {
+    background-color: #2C3E50; /* Couleur bleu foncé */
+    border-right: 2px solid #1A252F;
+}QPushButton:hover {
+    background-color: #1ABC9C; /* Vert */
+}
+
+QPushButton:checked {
+    background-color: #16A085; /* Vert foncé */
+}
+
+/* Spécifique au bouton &quot;Équipement&quot; */
+QPushButton#btnEquipement {
+    background-color: white;  /* Couleur de fond blanche */
+    color: #34495E;  /* Texte bleu foncé */
+}
+
+QPushButton#btnEquipement:hover {
+    background-color: #1ABC9C; /* Vert */
+    color: white;  /* Texte blanc */
+}
+
+QPushButton#btnEquipement:checked {
+    background-color: #16A085; /* Vert foncé */
+    color: white;  /* Texte blanc */
+}
+</string>
+       </property>
+       <widget class="QPushButton" name="emp1_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>150</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>employées</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/empe.png</normaloff>../../../Documents/projet_c/projet_c/empe.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="ChercheurButton_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>200</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>chercheurs</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/cher.png</normaloff>../../../Documents/projet_c/projet_c/cher.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="vac_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>250</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>vaccins</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/vaccin.png</normaloff>../../../Documents/projet_c/projet_c/vaccin.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="EquipementButton_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>300</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>équipements</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/equipement.png</normaloff>../../../Documents/projet_c/projet_c/equipement.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="client_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>400</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>clients</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/client.png</normaloff>../../../Documents/projet_c/projet_c/client.png</iconset>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_11">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>550</y>
+          <width>111</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton#pushButton_8 {
+    background-color: transparent;
+    color: #E74C3C;  /* Rouge */
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    padding: 8px 15px;
+    text-align: left;
+}
+
+QPushButton#pushButton_8:hover {
+    color: #C0392B;  /* Rouge foncé au survol */
+}
+
+QPushButton#pushButton_8:pressed {
+    color: #A93226;  /* Encore plus foncé au clic */
+}
+
+/* Ajouter une icône à gauche du texte */
+QPushButton#pushButton_8::before {
+    content: &quot;⏻ &quot;;  /* Icône de mise hors tension */
+    font-size: 18px;
+    margin-right: 8px;
+}
+</string>
+        </property>
+        <property name="text">
+         <string>Déconnexion</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="logout_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>560</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #2C3E50;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>../../../Documents/projet_c/application/logout.png</pixmap>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>549</y>
+          <width>31</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #2C3E50;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>../../../Documents/projet_c/projet_c/logout.png</pixmap>
+        </property>
+       </widget>
+       <widget class="QLabel" name="logo1_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>111</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #2C3E50;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>../../../Documents/projet_c/projet_c/logo1.png</pixmap>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="eq_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>350</y>
+          <width>141</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}
+</string>
+        </property>
+        <property name="text">
+         <string>test biologique</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../../../Documents/projet_c/projet_c/equipement.png</normaloff>../../../Documents/projet_c/projet_c/equipement.png</iconset>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="logo1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>111</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #2C3E50;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../../Documents/projet_c/projet_c/logo1.png</pixmap>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1456</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

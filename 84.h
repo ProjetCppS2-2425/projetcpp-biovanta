@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef 84_H
+#define 84_H
 
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -14,4 +14,4 @@ public:
     void closeconnect();
 };
 
-#endif // CONNECTION_H
+#endif // 84_H

@@ -1,5 +1,4 @@
-#include "chercheur_1.h"
-#include "chercheur.h"
+
 #include "ui_chercheur_1.h"
 #include <QMessageBox>
 #include <QSqlQuery>
@@ -13,8 +12,14 @@
 #include "ai_report_generator.h"
 #include "chercheur_1.h"
 #include "ui_chercheur_1.h"
+#include "ui_equipement1.h"
+
+
 #include "ai_report_generator.h"
 #include "arduino1.h"
+#include "chercheur.h"
+
+
 
 // Global or class-level instance
 
@@ -27,33 +32,6 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
 {
     ui->setupUi(this);
 
-    // PDF Export Setup
-    const int PDF_COLUMN = 8;  // Fixed spelling: COLUMN not COLUNN
-    ui->tableWidget_4->setColumnCount(PDF_COLUMN + 1);  // Fixed: tableWidget_4 not tab1ewidget_d
-    ui->tableWidget_4->setHorizontalHeaderItem(PDF_COLUMN, new QTableWidgetItem("Rapport"));
-
-    // Connect AI signal
-    connect(m_aiGenerator, &AIReportGenerator::reportGenerated,
-            this, &chercheur_1::updateReportInTable);
-    // Optional: connect a button
-
-
-
-    // In MainWindow constructor after ui->setupUi(this);
-
-
-
-
-
-    // Connect signals
-    // Change from:
-
-
-    // To:
-
-    // Example: Add prefix to project name in tableWidget_5
-
-    // In MainWindow constructor (mainwindow.cpp)
     // CORRECTED VERSION:
     ui->filtrage_4->clear();
     ui->filtrage_4->addItems(QStringList() << "ID" << "Nom" << "Email" << "Projet En Cours");// Now includes "ID"
@@ -103,10 +81,10 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
     ui->logo1->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\empe.png"));
-    ui->chercheur->setIcon(QPixmap("C:\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\cher.png"));
+    ui->ChercheurButton->setIcon(QPixmap("C:\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\cher.png"));
     ui->pdf_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\pdf1.png"));
     ui->vac->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\vaccin.png"));
-    ui->eq->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\equipement.png"));
+    ui->EquipementButton->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\equipement.png"));
     ui->test->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\teste.png"));
     ui->client->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\client.png"));
     ui->stat_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\st.png"));
@@ -333,68 +311,88 @@ void chercheur_1::pushButton_2_clicked()
 }
 void chercheur_1::refreshTable()
 {
-    // Clear both tables while preserving headers
+    qDebug() << "Starting table refresh...";
+
+    // Clear existing data while preserving columns
     ui->tableWidget_4->setRowCount(0);
-    ui->tableWidget_5->setRowCount(0);  // Added missing clear for tableWidget_5
+    ui->tableWidget_5->setRowCount(0);
 
-    ui->tableWidget_5->setMinimumSize(800, 600);
-    QList<Chercheur> chercheurs = Chercheur::afficher();
+    // Get all researchers from database
+    QList<Chercheur> chercheurs;
+    try {
+        chercheurs = Chercheur::afficher();
+        qDebug() << "Retrieved" << chercheurs.size() << "researchers from database";
+    } catch (const std::exception &e) {
+        qCritical() << "Database error:" << e.what();
+        QMessageBox::critical(this, "Database Error",
+                              QString("Failed to load researchers:\n%1").arg(e.what()));
+        return;
+    }
 
-    // Configure selection behavior
+    // Configure table properties
     ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_5->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // Populate main table (tableWidget_4)
     for (int row = 0; row < chercheurs.size(); ++row) {
         const Chercheur &c = chercheurs[row];
-        QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
 
-        // === Populate Main Table (tableWidget_4) ===
+        // Insert new row
         ui->tableWidget_4->insertRow(row);
-        ui->tableWidget_4->setItem(row, 0, new QTableWidgetItem(QString::number(c.getId())));
-        ui->tableWidget_4->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-        ui->tableWidget_4->setItem(row, 2, new QTableWidgetItem(c.getPrenom()));
-        ui->tableWidget_4->setItem(row, 3, new QTableWidgetItem(c.getEmail()));
-        ui->tableWidget_4->setItem(row, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
-        ui->tableWidget_4->setItem(row, 5, new QTableWidgetItem(c.getDomaineRecherche()));
-        ui->tableWidget_4->setItem(row, 6, new QTableWidgetItem(cleanProjectName));
+
+        // Set data for each column
+        auto setItem = [&](int col, const QVariant &data) {
+            QTableWidgetItem *item = new QTableWidgetItem(data.toString());
+            item->setFlags(item->flags() ^ Qt::ItemIsEditable); // Make read-only
+            ui->tableWidget_4->setItem(row, col, item);
+        };
+
+        setItem(0, c.getId());
+        setItem(1, c.getNom());
+        setItem(2, c.getPrenom());
+        setItem(3, c.getEmail());
+        setItem(4, c.getNumTlp());
+        setItem(5, c.getDomaineRecherche());
+
+        // Clean and set project name
+        QString cleanProject = c.cleanProjectName(c.getProjetEnCours());
+        setItem(6, cleanProject);
+
+        // Add history icon
         addHistoryIcon(row, c.getId());
 
-        // === Populate Report Table (tableWidget_5) ===
+        // Add PDF button
+        QPushButton *pdfBtn = new QPushButton("📄");
+        pdfBtn->setToolTip("Generate PDF Report");
+        pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
+        connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
+            generateResearcherPDF(c.getId(), "");
+        });
+        ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
+
+        // Populate report table (tableWidget_5)
         ui->tableWidget_5->insertRow(row);
         QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(c.getId()));
         idItem->setTextAlignment(Qt::AlignCenter);
         ui->tableWidget_5->setItem(row, 0, idItem);
         ui->tableWidget_5->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-        ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(cleanProjectName));
-
-        // Add PDF button
-        QPushButton *pdfBtn = new QPushButton("📄");
-        pdfBtn->setToolTip("Générer PDF");
-        pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
-
-        connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
-            for (int r = 0; r < ui->tableWidget_5->rowCount(); ++r) {
-                if (ui->tableWidget_5->item(r, 0)->text().toInt() == c.getId()) {
-                    QString report = ui->tableWidget_5->item(r, 3)->text();
-                    generateResearcherPDF(c.getId(), report);
-                    break;
-                }
-            }
-        });
-        ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
+        ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(cleanProject));
     }
 
-    // Auto-resize columns
-    ui->tableWidget_4->resizeColumnsToContents();
-    ui->tableWidget_5->resizeColumnsToContents();
+    // Auto-resize columns with minimum widths
+    auto resizeColumns = [](QTableWidget *table) {
+        table->resizeColumnsToContents();
+        for (int col = 0; col < table->columnCount(); ++col) {
+            int width = table->columnWidth(col);
+            table->setColumnWidth(col, qMax(width, 80)); // Minimum width 80px
+        }
+    };
 
-    // Set minimum widths
-    for (int col = 0; col < ui->tableWidget_4->columnCount(); ++col) {
-        if (ui->tableWidget_4->columnWidth(col) < 80)
-            ui->tableWidget_4->setColumnWidth(col, 80);
-    }
+    resizeColumns(ui->tableWidget_4);
+    resizeColumns(ui->tableWidget_5);
+
+    qDebug() << "Table refresh completed successfully";
 }
-
 void chercheur_1::onSuppButtonClicked()
 {
     int selectedRow = ui->tableWidget_4->currentRow();
@@ -870,3 +868,5 @@ void chercheur_1::readSerialData()
         qDebug() << "Serial read timeout";
     }
 }
+// Add this in chercheur_1.cpp (outside any other functions)
+

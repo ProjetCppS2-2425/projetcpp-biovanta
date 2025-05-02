@@ -1,6 +1,6 @@
 #include "chercheur_1.h"
 #include <QApplication>
-#include "connection.h"
+#include "84.h"
 #include <QMessageBox>
 
 int main(int argc, char *argv[])

@@ -1,3 +1,4 @@
+
 #ifndef CHERCHEUR_1_H
 #define CHERCHEUR_1_H
 
@@ -27,7 +28,7 @@ class chercheur_1 : public QMainWindow  // Changed from MainWindow
     Q_OBJECT
 
 public:
-    explicit chercheur_1(QWidget *parent = nullptr);  // Changed
+   chercheur_1(QWidget *parent = nullptr);  // Changed
     ~chercheur_1();  // Changed
 
 private slots:
@@ -75,6 +76,9 @@ private:
     void generateResearcherPDF(int researcherId, const QString &reportText);
     void initArduinoConnection();
     void readSerialData();
+signals:
+    void on_btnGoToEquipement_clicked();
 };
+  // Add this in chercheur_1.h
 
 #endif // CHERCHEUR_1_H
