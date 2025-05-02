@@ -311,87 +311,43 @@ void chercheur_1::pushButton_2_clicked()
 }
 void chercheur_1::refreshTable()
 {
-    qDebug() << "Starting table refresh...";
+    ui->tableWidget_4->setRowCount(0); // Clear existing rows
 
-    // Clear existing data while preserving columns
-    ui->tableWidget_4->setRowCount(0);
-    ui->tableWidget_5->setRowCount(0);
+    QList<Chercheur> chercheurs = Chercheur::afficher();
 
-    // Get all researchers from database
-    QList<Chercheur> chercheurs;
-    try {
-        chercheurs = Chercheur::afficher();
-        qDebug() << "Retrieved" << chercheurs.size() << "researchers from database";
-    } catch (const std::exception &e) {
-        qCritical() << "Database error:" << e.what();
-        QMessageBox::critical(this, "Database Error",
-                              QString("Failed to load researchers:\n%1").arg(e.what()));
-        return;
+    // Set column count if not already set
+    if (ui->tableWidget_4->columnCount() < 9) {
+        ui->tableWidget_4->setColumnCount(9);
     }
 
-    // Configure table properties
-    ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidget_5->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    // Populate main table (tableWidget_4)
     for (int row = 0; row < chercheurs.size(); ++row) {
         const Chercheur &c = chercheurs[row];
-
-        // Insert new row
         ui->tableWidget_4->insertRow(row);
 
-        // Set data for each column
-        auto setItem = [&](int col, const QVariant &data) {
-            QTableWidgetItem *item = new QTableWidgetItem(data.toString());
-            item->setFlags(item->flags() ^ Qt::ItemIsEditable); // Make read-only
-            ui->tableWidget_4->setItem(row, col, item);
-        };
+        // Add regular data columns
+        ui->tableWidget_4->setItem(row, ID_COL, new QTableWidgetItem(QString::number(c.getId())));
+        ui->tableWidget_4->setItem(row, NOM_COL, new QTableWidgetItem(c.getNom()));
+        ui->tableWidget_4->setItem(row, PRENOM_COL, new QTableWidgetItem(c.getPrenom()));
+        ui->tableWidget_4->setItem(row, EMAIL_COL, new QTableWidgetItem(c.getEmail()));
+        ui->tableWidget_4->setItem(row, TEL_COL, new QTableWidgetItem(QString::number(c.getNumTlp())));
+        ui->tableWidget_4->setItem(row, DOMAINE_COL, new QTableWidgetItem(c.getDomaineRecherche()));
+        ui->tableWidget_4->setItem(row, PROJET_COL, new QTableWidgetItem(c.getCurrentProject()));
 
-        setItem(0, c.getId());
-        setItem(1, c.getNom());
-        setItem(2, c.getPrenom());
-        setItem(3, c.getEmail());
-        setItem(4, c.getNumTlp());
-        setItem(5, c.getDomaineRecherche());
-
-        // Clean and set project name
-        QString cleanProject = c.cleanProjectName(c.getProjetEnCours());
-        setItem(6, cleanProject);
-
-        // Add history icon
+        // Add History Icon (Column 7)
         addHistoryIcon(row, c.getId());
 
-        // Add PDF button
-        QPushButton *pdfBtn = new QPushButton("📄");
-        pdfBtn->setToolTip("Generate PDF Report");
-        pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
-        connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
-            generateResearcherPDF(c.getId(), "");
-        });
-        ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
-
-        // Populate report table (tableWidget_5)
-        ui->tableWidget_5->insertRow(row);
-        QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(c.getId()));
-        idItem->setTextAlignment(Qt::AlignCenter);
-        ui->tableWidget_5->setItem(row, 0, idItem);
-        ui->tableWidget_5->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-        ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(cleanProject));
+        // Add Report Button (Column 8)
+        addReportButton(row, c.getId());
     }
 
-    // Auto-resize columns with minimum widths
-    auto resizeColumns = [](QTableWidget *table) {
-        table->resizeColumnsToContents();
-        for (int col = 0; col < table->columnCount(); ++col) {
-            int width = table->columnWidth(col);
-            table->setColumnWidth(col, qMax(width, 80)); // Minimum width 80px
-        }
-    };
+    // Resize columns to content
+    ui->tableWidget_4->resizeColumnsToContents();
 
-    resizeColumns(ui->tableWidget_4);
-    resizeColumns(ui->tableWidget_5);
-
-    qDebug() << "Table refresh completed successfully";
+    // Set minimum column widths
+    for (int col = 0; col < ui->tableWidget_4->columnCount(); ++col) {
+        if (ui->tableWidget_4->columnWidth(col) < 80)
+            ui->tableWidget_4->setColumnWidth(col, 80);
+    }
 }
 void chercheur_1::onSuppButtonClicked()
 {
