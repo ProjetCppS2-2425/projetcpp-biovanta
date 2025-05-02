@@ -32,7 +32,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
+class Ui_equipement1
 {
 public:
     QWidget *centralwidget;
@@ -105,12 +105,12 @@ public:
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow *equipement1)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1536, 670);
-        MainWindow->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
+        if (equipement1->objectName().isEmpty())
+            equipement1->setObjectName("equipement1");
+        equipement1->resize(1536, 670);
+        equipement1->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
 "QPushButton {\n"
 "    background-color: #34495E;  /* Bleu fonc\303\251 */\n"
 "    color: white;\n"
@@ -147,7 +147,7 @@ public:
 "\n"
 "\n"
 ""));
-        centralwidget = new QWidget(MainWindow);
+        centralwidget = new QWidget(equipement1);
         centralwidget->setObjectName("centralwidget");
         sidebare = new QWidget(centralwidget);
         sidebare->setObjectName("sidebare");
@@ -778,34 +778,34 @@ public:
         calendarWidget->setObjectName("calendarWidget");
         calendarWidget->setGeometry(QRect(60, 80, 1201, 461));
         stackedWidget->addWidget(calender_page);
-        MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
+        equipement1->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(equipement1);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 1536, 26));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
+        equipement1->setMenuBar(menubar);
+        statusbar = new QStatusBar(equipement1);
         statusbar->setObjectName("statusbar");
-        MainWindow->setStatusBar(statusbar);
+        equipement1->setStatusBar(statusbar);
 
-        retranslateUi(MainWindow);
+        retranslateUi(equipement1);
 
         stackedWidget->setCurrentIndex(1);
 
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(equipement1);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow *equipement1)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        equipement1->setWindowTitle(QCoreApplication::translate("equipement1", "MainWindow", nullptr));
         logo->setText(QString());
-        emp1->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
-        chercheur->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
-        vac->setText(QCoreApplication::translate("MainWindow", "vaccins", nullptr));
-        eq->setText(QCoreApplication::translate("MainWindow", "\303\251quipements", nullptr));
-        client->setText(QCoreApplication::translate("MainWindow", "clients", nullptr));
-        test->setText(QCoreApplication::translate("MainWindow", "tests biologiques", nullptr));
-        pushButton_8->setText(QCoreApplication::translate("MainWindow", "D\303\251connexion", nullptr));
+        emp1->setText(QCoreApplication::translate("equipement1", "employ\303\251es", nullptr));
+        chercheur->setText(QCoreApplication::translate("equipement1", "chercheurs", nullptr));
+        vac->setText(QCoreApplication::translate("equipement1", "vaccins", nullptr));
+        eq->setText(QCoreApplication::translate("equipement1", "\303\251quipements", nullptr));
+        client->setText(QCoreApplication::translate("equipement1", "clients", nullptr));
+        test->setText(QCoreApplication::translate("equipement1", "tests biologiques", nullptr));
+        pushButton_8->setText(QCoreApplication::translate("equipement1", "D\303\251connexion", nullptr));
         logout->setText(QString());
         noti->setText(QString());
         notificationBadge->setText(QString());
@@ -813,97 +813,97 @@ public:
         label_23->setText(QString());
         groupBox_2->setTitle(QString());
         QTableWidgetItem *___qtablewidgetitem = tableWidget_3->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement ", nullptr));
+        ___qtablewidgetitem->setText(QCoreApplication::translate("equipement1", "Id \303\251quipement ", nullptr));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget_3->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Nom ", nullptr));
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("equipement1", "Nom ", nullptr));
         QTableWidgetItem *___qtablewidgetitem2 = tableWidget_3->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "image ", nullptr));
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("equipement1", "image ", nullptr));
         QTableWidgetItem *___qtablewidgetitem3 = tableWidget_3->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QCoreApplication::translate("MainWindow", "type", nullptr));
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("equipement1", "type", nullptr));
         QTableWidgetItem *___qtablewidgetitem4 = tableWidget_3->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QCoreApplication::translate("MainWindow", "\303\251tat", nullptr));
+        ___qtablewidgetitem4->setText(QCoreApplication::translate("equipement1", "\303\251tat", nullptr));
         QTableWidgetItem *___qtablewidgetitem5 = tableWidget_3->horizontalHeaderItem(5);
-        ___qtablewidgetitem5->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
+        ___qtablewidgetitem5->setText(QCoreApplication::translate("equipement1", "Disponibilit\303\251 ", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = tableWidget_3->horizontalHeaderItem(6);
-        ___qtablewidgetitem6->setText(QCoreApplication::translate("MainWindow", "nombre", nullptr));
+        ___qtablewidgetitem6->setText(QCoreApplication::translate("equipement1", "nombre", nullptr));
         QTableWidgetItem *___qtablewidgetitem7 = tableWidget_3->horizontalHeaderItem(7);
-        ___qtablewidgetitem7->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
+        ___qtablewidgetitem7->setText(QCoreApplication::translate("equipement1", "resistance_eq_feu", nullptr));
 
         const bool __sortingEnabled = tableWidget_3->isSortingEnabled();
         tableWidget_3->setSortingEnabled(false);
         QTableWidgetItem *___qtablewidgetitem8 = tableWidget_3->item(1, 0);
-        ___qtablewidgetitem8->setText(QCoreApplication::translate("MainWindow", "01245", nullptr));
+        ___qtablewidgetitem8->setText(QCoreApplication::translate("equipement1", "01245", nullptr));
         QTableWidgetItem *___qtablewidgetitem9 = tableWidget_3->item(1, 1);
-        ___qtablewidgetitem9->setText(QCoreApplication::translate("MainWindow", "Microscopes optiques", nullptr));
+        ___qtablewidgetitem9->setText(QCoreApplication::translate("equipement1", "Microscopes optiques", nullptr));
         QTableWidgetItem *___qtablewidgetitem10 = tableWidget_3->item(1, 4);
-        ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "marche ", nullptr));
+        ___qtablewidgetitem10->setText(QCoreApplication::translate("equipement1", "marche ", nullptr));
         QTableWidgetItem *___qtablewidgetitem11 = tableWidget_3->item(1, 5);
-        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "disponible", nullptr));
+        ___qtablewidgetitem11->setText(QCoreApplication::translate("equipement1", "disponible", nullptr));
         QTableWidgetItem *___qtablewidgetitem12 = tableWidget_3->item(1, 6);
-        ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "5", nullptr));
+        ___qtablewidgetitem12->setText(QCoreApplication::translate("equipement1", "5", nullptr));
         tableWidget_3->setSortingEnabled(__sortingEnabled);
 
-        label_25->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
-        comboBox_11->setItemText(0, QCoreApplication::translate("MainWindow", "type", nullptr));
-        comboBox_11->setItemText(1, QCoreApplication::translate("MainWindow", "id \303\251quipement ", nullptr));
-        comboBox_11->setItemText(2, QCoreApplication::translate("MainWindow", "disponibilit\303\251", nullptr));
+        label_25->setText(QCoreApplication::translate("equipement1", "rechercher :", nullptr));
+        comboBox_11->setItemText(0, QCoreApplication::translate("equipement1", "type", nullptr));
+        comboBox_11->setItemText(1, QCoreApplication::translate("equipement1", "id \303\251quipement ", nullptr));
+        comboBox_11->setItemText(2, QCoreApplication::translate("equipement1", "disponibilit\303\251", nullptr));
 
-        comboBox_12->setItemText(0, QCoreApplication::translate("MainWindow", "\303\251tat", nullptr));
-        comboBox_12->setItemText(1, QCoreApplication::translate("MainWindow", "nbre d'\303\251quipement", nullptr));
-        comboBox_12->setItemText(2, QCoreApplication::translate("MainWindow", "nom d'\303\251quipement", nullptr));
+        comboBox_12->setItemText(0, QCoreApplication::translate("equipement1", "\303\251tat", nullptr));
+        comboBox_12->setItemText(1, QCoreApplication::translate("equipement1", "nbre d'\303\251quipement", nullptr));
+        comboBox_12->setItemText(2, QCoreApplication::translate("equipement1", "nom d'\303\251quipement", nullptr));
 
-        label_26->setText(QCoreApplication::translate("MainWindow", "Tri par :", nullptr));
+        label_26->setText(QCoreApplication::translate("equipement1", "Tri par :", nullptr));
         pdf_3->setText(QString());
         stat_3->setText(QString());
         ok_3->setText(QString());
         groupBox_6->setTitle(QString());
-        label_27->setText(QCoreApplication::translate("MainWindow", "  Listes ", nullptr));
+        label_27->setText(QCoreApplication::translate("equipement1", "  Listes ", nullptr));
         supp_3->setText(QString());
-        label_28->setText(QCoreApplication::translate("MainWindow", " supprimer un \303\251quipement :", nullptr));
+        label_28->setText(QCoreApplication::translate("equipement1", " supprimer un \303\251quipement :", nullptr));
         labelImage_3->setText(QString());
         pushButton_10->setText(QString());
-        radioButton_9->setText(QCoreApplication::translate("MainWindow", "ASC", nullptr));
-        radioButton_10->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
+        radioButton_9->setText(QCoreApplication::translate("equipement1", "ASC", nullptr));
+        radioButton_10->setText(QCoreApplication::translate("equipement1", "DSC", nullptr));
         groupBox->setTitle(QString());
-        label_29->setText(QCoreApplication::translate("MainWindow", "Id \303\251quipement", nullptr));
-        label_30->setText(QCoreApplication::translate("MainWindow", "Nom de l'\303\251quipement", nullptr));
-        label_31->setText(QCoreApplication::translate("MainWindow", "Image", nullptr));
-        pushButton_11->setText(QCoreApplication::translate("MainWindow", "choisir image", nullptr));
-        label_32->setText(QCoreApplication::translate("MainWindow", "Etat ", nullptr));
-        comboBox_13->setItemText(0, QCoreApplication::translate("MainWindow", "Fonctionnel ", nullptr));
-        comboBox_13->setItemText(1, QCoreApplication::translate("MainWindow", "pas Fonctionnel ", nullptr));
-        comboBox_13->setItemText(2, QCoreApplication::translate("MainWindow", "pas fonctionnel incendie", nullptr));
-        comboBox_13->setItemText(3, QCoreApplication::translate("MainWindow", "En maintenance", nullptr));
+        label_29->setText(QCoreApplication::translate("equipement1", "Id \303\251quipement", nullptr));
+        label_30->setText(QCoreApplication::translate("equipement1", "Nom de l'\303\251quipement", nullptr));
+        label_31->setText(QCoreApplication::translate("equipement1", "Image", nullptr));
+        pushButton_11->setText(QCoreApplication::translate("equipement1", "choisir image", nullptr));
+        label_32->setText(QCoreApplication::translate("equipement1", "Etat ", nullptr));
+        comboBox_13->setItemText(0, QCoreApplication::translate("equipement1", "Fonctionnel ", nullptr));
+        comboBox_13->setItemText(1, QCoreApplication::translate("equipement1", "pas Fonctionnel ", nullptr));
+        comboBox_13->setItemText(2, QCoreApplication::translate("equipement1", "pas fonctionnel incendie", nullptr));
+        comboBox_13->setItemText(3, QCoreApplication::translate("equipement1", "En maintenance", nullptr));
 
-        label_33->setText(QCoreApplication::translate("MainWindow", "Disponibilit\303\251 ", nullptr));
-        label_34->setText(QCoreApplication::translate("MainWindow", "Nombre de l'\303\251quipement ", nullptr));
-        pushButton_12->setText(QCoreApplication::translate("MainWindow", "valider", nullptr));
-        pushButton_13->setText(QCoreApplication::translate("MainWindow", "Annuler", nullptr));
-        label_35->setText(QCoreApplication::translate("MainWindow", " Ajout ", nullptr));
-        comboBox_14->setItemText(0, QCoreApplication::translate("MainWindow", "disponible", nullptr));
-        comboBox_14->setItemText(1, QCoreApplication::translate("MainWindow", "pas disponible", nullptr));
+        label_33->setText(QCoreApplication::translate("equipement1", "Disponibilit\303\251 ", nullptr));
+        label_34->setText(QCoreApplication::translate("equipement1", "Nombre de l'\303\251quipement ", nullptr));
+        pushButton_12->setText(QCoreApplication::translate("equipement1", "valider", nullptr));
+        pushButton_13->setText(QCoreApplication::translate("equipement1", "Annuler", nullptr));
+        label_35->setText(QCoreApplication::translate("equipement1", " Ajout ", nullptr));
+        comboBox_14->setItemText(0, QCoreApplication::translate("equipement1", "disponible", nullptr));
+        comboBox_14->setItemText(1, QCoreApplication::translate("equipement1", "pas disponible", nullptr));
 
-        label_36->setText(QCoreApplication::translate("MainWindow", "type", nullptr));
-        comboBox_15->setItemText(0, QCoreApplication::translate("MainWindow", "Appareil de laboratoire", nullptr));
-        comboBox_15->setItemText(1, QCoreApplication::translate("MainWindow", "Appareil de diagnostic", nullptr));
-        comboBox_15->setItemText(2, QCoreApplication::translate("MainWindow", "R\303\251frig\303\251ration et Stockage des Vaccins", nullptr));
+        label_36->setText(QCoreApplication::translate("equipement1", "type", nullptr));
+        comboBox_15->setItemText(0, QCoreApplication::translate("equipement1", "Appareil de laboratoire", nullptr));
+        comboBox_15->setItemText(1, QCoreApplication::translate("equipement1", "Appareil de diagnostic", nullptr));
+        comboBox_15->setItemText(2, QCoreApplication::translate("equipement1", "R\303\251frig\303\251ration et Stockage des Vaccins", nullptr));
 
-        label->setText(QCoreApplication::translate("MainWindow", "dateDebut", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "dateFin", nullptr));
-        res->setText(QCoreApplication::translate("MainWindow", "resistance_eq_feu", nullptr));
-        comboBox_16->setItemText(0, QCoreApplication::translate("MainWindow", "resistible", nullptr));
-        comboBox_16->setItemText(1, QCoreApplication::translate("MainWindow", "pas resistible", nullptr));
+        label->setText(QCoreApplication::translate("equipement1", "dateDebut", nullptr));
+        label_2->setText(QCoreApplication::translate("equipement1", "dateFin", nullptr));
+        res->setText(QCoreApplication::translate("equipement1", "resistance_eq_feu", nullptr));
+        comboBox_16->setItemText(0, QCoreApplication::translate("equipement1", "resistible", nullptr));
+        comboBox_16->setItemText(1, QCoreApplication::translate("equipement1", "pas resistible", nullptr));
 
         bg->setText(QString());
         groupBox_3->setTitle(QString());
-        radioButton_11->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
-        radioButton_12->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
+        radioButton_11->setText(QCoreApplication::translate("equipement1", "Ajouter", nullptr));
+        radioButton_12->setText(QCoreApplication::translate("equipement1", "Modifier", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+    class equipement1: public Ui_equipement1 {};
 } // namespace Ui
 
 QT_END_NAMESPACE

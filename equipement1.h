@@ -24,17 +24,17 @@
 #include "equipement.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class equipement1; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class equipement1 : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    equipement1(QWidget *parent = nullptr);
+    ~equipement1();
     static Equipement getEquipementById(const QString &id);
-    // In mainwindow.h, add to private members:
+
 private slots:
     void initArduinoConnection();
     void readSerialData();
@@ -45,7 +45,7 @@ private:
     QString selectedId;
     bool isModifying;
     Equipement equip;
-    Ui::MainWindow *ui;
+    Ui::equipement1 *ui;
     void reinitialiserFormulaire();
     void remplirTableWidget();
     void refreshAlertCount();

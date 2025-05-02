@@ -5,7 +5,7 @@
 #include <QString>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
-#include <QDate>  // Pour les membres dateDebutDispo et dateFinDispo
+#include <QDate>
 
 class Equipement {
 private:

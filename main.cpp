@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     }
 
     // Affichage de la fenêtre principale
-    MainWindow w;
+    equipement1 w;
     w.show();
 
     return a.exec();

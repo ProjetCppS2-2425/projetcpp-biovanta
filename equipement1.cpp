@@ -1,5 +1,5 @@
 #include "equipement1.h"
-#include "ui_equipement1.h"
+#include "ui_equipement1.h"  // This must be included
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QFile>
@@ -41,17 +41,17 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+equipement1::equipement1(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::equipement1)
 {
     ui->setupUi(this);
     initArduinoConnection();
-    connect(ui->supp_3, &QPushButton::clicked, this, &MainWindow::supp_3_clicked);
+    connect(ui->supp_3, &QPushButton::clicked, this, &equipement1::supp_3_clicked);
     isModifying = false;
-    connect(ui->ok_3, &QPushButton::clicked, this, &MainWindow::on_ok_3_clicked);
-    connect(ui->pushButton_13, &QPushButton::clicked, this, &MainWindow::on_pushButton_10_clicked);
-    connect(ui->radioButton_9, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
-    connect(ui->radioButton_10, &QRadioButton::clicked, this, &MainWindow::onTriDeclenche);
+    connect(ui->ok_3, &QPushButton::clicked, this, &equipement1::on_ok_3_clicked);
+    connect(ui->pushButton_13, &QPushButton::clicked, this, &equipement1::on_pushButton_10_clicked);
+    connect(ui->radioButton_9, &QRadioButton::clicked, this, &equipement1::onTriDeclenche);
+    connect(ui->radioButton_10, &QRadioButton::clicked, this, &equipement1::onTriDeclenche);
     connect(ui->comboBox_12, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
         if (ui->radioButton_9->isChecked() || ui->radioButton_10->isChecked()) {
             onTriDeclenche();
@@ -107,10 +107,10 @@ MainWindow::MainWindow(QWidget *parent)
         );
 
     notificationTimer = new QTimer(this);
-    connect(notificationTimer, &QTimer::timeout, this, &MainWindow::checkEquipmentStatus);
+    connect(notificationTimer, &QTimer::timeout, this, &equipement1::checkEquipmentStatus);
     notificationTimer->start(6000);
     checkEquipmentStatus();
-   connect(ui->noti, &QPushButton::clicked, this, &MainWindow::showAlertNotification);
+   connect(ui->noti, &QPushButton::clicked, this, &equipement1::showAlertNotification);
 
     ui->tableWidget_3->setStyleSheet(
         "QTableWidget {"
@@ -174,7 +174,7 @@ MainWindow::MainWindow(QWidget *parent)
         afficherDisponibiliteSurCalendrier();
     });
 
-    connect(ui->calendarWidget, &QCalendarWidget::clicked, this, &MainWindow::afficherDetailsEquipement);
+    connect(ui->calendarWidget, &QCalendarWidget::clicked, this, &equipement1::afficherDetailsEquipement);
      calendarWidget = ui->calendarWidget;
 
      connect(ui->calen, &QPushButton::clicked, this, [this]() {
@@ -182,7 +182,7 @@ MainWindow::MainWindow(QWidget *parent)
          afficherDisponibiliteSurCalendrier();
      });
      connect(calendarWidget, &QCalendarWidget::currentPageChanged,
-             this, &MainWindow::afficherDisponibiliteSurCalendrier);
+             this, &equipement1::afficherDisponibiliteSurCalendrier);
 
      backButtonCalendar = new QPushButton("Retour", ui->calender_page);
      backButtonCalendar->setGeometry(20, 10, 121, 41);
@@ -212,12 +212,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-MainWindow::~MainWindow()
+equipement1::~equipement1()
 {
     delete ui;
 }
 
-void MainWindow::on_pushButton_12_clicked() {
+void equipement1::on_pushButton_12_clicked() {
     QString id = ui->lineEdit_8->text();
     QDate dateDebut = ui->dateEditDebut->date();
     QDate dateFin = ui->dateEditFin->date();
@@ -328,7 +328,7 @@ void MainWindow::on_pushButton_12_clicked() {
         QMessageBox::warning(this, "Attention", "Veuillez sélectionner 'Ajouter' ou 'Modifier' avant de valider.");
     }
 }
-void MainWindow::on_pushButton_11_clicked() {
+void equipement1::on_pushButton_11_clicked() {
     QString filePath = QFileDialog::getOpenFileName(this, "Choisir une image", "", "Images (*.png *.jpg *.jpeg *.bmp)");
 
     if (!filePath.isEmpty()) {
@@ -345,7 +345,7 @@ void MainWindow::on_pushButton_11_clicked() {
     }
 }
 
-void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
+void equipement1::afficherEquipements(const QList<Equipement>& liste) {
     ui->tableWidget_3->setRowCount(liste.size());
    QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre", "Résistance feu"};
     ui->tableWidget_3->setHorizontalHeaderLabels(headers);
@@ -384,7 +384,7 @@ void MainWindow::afficherEquipements(const QList<Equipement>& liste) {
 }
 
 
-void MainWindow::actualiserTableau() {
+void equipement1::actualiserTableau() {
     ui->tableWidget_3->clear();
     ui->tableWidget_3->setColumnCount(8);
     QStringList headers = {"ID", "Nom", "Image", "Type", "État", "Disponibilité", "Nombre" , "Résistance feu"};
@@ -413,7 +413,7 @@ void MainWindow::actualiserTableau() {
     }
 }
 
-void MainWindow::supp_3_clicked() {
+void equipement1::supp_3_clicked() {
     if (selectedId.isEmpty()) {
         QMessageBox::warning(this, "Erreur", "Veuillez sélectionner un équipement à supprimer.");
         return;
@@ -436,7 +436,7 @@ void MainWindow::supp_3_clicked() {
         }
     }
 }
-void MainWindow::on_tableWidget_3_itemClicked(QTableWidgetItem *item) {
+void equipement1::on_tableWidget_3_itemClicked(QTableWidgetItem *item) {
     if (!item) return;
 
     int row = item->row();
@@ -449,7 +449,7 @@ void MainWindow::on_tableWidget_3_itemClicked(QTableWidgetItem *item) {
         ui->tableWidget_3->selectRow(row);
     }
 }
-void MainWindow::chargerEquipement() {
+void equipement1::chargerEquipement() {
     QString id = ui->lineEdit_8->text();
 
     if (id.isEmpty()) {
@@ -490,7 +490,7 @@ void MainWindow::chargerEquipement() {
 
     isModifying = true;
 }
-void MainWindow::reinitialiserFormulaire() {
+void equipement1::reinitialiserFormulaire() {
     ui->lineEdit_8->clear();
     ui->lineEdit_9->clear();
     ui->comboBox_15->setCurrentIndex(0);
@@ -514,10 +514,10 @@ void MainWindow::reinitialiserFormulaire() {
     ui->lineEdit_8->setFocus();
 }
 
-void MainWindow::on_pushButton_13_clicked() {
+void equipement1::on_pushButton_13_clicked() {
     reinitialiserFormulaire();
 }
-void MainWindow::on_pdf_3_clicked()
+void equipement1::on_pdf_3_clicked()
 {
     QString strStream;
     QTextStream out(&strStream);
@@ -627,7 +627,7 @@ void MainWindow::on_pdf_3_clicked()
 
     QMessageBox::information(this, "PDF généré", QString("Le fichier PDF a été généré avec succès dans %1.").arg(fileName));
 }
-void MainWindow::on_stat_3_clicked()
+void equipement1::on_stat_3_clicked()
 {
     QSqlQuery query;
 
@@ -706,7 +706,7 @@ void MainWindow::on_stat_3_clicked()
     // Passer à la page des statistiques
     ui->stackedWidget->setCurrentWidget(ui->page_stats);
 }
-void MainWindow::on_ok_3_clicked() {
+void equipement1::on_ok_3_clicked() {
     if (!ui) {
         qDebug() << "Erreur: ui n'est pas initialisé!";
         return;
@@ -788,7 +788,7 @@ void MainWindow::on_ok_3_clicked() {
 }
 
 
-void MainWindow::on_pushButton_10_clicked()
+void equipement1::on_pushButton_10_clicked()
 {
     QList<Equipement> liste = Equipement::afficher();
     afficherEquipements(liste);
@@ -797,7 +797,7 @@ void MainWindow::on_pushButton_10_clicked()
 }
 
 
-void MainWindow::onTriDeclenche() {
+void equipement1::onTriDeclenche() {
     if (!ui->radioButton_9->isChecked() && !ui->radioButton_10->isChecked()) {
         return;
     }
@@ -835,7 +835,7 @@ void MainWindow::onTriDeclenche() {
     afficherEquipements(liste);
 }
 
-void MainWindow::checkEquipmentStatus() {
+void equipement1::checkEquipmentStatus() {
     int nonFonctionnel = Equipement::countEquipementsParEtat("pas fonctionnel");
     int maintenance = Equipement::countEquipementsParEtat("maintenance");
     int total = nonFonctionnel + maintenance;
@@ -847,7 +847,7 @@ void MainWindow::checkEquipmentStatus() {
     updateNotificationBadge(total);
 }
 
-void MainWindow::updateNotificationBadge(int count)
+void equipement1::updateNotificationBadge(int count)
 {
     if (count > 0) {
         ui->noti->setProperty("alert", true);
@@ -907,7 +907,7 @@ void MainWindow::updateNotificationBadge(int count)
     }
     wasInAlertState = (count > 0);
 }
-void MainWindow::showEquipmentAlerts()
+void equipement1::showEquipmentAlerts()
 {
     QList<Equipement> alertes = Equipement::getEquipementsNonFonctionnels();
 
@@ -988,13 +988,13 @@ void MainWindow::showEquipmentAlerts()
     alertDialog->exec();
     delete alertDialog;
 }
-void MainWindow::refreshAlertCount()
+void equipement1::refreshAlertCount()
 {
     checkEquipmentStatus();
 }
 
 
-void MainWindow::afficherDisponibiliteSurCalendrier() {
+void equipement1::afficherDisponibiliteSurCalendrier() {
 
     calendarWidget->setDateTextFormat(QDate(), QTextCharFormat());
 
@@ -1062,7 +1062,7 @@ void MainWindow::afficherDisponibiliteSurCalendrier() {
 }
 
 
-void MainWindow::afficherDetailsEquipement(const QDate &date) {
+void equipement1::afficherDetailsEquipement(const QDate &date) {
     QString details;
     QList<Equipement> equipements = Equipement::afficher();
 
@@ -1091,7 +1091,7 @@ void MainWindow::afficherDetailsEquipement(const QDate &date) {
     QMessageBox::information(this, "📅 Détails des équipements", details);
 }
 
-void MainWindow::showAlertNotification()
+void equipement1::showAlertNotification()
 {
     if (notificationPopup) {
         notificationPopup->close();
@@ -1184,7 +1184,7 @@ void MainWindow::showAlertNotification()
     notificationPopup->show();
 
 }
-bool MainWindow::eventFilter(QObject* obj, QEvent* event)
+bool equipement1::eventFilter(QObject* obj, QEvent* event)
 {
     if (notificationPopup && event->type() == QEvent::MouseButtonPress) {
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
@@ -1199,12 +1199,12 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 }
 
 
-void MainWindow::initArduinoConnection() {
+void equipement1::initArduinoConnection() {
     int status = arduino.connect_arduino();
 
     if(status == 0) {
         connect(arduino.getserial(), &QSerialPort::readyRead,
-                this, &MainWindow::readSerialData);
+                this, &equipement1::readSerialData);
         ui->label_23->setText("Arduino connecté sur " + arduino.getarduino_port_name());
         ui->label_23->setStyleSheet("color: green;");
     } else {
@@ -1219,7 +1219,7 @@ void MainWindow::initArduinoConnection() {
     }
 }
 
-void MainWindow::readSerialData() {
+void equipement1::readSerialData() {
     while(arduino.getserial()->canReadLine()) {
         QString message = QString::fromUtf8(arduino.getserial()->readLine()).trimmed();
 
@@ -1254,7 +1254,7 @@ void MainWindow::readSerialData() {
     }
 }
 
-void MainWindow::handleFireDetection() {
+void equipement1::handleFireDetection() {
     if (!QSqlDatabase::database().isOpen()) {
         qDebug() << "Erreur : Base non connectée";
         return;
