@@ -1,4 +1,3 @@
-
 #ifndef CHERCHEUR_1_H
 #define CHERCHEUR_1_H
 
@@ -26,11 +25,9 @@ QT_END_NAMESPACE
 class chercheur_1 : public QMainWindow  // Changed from MainWindow
 {
     Q_OBJECT
-    // Ajoutez ceci dans la classe chercheur_1
-signals:
-    void requestShowEquipement();
+
 public:
-   chercheur_1(QWidget *parent = nullptr);  // Changed
+    chercheur_1(QWidget *parent = nullptr);  // Changed
     ~chercheur_1();  // Changed
 
 private slots:
@@ -51,8 +48,10 @@ private slots:
     void on_stat_clicked();
     void onPdfButtonClicked();
     void onCellClicked(int row, int column);
-    void updateReportInTable(const QString &projectName, const QString &report);
+
     void generateHistoryPDF(int researcherId);
+    void addReportIcon(int row, int researcherId, const QString& projectName);
+    void displayReportForProject(const QString& projectName);
 
 private:
     Ui::chercheur_1 *ui;  // Changed
@@ -71,6 +70,10 @@ private:
     };
 
     static const int HISTORY_COLUMN = 7;
+    static const int REPORT_COLUMN  = 8;
+
+
+
 
     void showResearcherHistory(int row);
     void addHistoryIcon(int row, int researcherId);
@@ -78,9 +81,14 @@ private:
     void generateResearcherPDF(int researcherId, const QString &reportText);
     void initArduinoConnection();
     void readSerialData();
+
 signals:
     void on_btnGoToEquipement_clicked();
+    // In chercheur_1.h
+private:
+    // ... existing private members ...
+    void generateAIReportPDF(int researcherId, const QString& projectName, const QString& reportContent);
 };
-  // Add this in chercheur_1.h
+    // Add this in chercheur_1.h
 
 #endif // CHERCHEUR_1_H
