@@ -188,12 +188,9 @@ void vaccin1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 8: _t->on_checkBox_2_stateChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 9: _t->on_ok_2_clicked(); break;
         case 10: _t->on_pushButton_6_clicked(); break;
-        case 11: _t->on_stat_2_clicked(); break;
         case 12: _t->on_pdf_2_clicked(); break;
         case 13: _t->on_pushButton_clicked(); break;
         case 14: _t->on_pushButton_2_clicked(); break;
-        case 15: _t->verifierTempEtMettreAJour(); break;
-        case 16: _t->lireDonneesArduino(); break;
         default: ;
         }
     }

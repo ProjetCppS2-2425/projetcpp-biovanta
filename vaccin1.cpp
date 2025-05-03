@@ -15,9 +15,9 @@
 ArduinoManager *arduino;
 
 
-MainWindow::MainWindow(QWidget *parent)
+vaccin1::vaccin1(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::vaccin1)
 {
     ui->setupUi(this);
 
@@ -67,31 +67,31 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 
-MainWindow::~MainWindow()
+vaccin1::~vaccin1()
 {
     delete ui;
 }
 
-void MainWindow::loadTableView()
+void vaccin1::loadTableView()
 {
     vaccin vac;
     ui->tableView_vaccin->setModel(vac.afficher());
 }
 
-void MainWindow::showEvent(QShowEvent *event)
+void vaccin1::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
     loadTableView();
 }
 
-QString MainWindow::checkType()
+QString vaccin1::checkType()
 {
     if (ui->radioButton_3->isChecked()) return "add";
     if (ui->radioButton_4->isChecked()) return "edit";
     return "check edit or delete";
 }
 
-void MainWindow::clearInputs()
+void vaccin1::clearInputs()
 {
     ui->lineEdit_2->clear();
     ui->lineEdit_4->clear();
@@ -101,7 +101,7 @@ void MainWindow::clearInputs()
     ui->dateEdit->setDate(QDate::currentDate());
 }
 
-bool MainWindow::validateInputs()
+bool vaccin1::validateInputs()
 {
     if (ui->lineEdit_2->text().isEmpty() ||
         ui->lineEdit_4->text().isEmpty() ||
@@ -115,7 +115,7 @@ bool MainWindow::validateInputs()
     return true;
 }
 
-void MainWindow::on_pushButton_7_clicked()
+void vaccin1::on_pushButton_7_clicked()
 {
     QString type = checkType();
 
@@ -177,17 +177,17 @@ void MainWindow::on_pushButton_7_clicked()
 }
 
 
-void MainWindow::on_comboBox_10_currentTextChanged(const QString &arg1)
+void vaccin1::on_comboBox_10_currentTextChanged(const QString &arg1)
 {
     ui->type_vaccin->setText(arg1);
 }
 
-void MainWindow::on_comboBox_11_currentTextChanged(const QString &arg1)
+void vaccin1::on_comboBox_11_currentTextChanged(const QString &arg1)
 {
     ui->nombre_doses->setText(arg1);
 }
 
-void MainWindow::on_tableView_vaccin_doubleClicked(const QModelIndex &index)
+void vaccin1::on_tableView_vaccin_doubleClicked(const QModelIndex &index)
 {
     QString selectedId = ui->tableView_vaccin->model()->data(index.sibling(index.row(), 0)).toString();
 
@@ -208,7 +208,7 @@ void MainWindow::on_tableView_vaccin_doubleClicked(const QModelIndex &index)
     }
 }
 
-void MainWindow::on_tableView_vaccin_clicked(const QModelIndex &index)
+void vaccin1::on_tableView_vaccin_clicked(const QModelIndex &index)
 {
     int row = index.row();
 
@@ -227,12 +227,12 @@ void MainWindow::on_tableView_vaccin_clicked(const QModelIndex &index)
     ui->dateEdit->setDate(QDate::fromString(date_expiration, "yyyy-MM-dd"));
 }
 
-void MainWindow::on_pushButton_9_clicked()
+void vaccin1::on_pushButton_9_clicked()
 {
     clearInputs();
 }
 
-void MainWindow::on_comboBox_7_activated(int index)
+void vaccin1::on_comboBox_7_activated(int index)
 {
     if(ASC){
         QString choix=ui->comboBox_7->currentText();
@@ -244,19 +244,19 @@ void MainWindow::on_comboBox_7_activated(int index)
 }
 
 
-void MainWindow::on_checkBox_stateChanged(int arg1)
+void vaccin1::on_checkBox_stateChanged(int arg1)
 {
     ASC = (arg1 == Qt::Checked);
 }
 
 
-void MainWindow::on_checkBox_2_stateChanged(int arg1)
+void vaccin1::on_checkBox_2_stateChanged(int arg1)
 {
      DSC = (arg1 == Qt::Checked);
 }
 
 
-void MainWindow::on_ok_2_clicked()
+void vaccin1::on_ok_2_clicked()
 {
     QString val=ui->le_rech->text();
     QString option=ui->cb_rech_emp->currentText();
@@ -280,7 +280,7 @@ void MainWindow::on_ok_2_clicked()
 }
 
 
-void MainWindow::on_pushButton_6_clicked()
+void vaccin1::on_pushButton_6_clicked()
 {
     ui->tableView_vaccin->setModel(vac.afficher());
 }
@@ -290,7 +290,7 @@ void MainWindow::on_pushButton_6_clicked()
 
 
 
-void MainWindow::on_pdf_2_clicked()
+void vaccin1::on_pdf_2_clicked()
 {
     QString idpdf = ui->vaccin_id_input->text();
     vaccin temp;
@@ -354,13 +354,13 @@ void MainWindow::on_pdf_2_clicked()
 
 
 
-void MainWindow::on_pushButton_clicked()
+void vaccin1::on_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0); // Page 3 (index 2)
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
+void vaccin1::on_pushButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1); // Page 3 (index 2)
 }
