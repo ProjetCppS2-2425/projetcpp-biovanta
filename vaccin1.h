@@ -11,17 +11,17 @@
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-class MainWindow;
+class vaccin1;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class vaccin1: public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    vaccin1(QWidget *parent = nullptr);
+    ~vaccin1();
 
     QString checkType();
 
@@ -66,7 +66,7 @@ private slots:
     void lireDonneesArduino() ;
 
 private:
-    Ui::MainWindow *ui;
+    Ui::vaccin1 *ui;
     vaccin vac;
     bool ASC = false;
     bool DSC = false;

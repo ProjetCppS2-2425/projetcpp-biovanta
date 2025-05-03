@@ -33,9 +33,9 @@ QT_WARNING_DISABLE_GCC("-Wuseless-cast")
 namespace {
 
 #ifdef QT_MOC_HAS_STRINGDATA
-struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {};
-constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::stringData(
-    "MainWindow",
+struct qt_meta_stringdata_CLASSvaccin1ENDCLASS_t {};
+constexpr auto qt_meta_stringdata_CLASSvaccin1ENDCLASS = QtMocHelpers::stringData(
+    "vaccin1",
     "on_pushButton_7_clicked",
     "",
     "on_comboBox_10_currentTextChanged",
@@ -63,7 +63,7 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
 #endif // !QT_MOC_HAS_STRINGDATA
 } // unnamed namespace
 
-Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
+Q_CONSTINIT static const uint qt_meta_data_CLASSvaccin1ENDCLASS[] = {
 
  // content:
       12,       // revision
@@ -117,15 +117,15 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0        // eod
 };
 
-Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
+Q_CONSTINIT const QMetaObject vaccin1::staticMetaObject = { {
     QMetaObject::SuperData::link<QMainWindow::staticMetaObject>(),
-    qt_meta_stringdata_CLASSMainWindowENDCLASS.offsetsAndSizes,
-    qt_meta_data_CLASSMainWindowENDCLASS,
+    qt_meta_stringdata_CLASSvaccin1ENDCLASS.offsetsAndSizes,
+    qt_meta_data_CLASSvaccin1ENDCLASS,
     qt_static_metacall,
     nullptr,
-    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSMainWindowENDCLASS_t,
+    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSvaccin1ENDCLASS_t,
         // Q_OBJECT / Q_GADGET
-        QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>,
+        QtPrivate::TypeAndForceComplete<vaccin1, std::true_type>,
         // method 'on_pushButton_7_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_comboBox_10_currentTextChanged'
@@ -171,10 +171,10 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
     nullptr
 } };
 
-void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void vaccin1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        auto *_t = static_cast<MainWindow *>(_o);
+        auto *_t = static_cast<vaccin1 *>(_o);
         (void)_t;
         switch (_id) {
         case 0: _t->on_pushButton_7_clicked(); break;
@@ -188,28 +188,31 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->on_checkBox_2_stateChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 9: _t->on_ok_2_clicked(); break;
         case 10: _t->on_pushButton_6_clicked(); break;
+        case 11: _t->on_stat_2_clicked(); break;
         case 12: _t->on_pdf_2_clicked(); break;
         case 13: _t->on_pushButton_clicked(); break;
         case 14: _t->on_pushButton_2_clicked(); break;
+        case 15: _t->verifierTempEtMettreAJour(); break;
+        case 16: _t->lireDonneesArduino(); break;
         default: ;
         }
     }
 }
 
-const QMetaObject *MainWindow::metaObject() const
+const QMetaObject *vaccin1::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *MainWindow::qt_metacast(const char *_clname)
+void *vaccin1::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_CLASSMainWindowENDCLASS.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_CLASSvaccin1ENDCLASS.stringdata0))
         return static_cast<void*>(this);
     return QMainWindow::qt_metacast(_clname);
 }
 
-int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int vaccin1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QMainWindow::qt_metacall(_c, _id, _a);
     if (_id < 0)

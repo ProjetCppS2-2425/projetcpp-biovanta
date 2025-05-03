@@ -34,7 +34,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
+class Ui_vaccin1
 {
 public:
     QWidget *centralwidget;
@@ -112,12 +112,12 @@ public:
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow *vaccin1)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1208, 649);
-        MainWindow->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
+        if (vaccin1->objectName().isEmpty())
+            vaccin1->setObjectName("vaccin1");
+        vaccin1->resize(1208, 649);
+        vaccin1->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
 "QPushButton {\n"
 "    background-color: #34495E;  /* Bleu fonc\303\251 */\n"
 "    color: white;\n"
@@ -154,7 +154,7 @@ public:
 "\n"
 "\n"
 ""));
-        centralwidget = new QWidget(MainWindow);
+        centralwidget = new QWidget(vaccin1);
         centralwidget->setObjectName("centralwidget");
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName("tabWidget");
@@ -702,94 +702,94 @@ public:
         pushButton->setGeometry(QRect(980, 60, 71, 41));
         stackedWidget->addWidget(page_4);
         tabWidget->addTab(tab_2, QString());
-        MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
+        vaccin1->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(vaccin1);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 1208, 18));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
+        vaccin1->setMenuBar(menubar);
+        statusbar = new QStatusBar(vaccin1);
         statusbar->setObjectName("statusbar");
-        MainWindow->setStatusBar(statusbar);
+        vaccin1->setStatusBar(statusbar);
 
-        retranslateUi(MainWindow);
+        retranslateUi(vaccin1);
 
         tabWidget->setCurrentIndex(0);
         stackedWidget->setCurrentIndex(0);
 
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(vaccin1);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow *vaccin1)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        vaccin1->setWindowTitle(QCoreApplication::translate("vaccin1", "MainWindow", nullptr));
         bg->setText(QString());
         nombre_doses->setText(QString());
-        emp->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
-        chercheur_->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
-        vac_2->setText(QCoreApplication::translate("MainWindow", "vaccins", nullptr));
-        eq_2->setText(QCoreApplication::translate("MainWindow", "\303\251quipements", nullptr));
-        client_2->setText(QCoreApplication::translate("MainWindow", "clients", nullptr));
-        test_2->setText(QCoreApplication::translate("MainWindow", "tests biologiques", nullptr));
-        pushButton_10->setText(QCoreApplication::translate("MainWindow", "D\303\251connexion", nullptr));
+        emp->setText(QCoreApplication::translate("vaccin1", "employ\303\251es", nullptr));
+        chercheur_->setText(QCoreApplication::translate("vaccin1", "chercheurs", nullptr));
+        vac_2->setText(QCoreApplication::translate("vaccin1", "vaccins", nullptr));
+        eq_2->setText(QCoreApplication::translate("vaccin1", "\303\251quipements", nullptr));
+        client_2->setText(QCoreApplication::translate("vaccin1", "clients", nullptr));
+        test_2->setText(QCoreApplication::translate("vaccin1", "tests biologiques", nullptr));
+        pushButton_10->setText(QCoreApplication::translate("vaccin1", "D\303\251connexion", nullptr));
         logo->setText(QString());
         logout_2->setText(QString());
         groupBox_3->setTitle(QString());
-        radioButton_3->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
-        radioButton_4->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
+        radioButton_3->setText(QCoreApplication::translate("vaccin1", "Ajouter", nullptr));
+        radioButton_4->setText(QCoreApplication::translate("vaccin1", "Modifier", nullptr));
         type_vaccin->setText(QString());
         groupBox->setTitle(QString());
-        pushButton_7->setText(QCoreApplication::translate("MainWindow", "valider", nullptr));
-        pushButton_9->setText(QCoreApplication::translate("MainWindow", "Annuler", nullptr));
-        label_22->setText(QCoreApplication::translate("MainWindow", " Ajout ", nullptr));
-        label_16->setText(QCoreApplication::translate("MainWindow", "Id_vaccin", nullptr));
-        label_17->setText(QCoreApplication::translate("MainWindow", "Nom_vaccin", nullptr));
-        label_23->setText(QCoreApplication::translate("MainWindow", "type_vaccin", nullptr));
-        comboBox_10->setItemText(0, QCoreApplication::translate("MainWindow", "ARNm", nullptr));
-        comboBox_10->setItemText(1, QCoreApplication::translate("MainWindow", "actif", nullptr));
-        comboBox_10->setItemText(2, QCoreApplication::translate("MainWindow", "inactif", nullptr));
+        pushButton_7->setText(QCoreApplication::translate("vaccin1", "valider", nullptr));
+        pushButton_9->setText(QCoreApplication::translate("vaccin1", "Annuler", nullptr));
+        label_22->setText(QCoreApplication::translate("vaccin1", " Ajout ", nullptr));
+        label_16->setText(QCoreApplication::translate("vaccin1", "Id_vaccin", nullptr));
+        label_17->setText(QCoreApplication::translate("vaccin1", "Nom_vaccin", nullptr));
+        label_23->setText(QCoreApplication::translate("vaccin1", "type_vaccin", nullptr));
+        comboBox_10->setItemText(0, QCoreApplication::translate("vaccin1", "ARNm", nullptr));
+        comboBox_10->setItemText(1, QCoreApplication::translate("vaccin1", "actif", nullptr));
+        comboBox_10->setItemText(2, QCoreApplication::translate("vaccin1", "inactif", nullptr));
 
-        label_18->setText(QCoreApplication::translate("MainWindow", "nombre_doses", nullptr));
-        comboBox_11->setItemText(0, QCoreApplication::translate("MainWindow", "unidose", nullptr));
-        comboBox_11->setItemText(1, QCoreApplication::translate("MainWindow", "multidose", nullptr));
+        label_18->setText(QCoreApplication::translate("vaccin1", "nombre_doses", nullptr));
+        comboBox_11->setItemText(0, QCoreApplication::translate("vaccin1", "unidose", nullptr));
+        comboBox_11->setItemText(1, QCoreApplication::translate("vaccin1", "multidose", nullptr));
 
-        label_19->setText(QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
-        label_20->setText(QCoreApplication::translate("MainWindow", "date_expiration", nullptr));
+        label_19->setText(QCoreApplication::translate("vaccin1", "temperature_conservation", nullptr));
+        label_20->setText(QCoreApplication::translate("vaccin1", "date_expiration", nullptr));
         groupBox_2->setTitle(QString());
-        label_13->setText(QCoreApplication::translate("MainWindow", "rechercher :", nullptr));
-        label_14->setText(QCoreApplication::translate("MainWindow", "  Listes ", nullptr));
-        cb_rech_emp->setItemText(0, QCoreApplication::translate("MainWindow", "type_vaccin", nullptr));
-        cb_rech_emp->setItemText(1, QCoreApplication::translate("MainWindow", "id_vaccin", nullptr));
-        cb_rech_emp->setItemText(2, QCoreApplication::translate("MainWindow", "nom_vaccin", nullptr));
-        cb_rech_emp->setItemText(3, QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
+        label_13->setText(QCoreApplication::translate("vaccin1", "rechercher :", nullptr));
+        label_14->setText(QCoreApplication::translate("vaccin1", "  Listes ", nullptr));
+        cb_rech_emp->setItemText(0, QCoreApplication::translate("vaccin1", "type_vaccin", nullptr));
+        cb_rech_emp->setItemText(1, QCoreApplication::translate("vaccin1", "id_vaccin", nullptr));
+        cb_rech_emp->setItemText(2, QCoreApplication::translate("vaccin1", "nom_vaccin", nullptr));
+        cb_rech_emp->setItemText(3, QCoreApplication::translate("vaccin1", "temperature_conservation", nullptr));
 
-        comboBox_7->setItemText(0, QCoreApplication::translate("MainWindow", "nom_vaccin", nullptr));
-        comboBox_7->setItemText(1, QCoreApplication::translate("MainWindow", "temperature_conservation", nullptr));
-        comboBox_7->setItemText(2, QCoreApplication::translate("MainWindow", "date_expiration", nullptr));
+        comboBox_7->setItemText(0, QCoreApplication::translate("vaccin1", "nom_vaccin", nullptr));
+        comboBox_7->setItemText(1, QCoreApplication::translate("vaccin1", "temperature_conservation", nullptr));
+        comboBox_7->setItemText(2, QCoreApplication::translate("vaccin1", "date_expiration", nullptr));
 
-        label_15->setText(QCoreApplication::translate("MainWindow", "Tri par :", nullptr));
+        label_15->setText(QCoreApplication::translate("vaccin1", "Tri par :", nullptr));
         pdf_2->setText(QString());
         stat_2->setText(QString());
         ok_2->setText(QString());
-        checkBox->setText(QCoreApplication::translate("MainWindow", "ASC", nullptr));
-        checkBox_2->setText(QCoreApplication::translate("MainWindow", "DSC", nullptr));
-        pushButton_6->setText(QCoreApplication::translate("MainWindow", "Refresh", nullptr));
-        labelFan->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
-        sendButton_2->setText(QCoreApplication::translate("MainWindow", "Envoyer", nullptr));
+        checkBox->setText(QCoreApplication::translate("vaccin1", "ASC", nullptr));
+        checkBox_2->setText(QCoreApplication::translate("vaccin1", "DSC", nullptr));
+        pushButton_6->setText(QCoreApplication::translate("vaccin1", "Refresh", nullptr));
+        labelFan->setText(QCoreApplication::translate("vaccin1", "TextLabel", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("vaccin1", "Tab 1", nullptr));
+        sendButton_2->setText(QCoreApplication::translate("vaccin1", "Envoyer", nullptr));
         bg_3->setText(QString());
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Aller vers stats", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("vaccin1", "Aller vers stats", nullptr));
         bg_4->setText(QString());
         label->setText(QString());
-        pushButton_11->setText(QCoreApplication::translate("MainWindow", "Fermer", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Retour", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
+        pushButton_11->setText(QCoreApplication::translate("vaccin1", "Fermer", nullptr));
+        pushButton->setText(QCoreApplication::translate("vaccin1", "Retour", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("vaccin1", "Tab 2", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+    class vaccin1: public Ui_vaccin1 {};
 } // namespace Ui
 
 QT_END_NAMESPACE
