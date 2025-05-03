@@ -75,11 +75,11 @@ constexpr auto qt_meta_stringdata_CLASSchercheur_1ENDCLASS = QtMocHelpers::strin
     "onCellClicked",
     "row",
     "column",
-    "generateHistoryPDF",
-    "researcherId",
-    "addReportIcon",
+    "updateReportInTable",
     "projectName",
-    "displayReportForProject"
+    "report",
+    "generateHistoryPDF",
+    "researcherId"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -92,7 +92,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSchercheur_1ENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -100,21 +100,20 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSchercheur_1ENDCLASS[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   92,    2, 0x06,    1 /* Public */,
+       1,    0,   86,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       3,    0,   93,    2, 0x08,    2 /* Private */,
-       4,    0,   94,    2, 0x08,    3 /* Private */,
-       5,    0,   95,    2, 0x08,    4 /* Private */,
-       6,    0,   96,    2, 0x08,    5 /* Private */,
-       7,    0,   97,    2, 0x08,    6 /* Private */,
-       8,    0,   98,    2, 0x08,    7 /* Private */,
-       9,    0,   99,    2, 0x08,    8 /* Private */,
-      10,    0,  100,    2, 0x08,    9 /* Private */,
-      11,    2,  101,    2, 0x08,   10 /* Private */,
-      14,    1,  106,    2, 0x08,   13 /* Private */,
-      16,    3,  109,    2, 0x08,   15 /* Private */,
-      18,    1,  116,    2, 0x08,   19 /* Private */,
+       3,    0,   87,    2, 0x08,    2 /* Private */,
+       4,    0,   88,    2, 0x08,    3 /* Private */,
+       5,    0,   89,    2, 0x08,    4 /* Private */,
+       6,    0,   90,    2, 0x08,    5 /* Private */,
+       7,    0,   91,    2, 0x08,    6 /* Private */,
+       8,    0,   92,    2, 0x08,    7 /* Private */,
+       9,    0,   93,    2, 0x08,    8 /* Private */,
+      10,    0,   94,    2, 0x08,    9 /* Private */,
+      11,    2,   95,    2, 0x08,   10 /* Private */,
+      14,    2,  100,    2, 0x08,   13 /* Private */,
+      17,    1,  105,    2, 0x08,   16 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -129,9 +128,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSchercheur_1ENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int, QMetaType::Int,   12,   13,
-    QMetaType::Void, QMetaType::Int,   15,
-    QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::QString,   12,   15,   17,
-    QMetaType::Void, QMetaType::QString,   17,
+    QMetaType::Void, QMetaType::QString, QMetaType::QString,   15,   16,
+    QMetaType::Void, QMetaType::Int,   18,
 
        0        // eod
 };
@@ -167,17 +165,13 @@ Q_CONSTINIT const QMetaObject chercheur_1::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'updateReportInTable'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
         // method 'generateHistoryPDF'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        // method 'addReportIcon'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
-        // method 'displayReportForProject'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>
+        QtPrivate::TypeAndForceComplete<int, std::false_type>
     >,
     nullptr
 } };
@@ -198,9 +192,8 @@ void chercheur_1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 7: _t->on_stat_clicked(); break;
         case 8: _t->onPdfButtonClicked(); break;
         case 9: _t->onCellClicked((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 10: _t->generateHistoryPDF((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 11: _t->addReportIcon((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3]))); break;
-        case 12: _t->displayReportForProject((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 10: _t->updateReportInTable((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 11: _t->generateHistoryPDF((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -234,13 +227,13 @@ int chercheur_1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 12)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 13;
+        _id -= 12;
     }
     return _id;
 }

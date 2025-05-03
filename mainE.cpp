@@ -1,4 +1,4 @@
-#include "equipement1.h"
+#include "menu.h"
 #include <QApplication>
 #include "connection.h"
 #include <QMessageBox>
@@ -19,8 +19,7 @@ int main(int argc, char *argv[])
         return -1; // Quitter l'application si la connexion échoue
     }
 
-    // Affichage de la fenêtre principale
-    equipement1 w;
+    menu w;
     w.show();
 
     return a.exec();

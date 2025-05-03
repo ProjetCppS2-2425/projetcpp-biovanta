@@ -34,7 +34,9 @@ public:
     equipement1(QWidget *parent = nullptr);
     ~equipement1();
     static Equipement getEquipementById(const QString &id);
-
+    // Ajoutez ceci dans la classe equipement1
+signals:
+    void requestShowChercheur();
 private slots:
     void initArduinoConnection();
     void readSerialData();

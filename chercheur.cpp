@@ -44,7 +44,7 @@
 #include <QTextTableCell>
 #include <QTextDocument>
 #include <QTextCursor>
-#include "chercheur.h"  // Include MainWindow header to use MainWindow class
+#include "chercheur_1.h"  // Include MainWindow header to use MainWindow class
 
 #include <QFileDialog>
 #include <QPushButton>
@@ -178,14 +178,13 @@ bool Chercheur::fetchDataById(int id) {
 
 bool Chercheur::modify(int id, const QString &nom, const QString &prenom,
                        const QString &email, int num_tlp,
-                       const QString &domaine_recherche, const QString &newProject) {
-
+                       const QString &domaine_recherche, const QString &newProject)
+{
     if (!fetchDataById(id)) {
-        qDebug() << "Failed to fetch researcher data";
         return false;
     }
 
-    // This will store clean, non-nested data
+    // This updates both current project and history
     updateProjectHistory(newProject);
 
     QSqlQuery query;
@@ -202,13 +201,9 @@ bool Chercheur::modify(int id, const QString &nom, const QString &prenom,
     query.bindValue(":email", email);
     query.bindValue(":num_tlp", num_tlp);
     query.bindValue(":domaine", domaine_recherche);
-    query.bindValue(":projet", projet_en_cours);  // Now contains clean JSON
+    query.bindValue(":projet", getFullProjectJson()); // Store complete JSON
 
-    if (!query.exec()) {
-        qDebug() << "Update error:" << query.lastError().text();
-        return false;
-    }
-    return true;
+    return query.exec();
 }
 
 QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QString &filter) {
@@ -216,22 +211,41 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
     QSqlQuery query;
 
     QString sqlQuery = "SELECT * FROM CHERCHEUR WHERE ";
-    if (filter == "Nom") {
+
+    if (filter == "ID") {
+        bool ok;
+        int searchId = searchTerm.toInt(&ok);
+        if (ok) {
+            sqlQuery += "ID_CHERCHEUR = :id";
+            query.prepare(sqlQuery);
+            query.bindValue(":id", searchId);
+        } else {
+            return results;
+        }
+    }
+    else if (filter == "Nom") {
         sqlQuery += "NOM LIKE :searchTerm";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else if (filter == "Email") {
         sqlQuery += "EMAIL LIKE :searchTerm";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else if (filter == "Projet En Cours") {
-        sqlQuery += "PROJET_EN_COURS LIKE :searchTerm";
+        // Search in cleaned project names
+        sqlQuery += "LOWER(json_extract(PROJET_EN_COURS, '$.current')) LIKE LOWER(:searchTerm)";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
     else {
-        // Default case if filter doesn't match
-        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR PROJET_EN_COURS LIKE :searchTerm)";
+        // Default search
+        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR "
+                    "LOWER(json_extract(PROJET_EN_COURS, '$.current')) LIKE LOWER(:searchTerm))";
+        query.prepare(sqlQuery);
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");
     }
-
-    query.prepare(sqlQuery);
-    query.bindValue(":searchTerm", "%" + searchTerm + "%");
 
     if (!query.exec()) {
         qDebug() << "Search error:" << query.lastError().text();
@@ -248,6 +262,9 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
             query.value("DOMAINE_RECHERCHE").toString(),
             query.value("PROJET_EN_COURS").toString()
             );
+
+        // Clean the project name before adding to results
+        c.initProjectJson(); // Ensure clean JSON structure
         results.append(c);
     }
 
@@ -593,120 +610,178 @@ void Chercheur::generatePDF(const QString &filePath, QWidget *parent)
     }
 }
 
-void Chercheur::initProjectJson() {
+void Chercheur::initProjectJson()
+{
     if (projet_en_cours.isEmpty() || !projet_en_cours.startsWith("{")) {
-        // Create clean new structure
-        QJsonObject json;
-        json["current"] = "";
-        json["history"] = QJsonArray();
-        projet_en_cours = QJsonDocument(json).toJson(QJsonDocument::Compact);
-        return;
-    }
+        // Initialize with proper JSON structure
+        QJsonObject root;
+        root["creation_date"] = QDateTime::currentDateTime().toString(Qt::ISODate);
 
-    // Clean existing structure
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8(), &error);
-    if (error.error != QJsonParseError::NoError) return;
+        QJsonObject projects;
+        projects["current"] = "";
+        projects["history"] = QJsonArray();
 
-    QJsonObject json = doc.object();
-    QString current = json["current"].toString();
+        root["projects"] = projects;
+        projet_en_cours = QJsonDocument(root).toJson(QJsonDocument::Compact);
+    } else {
+        // Clean existing JSON
+        QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+        QJsonObject root = doc.object();
 
-    // Fix nested current project
-    if (current.startsWith("{")) {
-        QJsonDocument nested = QJsonDocument::fromJson(current.toUtf8());
-        if (nested.isObject()) {
-            json["current"] = nested.object()["current"].toString();
-        } else {
-            json["current"] = "";
+        // Ensure creation date exists
+        if (!root.contains("creation_date")) {
+            root["creation_date"] = QDateTime::currentDateTime().toString(Qt::ISODate);
         }
+
+        // Ensure projects structure exists
+        if (!root.contains("projects")) {
+            QJsonObject projects;
+            projects["current"] = "";
+            projects["history"] = QJsonArray();
+            root["projects"] = projects;
+        } else {
+            QJsonObject projects = root["projects"].toObject();
+
+            // Fix current project if it's nested JSON
+            QString current = projects["current"].toString();
+            if (current.startsWith("{")) {
+                QJsonDocument nested = QJsonDocument::fromJson(current.toUtf8());
+                if (nested.isObject()) {
+                    projects["current"] = nested.object()["current"].toString();
+                }
+            }
+
+            // Fix history entries
+            QJsonArray history = projects["history"].toArray();
+            for (int i = 0; i < history.size(); i++) {
+                QJsonObject entry = history[i].toObject();
+                if (entry["project"].toString().startsWith("{")) {
+                    QJsonDocument nested = QJsonDocument::fromJson(entry["project"].toString().toUtf8());
+                    if (nested.isObject()) {
+                        entry["project"] = nested.object()["current"].toString();
+                        history[i] = entry;
+                    }
+                }
+            }
+            projects["history"] = history;
+            root["projects"] = projects;
+        }
+
+        projet_en_cours = QJsonDocument(root).toJson(QJsonDocument::Compact);
+    }
+}
+
+void Chercheur::updateProjectHistory(const QString &newProject)
+{
+    initProjectJson(); // Ensure valid structure
+
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    QJsonObject root = doc.object();
+    QJsonObject projects = root["projects"].toObject();
+
+    QString currentProject = projects["current"].toString();
+    QString cleanedNewProject = newProject.trimmed();
+
+    // Only update if project actually changed
+    if (currentProject != cleanedNewProject) {
+        QJsonArray history = projects["history"].toArray();
+
+        // Add current project to history before changing it
+        if (!currentProject.isEmpty()) {
+            QJsonObject historyEntry;
+            historyEntry["date"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+            historyEntry["project"] = currentProject;
+            history.prepend(historyEntry);
+
+            // Keep only last 15 entries
+            while (history.size() > 15) {
+                history.removeLast();
+            }
+        }
+
+        // Update current project
+        projects["current"] = cleanedNewProject;
+        projects["history"] = history;
+        root["projects"] = projects;
+
+        projet_en_cours = QJsonDocument(root).toJson(QJsonDocument::Compact);
+    }
+}
+
+// Set the creation date in JSON data
+void Chercheur::setCreationDate(const QString &date)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    QJsonObject data = doc.object();
+    data["creation_date"] = date;
+    fullProjectJson = QJsonDocument(data).toJson();
+}
+
+// Get formatted history string for display
+
+
+// Helper method to clean project names
+
+QString Chercheur::getCurrentProject() const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    if (doc.isNull()) return "Aucun projet";
+
+    QJsonObject root = doc.object();
+    if (!root.contains("projects")) return "Aucun projet";
+
+    QJsonObject projects = root["projects"].toObject();
+    QString project = projects["current"].toString();
+
+    return cleanProjectName(project);
+}
+QString Chercheur::getFormattedHistory() const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
+    if (doc.isNull()) return "Aucun historique disponible";
+
+    QJsonObject root = doc.object();
+    QString result;
+
+    // Add creation date
+    if (root.contains("creation_date")) {
+        QDateTime created = QDateTime::fromString(root["creation_date"].toString(), Qt::ISODate);
+        result += QString("🕒 Créé le: %1\n\n").arg(created.toString("dd/MM/yyyy HH:mm"));
     }
 
-    // Fix history entries
-    QJsonArray history = json["history"].toArray();
-    for (int i = 0; i < history.size(); i++) {
-        QJsonObject item = history[i].toObject();
-        QString project = item["project"].toString();
-        if (project.startsWith("{")) {
-            QJsonDocument nested = QJsonDocument::fromJson(project.toUtf8());
-            if (nested.isObject()) {
-                item["project"] = nested.object()["current"].toString();
-                history[i] = item;
+    // Add project history
+    if (root.contains("projects")) {
+        QJsonObject projects = root["projects"].toObject();
+        QJsonArray history = projects["history"].toArray();
+
+        if (!history.isEmpty()) {
+            result += "📜 Historique des projets:\n";
+            for (const QJsonValue &entry : history) {
+                QJsonObject item = entry.toObject();
+                QString date = QDateTime::fromString(item["date"].toString(), Qt::ISODate)
+                                   .toString("dd/MM/yyyy");
+                QString project = cleanProjectName(item["project"].toString());
+                result += QString("• %1 - %2\n").arg(date, project);
             }
         }
     }
-    json["history"] = history;
 
-    projet_en_cours = QJsonDocument(json).toJson(QJsonDocument::Compact);
+    return result.isEmpty() ? "Aucun historique disponible" : result;
 }
 
-void Chercheur::updateProjectHistory(const QString &newProject) {
-    initProjectJson(); // Ensure clean structure
-
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
-    QJsonObject json = doc.object();
-    QString current = cleanProjectName(json["current"].toString());
-
-    if (current != newProject && !current.isEmpty()) {
-        QJsonArray history = json["history"].toArray();
-
-        history.prepend(QJsonObject{
-            {"date", QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss")},
-            {"project", current} // Store already cleaned name
-        });
-
-        // Keep last 10 entries
-        while (history.size() > 10) history.removeLast();
-        json["history"] = history;
+QString Chercheur::cleanProjectName(const QString &project) const
+{
+    if (project.isEmpty() || project.compare("null", Qt::CaseInsensitive) == 0) {
+        return "Aucun projet";
     }
-
-    json["current"] = newProject;
-    projet_en_cours = QJsonDocument(json).toJson(QJsonDocument::Compact);
-}
-QString Chercheur::getCurrentProject() const {
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8());
-    return doc.object()["current"].toString();
-}
-QString Chercheur::getFormattedHistory() const {
-    if (projet_en_cours.isEmpty()) {
-        return "No history available";
-    }
-
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(projet_en_cours.toUtf8(), &error);
-
-    if (error.error != QJsonParseError::NoError || !doc.isObject()) {
-        return "Invalid project data";
-    }
-
-    QJsonObject json = doc.object();
-    QString current = json["current"].toString();
-    QJsonArray history = json["history"].toArray();
-
-    QString result;
-    result += "<b>Current Project:</b> " + cleanProjectName(current) + "<br><br>";
-    result += "<b>History:</b>";
-
-    for (const QJsonValue& item : history) {
-        if (item.isObject()) {
-            QJsonObject obj = item.toObject();
-            result += QString("<br>• %1: %2")
-                          .arg(obj["date"].toString())
-                          .arg(cleanProjectName(obj["project"].toString()));
-        }
-    }
-
-    return result;
+    return project;
 }
 
-QString Chercheur::cleanProjectName(const QString &project) const {
-    if (project.isEmpty()) return "None";
-    if (!project.startsWith("{")) return project;
-
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(project.toUtf8(), &error);
-    if (error.error == QJsonParseError::NoError && doc.isObject()) {
-        QString clean = doc.object()["current"].toString();
-        return clean.isEmpty() ? "Invalid" : clean;
+QString Chercheur::getCreationDate() const
+{
+    QJsonDocument doc = QJsonDocument::fromJson(fullProjectJson.toUtf8());
+    if (doc.isNull() || !doc.object().contains("creation_date")) {
+        return "Date inconnue";  // Return "Unknown date" if not found
     }
-    return "Invalid";
+    return doc.object()["creation_date"].toString();
 }

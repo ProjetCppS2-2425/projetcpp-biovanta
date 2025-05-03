@@ -39,9 +39,15 @@ public:
     QWidget *sidebare;
     QLabel *logo;
     QPushButton *emp1;
+<<<<<<< HEAD
     QPushButton *chercheur;
     QPushButton *vac;
     QPushButton *eq;
+=======
+    QPushButton *ChercheurButton;
+    QPushButton *vac;
+    QPushButton *EquipementButton;
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     QPushButton *client;
     QPushButton *test;
     QPushButton *pushButton_8;
@@ -189,12 +195,21 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8("empe.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         emp1->setIcon(icon);
+<<<<<<< HEAD
         chercheur = new QPushButton(sidebare);
         chercheur->setObjectName("chercheur");
         chercheur->setGeometry(QRect(0, 200, 141, 41));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8("cher.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         chercheur->setIcon(icon1);
+=======
+        ChercheurButton = new QPushButton(sidebare);
+        ChercheurButton->setObjectName("ChercheurButton");
+        ChercheurButton->setGeometry(QRect(0, 200, 141, 41));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("cher.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        ChercheurButton->setIcon(icon1);
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         vac = new QPushButton(sidebare);
         vac->setObjectName("vac");
         vac->setGeometry(QRect(0, 250, 141, 41));
@@ -202,10 +217,17 @@ public:
         icon2.addFile(QString::fromUtf8("vaccin.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
         vac->setIcon(icon2);
         vac->setIconSize(QSize(20, 20));
+<<<<<<< HEAD
         eq = new QPushButton(sidebare);
         eq->setObjectName("eq");
         eq->setGeometry(QRect(0, 300, 141, 41));
         eq->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+=======
+        EquipementButton = new QPushButton(sidebare);
+        EquipementButton->setObjectName("EquipementButton");
+        EquipementButton->setGeometry(QRect(0, 300, 141, 41));
+        EquipementButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
 "    border-radius: 5px;         /* Bords arrondis */\n"
@@ -219,7 +241,11 @@ public:
 "}"));
         QIcon icon3;
         icon3.addFile(QString::fromUtf8("equipement.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+<<<<<<< HEAD
         eq->setIcon(icon3);
+=======
+        EquipementButton->setIcon(icon3);
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         client = new QPushButton(sidebare);
         client->setObjectName("client");
         client->setGeometry(QRect(0, 400, 141, 41));
@@ -800,9 +826,15 @@ public:
         equipement1->setWindowTitle(QCoreApplication::translate("equipement1", "MainWindow", nullptr));
         logo->setText(QString());
         emp1->setText(QCoreApplication::translate("equipement1", "employ\303\251es", nullptr));
+<<<<<<< HEAD
         chercheur->setText(QCoreApplication::translate("equipement1", "chercheurs", nullptr));
         vac->setText(QCoreApplication::translate("equipement1", "vaccins", nullptr));
         eq->setText(QCoreApplication::translate("equipement1", "\303\251quipements", nullptr));
+=======
+        ChercheurButton->setText(QCoreApplication::translate("equipement1", "chercheurs", nullptr));
+        vac->setText(QCoreApplication::translate("equipement1", "vaccins", nullptr));
+        EquipementButton->setText(QCoreApplication::translate("equipement1", "\303\251quipements", nullptr));
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         client->setText(QCoreApplication::translate("equipement1", "clients", nullptr));
         test->setText(QCoreApplication::translate("equipement1", "tests biologiques", nullptr));
         pushButton_8->setText(QCoreApplication::translate("equipement1", "D\303\251connexion", nullptr));

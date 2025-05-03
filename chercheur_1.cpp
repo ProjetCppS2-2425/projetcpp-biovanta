@@ -1,5 +1,4 @@
-#include "chercheur_1.h"
-
+#include "ui_chercheur_1.h"
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QDebug>
@@ -10,15 +9,15 @@
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include "ai_report_generator.h"
-#include <QPrinter>
-#include <QPageLayout>
-#include <QPageSize>
-#include <QTextDocument>
-
-
+#include "chercheur_1.h"
 #include "ui_chercheur_1.h"
+
 #include "ai_report_generator.h"
-#define REPORT_COLUMN 8
+#include "arduinoE.h"
+#include "chercheur.h"
+
+
+
 // Global or class-level instance
 
 
@@ -34,29 +33,10 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
     ui->filtrage_4->clear();
     ui->filtrage_4->addItems(QStringList() << "ID" << "Nom" << "Email" << "Projet En Cours");// Now includes "ID"
 
-
-
-    // In your slot that connects to reportGenerated, add an error case
-    // Replace the error connection with this complete connection setup:
-    connect(m_aiGenerator, &AIReportGenerator::reportGenerated,
-            this, [this](const QString& projectName, const QString& reportContent) {
-                // Find which researcher this report is for
-                for (int row = 0; row < ui->tableWidget_4->rowCount(); ++row) {
-                    QTableWidgetItem* item = ui->tableWidget_4->item(row, REPORT_COLUMN);
-                    if (item && item->data(Qt::UserRole + 1).toString() == projectName) {
-                        int researcherId = item->data(Qt::UserRole).toInt();
-                        generateAIReportPDF(researcherId, projectName, reportContent);
-                        return;
-                    }
-                }
-                QMessageBox::warning(this, "Erreur", "Chercheur non trouvé pour ce projet.");
-            });
-
-    connect(m_aiGenerator, &AIReportGenerator::reportError,
-            this, [this](const QString& error) {
-                QMessageBox::critical(this, "Erreur AI",
-                                      "Échec de génération du rapport:\n" + error);
-            });
+    connect(ui->btn_goToStats, &QPushButton::clicked, this, [this]() {
+        ui->stackedWidget->setCurrentIndex(2);  // Go to Page 2 (index 2 typically means page 3)
+    });
+    refreshTable();
 
     ui->tableWidget_4->setStyleSheet(
         "QTableWidget {"
@@ -87,24 +67,26 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
 
     ui->S1_4->setPlaceholderText("Rechercher...");
 
+    connect(ui->btn_goToStats, &QPushButton::clicked, this, [=](){
+        ui->stackedWidget->setCurrentIndex(2);  // Go to Page 1
 
+    });
 
     connect(ui->tableWidget_4, &QTableWidget::cellClicked, this, &chercheur_1::onCellClicked);
+    ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
+    ui->logo1->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
+    ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
+    ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
+    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
+    ui->pdf_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
+    ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
+    ui->eq->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\equipement.png"));
+    ui->test->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\teste.png"));
+    ui->client->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\client.png"));
+    ui->stat_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
+    ui->ok_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
+    ui->supp_6->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
 
-    ui->logo1->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logo1.png"));
-    ui->logout->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\logout.jpg"));
-    ui->bg->setPixmap(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\bg.jpg"));
-    ui->emp1->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\empe.png"));
-    ui->ChercheurButton->setIcon(QPixmap("C:\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\cher.png"));
-    ui->pdf_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\pdf1.png"));
-    ui->vac->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\vaccin.png"));
-    ui->EquipementButton->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\equipement.png"));
-    ui->test->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\teste.png"));
-    ui->client->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\client.png"));
-    ui->stat_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\st.png"));
-    ui->ok_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\search.png"));
-    ui->supp_6->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\effacer.png"));
-    // Replace whatever displays the current project with:
 
     // Connect search
     connect(ui->ok_4, &QPushButton::clicked, this, &chercheur_1::on_searchButton_clicked);
@@ -142,7 +124,7 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
     // After populating the table with data:
     ui->tableWidget_4->resizeColumnsToContents();
     // Add this where you set up table columns (after HISTORY_COLUMN)
-    // Adjust based on your column count
+    const int REPORT_COLUMN = 8;  // Adjust based on your column count
     ui->tableWidget_4->setColumnCount(REPORT_COLUMN + 1);
     // Set minimum widths after auto-resizing
     for (int i = 0; i < ui->tableWidget_4->columnCount(); ++i) {
@@ -159,7 +141,6 @@ chercheur_1::~chercheur_1()
 {
     delete ui;
 }
-
 void chercheur_1::pushButton_2_clicked()
 {
     if (ui->radioButton_5->isChecked()) {  // Add operation
@@ -197,9 +178,27 @@ void chercheur_1::pushButton_2_clicked()
         }
 
         // Initialize project JSON structure
+        QString currentProject = ui->lineEdit_24->text().trimmed();
+        QString currentDateTime = QDateTime::currentDateTime().toString(Qt::ISODate);
+
+        // Build the JSON object with an initial dated entry
+        QJsonObject researcherData;
+        researcherData["creation_date"] = currentDateTime;  // Add creation date
+
         QJsonObject projectJson;
-        projectJson["current"] = ui->lineEdit_24->text().trimmed();
-        projectJson["history"] = QJsonArray();
+        projectJson["current"] = currentProject;
+
+        QJsonArray historyArray;
+        QJsonObject initialEntry;
+        initialEntry["project"] = currentProject;
+        initialEntry["date"] = QDate::currentDate().toString(Qt::ISODate);
+        historyArray.append(initialEntry);
+
+        projectJson["history"] = historyArray;
+        researcherData["projects"] = projectJson;  // Nest project data
+
+        QString researcherJsonString = QJsonDocument(researcherData).toJson();
+
         QString projetJsonString = QJsonDocument(projectJson).toJson();
 
         Chercheur c(id, nom,
@@ -209,10 +208,11 @@ void chercheur_1::pushButton_2_clicked()
                     domaine_recherche,
                     projetJsonString);
 
-        if (c.ajouter()) {
-            QMessageBox::information(this, "Succès", "Chercheur ajouté !");
-            refreshTable();
 
+        if (c.ajouter()) {
+            QMessageBox::information(this, "Succès",
+                                     QString("Chercheur ajouté le %1").arg(currentDateTime));
+            refreshTable();
             clearFields();
         } else {
             QMessageBox::critical(this, "Erreur", "Échec de l'ajout. Vérifiez les données.");
@@ -262,31 +262,27 @@ void chercheur_1::pushButton_2_clicked()
 
             // Fetch current data
             Chercheur c;
+            // …inside pushButton_2_clicked(), in “Modify operation”…
             if (c.fetchDataById(id)) {
-                // Update project history
-                c.updateProjectHistory(newProject);
-
-                // Perform database modification with complete JSON
-                if (c.modify(id, nom,
-                             ui->lineEdit_20->text().trimmed(),
-                             email,
+                // *just pass the new project name*—the modify() method
+                // itself will call updateProjectHistory() and write the full JSON
+                if (c.modify(id,
+                             ui->lineEdit_19->text().trimmed(),    // nom
+                             ui->lineEdit_20->text().trimmed(),    // prenom
+                             ui->lineEdit_23->text().trimmed(),    // email
                              num_tlp,
-                             domaine,
-                             c.getFullProjectJson())) {
-                    if (!newProject.isEmpty()) {
-
-                    }
-
+                             ui->comboBox_7->currentText().trimmed(),
+                             ui->lineEdit_24->text().trimmed()     // <-- newProjectName only
+                             ))
+                {
                     QMessageBox::information(this, "Succès", "Modification réussie");
                     refreshTable();
-
                     clearFields();
                 } else {
                     QMessageBox::warning(this, "Erreur", "Échec de la modification");
                 }
-            } else {
-                QMessageBox::warning(this, "Erreur", "Chercheur non trouvé");
             }
+
         }
         else {  // Fetch mode
             Chercheur c;
@@ -307,42 +303,93 @@ void chercheur_1::pushButton_2_clicked()
 }
 void chercheur_1::refreshTable()
 {
-    // Clear existing data but preserve columns
+    qDebug() << "Starting table refresh...";
+
+    // Clear existing data while preserving columns
     ui->tableWidget_4->setRowCount(0);
+    ui->tableWidget_5->setRowCount(0);
 
-    // Get data
-    QList<Chercheur> chercheurs = Chercheur::afficher();
+    // Get all researchers from database
+    QList<Chercheur> chercheurs;
+    try {
+        chercheurs = Chercheur::afficher();
+        qDebug() << "Retrieved" << chercheurs.size() << "researchers from database";
 
+        // DEBUG: Print first researcher's project data if available
+        if (!chercheurs.isEmpty()) {
+            qDebug() << "First researcher's raw project data:" << chercheurs.first().getProjetEnCours();
+            qDebug() << "First researcher's clean project:" << chercheurs.first().getCurrentProject();
+        }
+    } catch (const std::exception &e) {
+        qCritical() << "Database error:" << e.what();
+        QMessageBox::critical(this, "Database Error",
+                              QString("Failed to load researchers:\n%1").arg(e.what()));
+        return;
+    }
+
+    // Configure table properties
+    ui->tableWidget_4->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_5->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    // Populate main table (tableWidget_4)
     for (int row = 0; row < chercheurs.size(); ++row) {
         const Chercheur &c = chercheurs[row];
-        QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
 
         // Insert new row
         ui->tableWidget_4->insertRow(row);
 
-        // Standard columns (0-6)
-        ui->tableWidget_4->setItem(row, 0, new QTableWidgetItem(QString::number(c.getId())));
-        ui->tableWidget_4->setItem(row, 1, new QTableWidgetItem(c.getNom()));
-        ui->tableWidget_4->setItem(row, 2, new QTableWidgetItem(c.getPrenom()));
-        ui->tableWidget_4->setItem(row, 3, new QTableWidgetItem(c.getEmail()));
-        ui->tableWidget_4->setItem(row, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
-        ui->tableWidget_4->setItem(row, 5, new QTableWidgetItem(c.getDomaineRecherche()));
-        ui->tableWidget_4->setItem(row, 6, new QTableWidgetItem(cleanProjectName));
+        // Set data for each column
+        auto setItem = [&](int col, const QVariant &data) {
+            QTableWidgetItem *item = new QTableWidgetItem(data.toString());
+            item->setFlags(item->flags() ^ Qt::ItemIsEditable); // Make read-only
+            ui->tableWidget_4->setItem(row, col, item);
+        };
 
-        // Your existing functions
-        addHistoryIcon(row, c.getId());           // Column 7
-        addReportIcon(row, c.getId(), cleanProjectName); // Column 8
+        // Set regular columns
+        setItem(0, c.getId());
+        setItem(1, c.getNom());
+        setItem(2, c.getPrenom());
+        setItem(3, c.getEmail());
+        setItem(4, c.getNumTlp());
+        setItem(5, c.getDomaineRecherche());
+
+        // Set project name - using getCurrentProject() to get just the name
+        setItem(6, c.getCurrentProject());
+        // Add history icon
+        addHistoryIcon(row, c.getId());
+
+        // Add PDF button
+        QPushButton *pdfBtn = new QPushButton("📄");
+        pdfBtn->setToolTip("Generate PDF Report");
+        pdfBtn->setStyleSheet("border: none; background: none; padding: 5px;");
+        connect(pdfBtn, &QPushButton::clicked, this, [this, c]() {
+            generateResearcherPDF(c.getId(), "");
+        });
+        ui->tableWidget_4->setCellWidget(row, 8, pdfBtn);
+
+        // Populate report table (tableWidget_5)
+        ui->tableWidget_5->insertRow(row);
+        QTableWidgetItem *idItem = new QTableWidgetItem(QString::number(c.getId()));
+        idItem->setTextAlignment(Qt::AlignCenter);
+        ui->tableWidget_5->setItem(row, 0, idItem);
+        ui->tableWidget_5->setItem(row, 1, new QTableWidgetItem(c.getNom()));
+        ui->tableWidget_5->setItem(row, 2, new QTableWidgetItem(c.getCurrentProject())); // Use clean project name
     }
 
-    // Force visibility and proper sizing
-    ui->tableWidget_4->setColumnHidden(8, false);
-    ui->tableWidget_4->resizeColumnsToContents();
-    ui->tableWidget_4->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    // Auto-resize columns with minimum widths
+    auto resizeColumns = [](QTableWidget *table) {
+        table->resizeColumnsToContents();
+        for (int col = 0; col < table->columnCount(); ++col) {
+            int width = table->columnWidth(col);
+            table->setColumnWidth(col, qMax(width, 80)); // Minimum width 80px
+        }
+    };
 
-    qDebug() << "Table refreshed. Visible columns:" << ui->tableWidget_4->columnCount();
+    resizeColumns(ui->tableWidget_4);
+    resizeColumns(ui->tableWidget_5);
+
+    qDebug() << "Table refresh completed successfully";
 }
-
-
 void chercheur_1::onSuppButtonClicked()
 {
     int selectedRow = ui->tableWidget_4->currentRow();
@@ -397,8 +444,6 @@ void chercheur_1::on_searchButton_clicked() {
 
         // Add history icon
         addHistoryIcon(i, c.getId());
-        QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
-        addReportIcon(i, c.getId(), cleanProjectName);
     }
 
     if (results.isEmpty()) {
@@ -434,8 +479,6 @@ void chercheur_1::onTriClicked() {
 
         // Add history icon (assuming it's column 7)
         addHistoryIcon(i, c.getId());
-        QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
-        addReportIcon(i, c.getId(), cleanProjectName);
 
 
     }
@@ -474,133 +517,111 @@ void chercheur_1::showResearcherHistory(int row)
     Chercheur c;
     if (c.fetchDataById(id)) {
         QDialog historyDialog(this);
-        historyDialog.setWindowTitle("🧬 Dossier Historique du Chercheur");
-        historyDialog.setMinimumSize(600, 500);
-
-        // Stylesheet: medical, clear, elegant
-        historyDialog.setStyleSheet(R"(
-            QDialog {
-                background-color: #e8f2fb;
-                border-radius: 12px;
-            }
-            QLabel#HeaderLabel {
-                font-size: 20px;
-                font-weight: bold;
-                color: #1f3b57;
-                padding: 10px;
-                border-bottom: 2px solid #accbe1;
-                margin-bottom: 10px;
-            }
-            QLabel.entryHeader {
-                font-size: 14px;
-                font-weight: bold;
-                color: #2a628f;
-                margin-top: 15px;
-            }
-            QLabel.entryText {
-                font-size: 13px;
-                color: #1f1f1f;
-                padding-left: 10px;
-            }
-            QScrollArea {
-                background-color: #ffffff;
-                border: 1px solid #bdd8ee;
-                border-radius: 8px;
-            }
-            QPushButton {
-                background-color: #2a9df4;
-                color: white;
-                padding: 6px 16px;
-                font-size: 14px;
-                border-radius: 6px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #1d7ecb;
-            }
-        )");
+        historyDialog.setWindowTitle("🧬 Historique du Chercheur");
+        historyDialog.setMinimumSize(500, 400);
 
         QVBoxLayout *mainLayout = new QVBoxLayout(&historyDialog);
 
-        QLabel *header = new QLabel(QString("🧾 Historique de %1 %2").arg(c.getPrenom(), c.getNom()));
-        header->setObjectName("HeaderLabel");
+        // Header with researcher info
+        QLabel *header = new QLabel(QString("Historique de %1 %2 (ID: %3)")
+                                        .arg(c.getPrenom())
+                                        .arg(c.getNom())
+                                        .arg(id));
+        header->setStyleSheet("font-size: 16px; font-weight: bold; color: #2C3E50;");
         mainLayout->addWidget(header);
 
-        // Container for historical entries
-        QWidget *historyContainer = new QWidget;
-        QVBoxLayout *historyLayout = new QVBoxLayout(historyContainer);
-        historyLayout->setSpacing(12);
+        // Creation date
+        QString creationDate = c.getCreationDate();
+        QLabel *createdLabel = new QLabel(QString("🕒 Ajouté le: %1").arg(creationDate));
+        createdLabel->setStyleSheet("font-size: 12px; color: #555; margin-top: 5px;");
+        mainLayout->addWidget(createdLabel);
 
-        // Simulate formatted history entries (replace with real parsing if needed)
-        QStringList entries = c.getFormattedHistory().split("<br>", Qt::SkipEmptyParts);
-        for (const QString &entry : entries) {
-            QLabel *entryLabel = new QLabel("📌 " + entry.trimmed());
-            entryLabel->setWordWrap(true);
-            entryLabel->setProperty("class", "entryText");
-            historyLayout->addWidget(entryLabel);
+        // Current project
+        QString currentProject = c.getCurrentProject();
+        QLabel *currentLabel = new QLabel(QString("📌 Projet actuel: %1").arg(currentProject));
+        currentLabel->setStyleSheet("font-size: 12px; color: #27ae60; margin-top: 5px;");
+        mainLayout->addWidget(currentLabel);
+
+        // Project history section
+        QLabel *projectsHeader = new QLabel("📜 Historique des projets:");
+        projectsHeader->setStyleSheet("font-size: 14px; font-weight: bold; margin-top: 15px; color: #2C3E50;");
+        mainLayout->addWidget(projectsHeader);
+
+        QTextEdit *historyText = new QTextEdit();
+        historyText->setReadOnly(true);
+        historyText->setStyleSheet(R"(
+            QTextEdit {
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                padding: 8px;
+                background-color: #f9f9f9;
+                font-size: 12px;
+            }
+        )");
+
+        // Get formatted history
+        QString formattedHistory = c.getFormattedHistory();
+        if (formattedHistory.isEmpty()) {
+            formattedHistory = "Aucun historique de projet disponible.";
         }
+        historyText->setText(formattedHistory);
+        mainLayout->addWidget(historyText);
 
-        QScrollArea *scrollArea = new QScrollArea;
-        scrollArea->setWidgetResizable(true);
-        scrollArea->setWidget(historyContainer);
-        mainLayout->addWidget(scrollArea);
-
-        QPushButton *closeButton = new QPushButton("Fermer le Dossier");
+        // Close button
+        QPushButton *closeButton = new QPushButton("Fermer");
+        closeButton->setStyleSheet(R"(
+            QPushButton {
+                background-color: #2C3E50;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                min-width: 80px;
+            }
+            QPushButton:hover {
+                background-color: #34495E;
+            }
+        )");
         connect(closeButton, &QPushButton::clicked, &historyDialog, &QDialog::accept);
         mainLayout->addWidget(closeButton, 0, Qt::AlignRight);
 
         historyDialog.exec();
+    } else {
+        QMessageBox::warning(this, "Erreur", "Impossible de charger les données du chercheur.");
     }
 }
 
 
 void chercheur_1::onCellClicked(int row, int column)
 {
-    // 1) History column clicked?
     if (column == HISTORY_COLUMN) {
-        // Simply open the history PDF/dialog
-        generateHistoryPDF(ui->tableWidget_4->item(row, HISTORY_COLUMN)
-                               ->data(Qt::UserRole)
-                               .toInt());
-        return;
-    }
-
-    // 2) Report column clicked?
-    if (column == REPORT_COLUMN) {
-        QTableWidgetItem *reportItem = ui->tableWidget_4->item(row, REPORT_COLUMN);
-        if (!reportItem) return;
-
-        const int researcherId = reportItem->data(Qt::UserRole).toInt();
-        const QString projectName = reportItem->data(Qt::UserRole + 1).toString();
-
-        if (projectName.isEmpty()) {
-            QMessageBox::information(this,
-                                     "Information",
-                                     "Aucun projet associé à ce chercheur.");
-            return;
+        // Retrieve the researcher id stored in the history icon cell's UserRole
+        QTableWidgetItem* historyItem = ui->tableWidget_4->item(row, HISTORY_COLUMN);
+        if (historyItem) {
+            int researcherId = historyItem->data(Qt::UserRole).toInt();
+            generateHistoryPDF(researcherId);
         }
-
-        // Show a modal progress dialog while waiting for the AI report
-        auto *progress = new QProgressDialog(
-            "Génération du rapport AI...", QString(), 0, 0, this);
-        progress->setWindowModality(Qt::WindowModal);
-        progress->show();
-
-        // Connect only the success signal; capture 'this' and 'progress'
-        connect(m_aiGenerator, &AIReportGenerator::reportGenerated,
-                this,
-                [this, researcherId, projectName, progress]
-                (const QString&, const QString& reportContent) {
-                    progress->close();
-                    progress->deleteLater();
-                    generateAIReportPDF(researcherId, projectName, reportContent);
-                });
-
-        // Trigger the async AI report generation
-        m_aiGenerator->requestProjectReport(projectName);
     }
 }
 
+
+
+void chercheur_1::updateReportInTable(const QString &projectName, const QString &report)
+{
+    // Iterate through the rows of tableWidget_5
+    for (int row = 0; row < ui->tableWidget_5->rowCount(); ++row) {
+        QTableWidgetItem *projectItem = ui->tableWidget_5->item(row, 2); // Project is in column 2
+        if (projectItem && projectItem->text() == projectName) {
+            QTableWidgetItem *reportItem = ui->tableWidget_5->item(row, 3); // Report is in column 3
+            if (reportItem) {
+                reportItem->setText(report);
+                reportItem->setForeground(Qt::black);
+                // Auto-resize the row to fit the new content
+                ui->tableWidget_5->resizeRowToContents(row);
+            }
+        }
+    }
+}
 
 
 void chercheur_1::generateHistoryPDF(int researcherId)
@@ -723,152 +744,125 @@ void chercheur_1::addHistoryIcon(int row, int researcherId)
     historyIcon->setData(Qt::UserRole, researcherId);
     ui->tableWidget_4->setItem(row, HISTORY_COLUMN, historyIcon);
 }
-// Add this new function:
-void chercheur_1::addReportIcon(int row, int researcherId, const QString& projectName)
+void chercheur_1::setupPDFExport()
 {
-    if (row < 0 || row >= ui->tableWidget_4->rowCount()) return;
-    if (ui->tableWidget_4->columnCount() <= REPORT_COLUMN) return;
+    // Add PDF column as the last column
+    const int PDF_COLUMN = 7; // Assuming history is column 7, make PDF column 8
+    ui->tableWidget_4->setColumnCount(PDF_COLUMN + 1);
 
-    QTableWidgetItem *reportIcon = new QTableWidgetItem("📊");
-    reportIcon->setTextAlignment(Qt::AlignCenter);
-    reportIcon->setToolTip("Cliquez pour voir le rapport du projet");
-    reportIcon->setFlags(reportIcon->flags() ^ Qt::ItemIsEditable);
-    reportIcon->setData(Qt::UserRole, researcherId);
-    reportIcon->setData(Qt::UserRole + 1, projectName);
-    ui->tableWidget_4->setItem(row, REPORT_COLUMN, reportIcon);
+    // Set header
+    QTableWidgetItem *pdfHeader = new QTableWidgetItem("Rapport");
+    ui->tableWidget_4->setHorizontalHeaderItem(PDF_COLUMN, pdfHeader);
 }
-void chercheur_1::displayReportForProject(const QString& projectName)
+
+void chercheur_1::generateResearcherPDF(int researcherId, const QString &reportText)
 {
-    // Find or create the text edit
-    QTextEdit *textEdit = findChild<QTextEdit*>("textEditReport");
-    if (!textEdit) {
-        textEdit = new QTextEdit(ui->stackedWidget->widget(2)); // page 2
-        textEdit->setObjectName("textEditReport");
-        // Add to layout if needed
+    // Find researcher info from tableWidget_4
+    QString researcherName, currentProject;
+    for (int row = 0; row < ui->tableWidget_4->rowCount(); ++row) {
+        if (ui->tableWidget_4->item(row, 0)->text().toInt() == researcherId) {
+            researcherName = ui->tableWidget_4->item(row, 1)->text();
+            currentProject = ui->tableWidget_4->item(row, 6)->text();
+            break;
+        }
     }
 
-    // Clear and show loading message
-    textEdit->clear();
-    textEdit->setText("Génération du rapport en cours...");
+    QString fileName = QFileDialog::getSaveFileName(
+        this,
+        "Enregistrer le rapport PDF",
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) +
+            "/Rapport_" + researcherName + ".pdf",
+        "PDF Files (*.pdf)");
 
-    // Request AI report
-    m_aiGenerator->requestProjectReport(projectName);
+    if (!fileName.isEmpty()) {
+        QPrinter printer(QPrinter::HighResolution);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(fileName);
+
+        QTextDocument doc;
+        QString html = QString(R"(
+            <html>
+            <head>
+                <style>
+                    body { font-family: Arial; margin: 20px; }
+                    h1 { color: #2c3e50; }
+                    .header { background-color: #f2f2f2; padding: 10px; }
+                    .content { margin-top: 20px; white-space: pre-wrap; }
+                </style>
+            </head>
+            <body>
+                <div class='header'>
+                    <h1>Rapport de Recherche</h1>
+                    <p><strong>Chercheur:</strong> %1</p>
+                    <p><strong>Projet:</strong> %2</p>
+                    <p><strong>Date:</strong> %3</p>
+                </div>
+                <div class='content'>
+                    %4
+                </div>
+            </body>
+            </html>
+        )").arg(researcherName)
+                           .arg(currentProject)
+                           .arg(QDate::currentDate().toString("dd/MM/yyyy"))
+                           .arg(reportText);
+
+        doc.setHtml(html);
+        doc.print(&printer);
+
+        QMessageBox::information(this, "Succès", "Rapport PDF généré avec succès!");
+    }
 }
-void chercheur_1::generateAIReportPDF(int researcherId, const QString& projectName, const QString& reportContent)
+void chercheur_1::initArduinoConnection()
 {
-    // Fetch researcher data
-    Chercheur c;
-    if (!c.fetchDataById(researcherId)) {
-        QMessageBox::warning(this, "Erreur", "Chercheur non trouvé.");
+    qDebug();
+
+    // Check available ports
+    qDebug() << "Available ports:";
+    foreach(const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        qDebug() << "Port:" << info.portName()
+        << "Description:" << info.description()
+        << "Manufacturer:" << info.manufacturer();
+    }
+
+    int status = arduino.connect_arduino();
+    qDebug() << "Connection status code:" << status;
+
+    if(status == 0) {
+        qDebug() << "Successfully connected to Arduino on" << arduino.getarduino_port_name();
+
+        // Test if we can write to the port
+        if(arduino.getserial()->write("PING\n") == -1) {
+            qDebug() << "Write failed:" << arduino.getserial()->errorString();
+        } else {
+            qDebug() << "Test command sent to Arduino";
+        }
+
+        connect(arduino.getserial(), &QSerialPort::readyRead,
+                this, &chercheur_1::readSerialData);
+    }
+}
+void chercheur_1::readSerialData()
+{
+    // Check if data is actually available
+    if(!arduino.getserial()->bytesAvailable()) {
+        qDebug() << "No data available";
         return;
     }
 
-    // Ask for save location
-    QString filePath = QFileDialog::getSaveFileName(
-        this,
-        "Enregistrer le rapport en PDF",
-        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) +
-            QString("/rapport_%1_%2.pdf").arg(c.getNom()).arg(projectName),
-        "PDF Files (*.pdf)"
-        );
+    // Wait for data with timeout
+    if(arduino.getserial()->waitForReadyRead(100)) {
+        QByteArray data = arduino.getserial()->readAll();
+        while(arduino.getserial()->waitForReadyRead(10))
+            data += arduino.getserial()->readAll();
 
-    if (filePath.isEmpty()) return;
-    if (!filePath.endsWith(".pdf", Qt::CaseInsensitive)) {
-        filePath += ".pdf";
+        QString message = QString::fromUtf8(data).trimmed();
+        qDebug() << "Received raw data:" << data.toHex(); // Hex dump
+        qDebug() << "As string:" << message;
+
+        // Rest of your processing...
+    } else {
+        qDebug() << "Serial read timeout";
     }
-
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(filePath);
-    printer.setPageSize(QPageSize(QPageSize::A4));
-    printer.setPageMargins(QMarginsF(15, 15, 15, 15), QPageLayout::Millimeter);
-
-    QTextDocument doc;
-
-    QString html = R"(
-        <html>
-        <head>
-            <meta charset='utf-8'>
-            <style>
-                body { font-family: 'Arial', sans-serif; margin: 0; padding: 20px; color: #333; }
-                .header {
-                    background-color: #2c3e50;
-                    color: white;
-                    padding: 20px;
-                    text-align: center;
-                    border-radius: 5px;
-                    margin-bottom: 30px;
-                }
-                .researcher-info {
-                    background-color: #f8f9fa;
-                    padding: 15px;
-                    border-radius: 5px;
-                    margin-bottom: 20px;
-                }
-                .report-content {
-                    line-height: 1.6;
-                    font-size: 12pt;
-                    white-space: pre-wrap;
-                }
-                .footer {
-                    text-align: right;
-                    font-size: 10pt;
-                    color: #777;
-                    margin-top: 30px;
-                    border-top: 1px solid #eee;
-                    padding-top: 10px;
-                }
-                h1 { color: #2c3e50; margin-top: 0; }
-                h2 { color: #3498db; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class='header'>
-                <h1>Rapport de Recherche Scientifique</h1>
-                <h2>Projet: %1</h2>
-            </div>
-
-            <div class='researcher-info'>
-                <strong>Chercheur:</strong> %2 %3<br>
-                <strong>ID:</strong> %4<br>
-                <strong>Domaine:</strong> %5<br>
-                <strong>Email:</strong> %6<br>
-                <strong>Téléphone:</strong> %7
-            </div>
-
-            <div class='report-content'>
-                %8
-            </div>
-
-            <div class='footer'>
-                Généré le %9 • Système de Gestion de Recherche
-            </div>
-        </body>
-        </html>
-    )";
-
-    QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
-
-    // Format the report content - preserve line breaks and basic formatting
-    QString formattedContent = reportContent.toHtmlEscaped();
-    formattedContent.replace("\n", "<br>");
-
-    doc.setHtml(html.arg(
-        projectName,
-        c.getPrenom(),
-        c.getNom(),
-        QString::number(c.getId()),
-        c.getDomaineRecherche(),
-        c.getEmail(),
-        QString::number(c.getNumTlp()),
-        formattedContent,
-        currentDate
-        ));
-
-    doc.print(&printer);
-
-    // Show success message and open PDF
-    QMessageBox::information(this, "Succès",
-                             QString("Rapport AI généré avec succès!\n\nFichier: %1").arg(filePath));
-    QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }
+// Add this in chercheur_1.cpp (outside any other functions)

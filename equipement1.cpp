@@ -62,7 +62,7 @@ equipement1::equipement1(QWidget *parent)
     ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
     ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
     ui->supp_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
-    ui->chercheur->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
+    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
     ui->pdf_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
     ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
     ui->eq->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\equipement.png"));
@@ -73,6 +73,7 @@ equipement1::equipement1(QWidget *parent)
     ui->pushButton_10->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
     ui->noti->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\notif.png"));
     ui->calen->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\calend.png"));
+
 
 
     QList<Equipement> liste = Equipement::afficher();

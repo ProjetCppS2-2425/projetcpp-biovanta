@@ -1443,7 +1443,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>450</y>
+        <y>460</y>
         <width>301</width>
         <height>81</height>
        </rect>
@@ -1493,7 +1493,7 @@ QPushButton:pressed {
         <x>10</x>
         <y>0</y>
         <width>301</width>
-        <height>461</height>
+        <height>471</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -1551,7 +1551,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>380</y>
+         <y>390</y>
          <width>91</width>
          <height>31</height>
         </rect>
@@ -1564,7 +1564,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>380</y>
+         <y>390</y>
          <width>91</width>
          <height>31</height>
         </rect>
@@ -1715,7 +1715,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>280</y>
+         <y>290</y>
          <width>91</width>
          <height>26</height>
         </rect>
@@ -1796,7 +1796,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>280</y>
+         <y>290</y>
          <width>151</width>
          <height>20</height>
         </rect>
@@ -1809,7 +1809,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>330</y>
+         <y>340</y>
          <width>151</width>
          <height>20</height>
         </rect>
@@ -1822,7 +1822,7 @@ QPushButton:pressed {
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>330</y>
+         <y>340</y>
          <width>91</width>
          <height>26</height>
         </rect>

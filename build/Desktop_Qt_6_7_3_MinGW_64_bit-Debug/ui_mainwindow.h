@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+<<<<<<< HEAD
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDateEdit>
@@ -28,6 +29,14 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
+=======
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QStatusBar>
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -36,6 +45,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
+<<<<<<< HEAD
     QWidget *sidebare;
     QLabel *logo;
     QPushButton *emp1;
@@ -102,6 +112,33 @@ public:
     QRadioButton *radioButton_12;
     QWidget *calender_page;
     QCalendarWidget *calendarWidget;
+=======
+    QStackedWidget *stackedWidget;
+    QWidget *page;
+    QWidget *sidebare;
+    QPushButton *emp1;
+    QPushButton *ChercheurButton;
+    QPushButton *vac;
+    QPushButton *EquipementButton;
+    QPushButton *client;
+    QPushButton *pushButton_8;
+    QLabel *logout;
+    QLabel *label_3;
+    QPushButton *eq_2;
+    QWidget *sidebare_2;
+    QPushButton *emp1_2;
+    QPushButton *ChercheurButton_2;
+    QPushButton *vac_2;
+    QPushButton *EquipementButton_2;
+    QPushButton *client_2;
+    QPushButton *pushButton_11;
+    QLabel *logout_2;
+    QLabel *label_4;
+    QLabel *logo1_2;
+    QPushButton *eq_3;
+    QLabel *logo1;
+    QWidget *page_2;
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -109,6 +146,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
+<<<<<<< HEAD
         MainWindow->resize(1536, 670);
         MainWindow->setStyleSheet(QString::fromUtf8("/* Style global des boutons */\n"
 "QPushButton {\n"
@@ -152,6 +190,19 @@ public:
         sidebare = new QWidget(centralwidget);
         sidebare->setObjectName("sidebare");
         sidebare->setGeometry(QRect(10, -9, 141, 651));
+=======
+        MainWindow->resize(1456, 600);
+        centralwidget = new QWidget(MainWindow);
+        centralwidget->setObjectName("centralwidget");
+        stackedWidget = new QStackedWidget(centralwidget);
+        stackedWidget->setObjectName("stackedWidget");
+        stackedWidget->setGeometry(QRect(-50, 10, 1351, 541));
+        page = new QWidget();
+        page->setObjectName("page");
+        sidebare = new QWidget(page);
+        sidebare->setObjectName("sidebare");
+        sidebare->setGeometry(QRect(80, -40, 141, 651));
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         sidebare->setStyleSheet(QString::fromUtf8("#sidebare {\n"
 "    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #1A252F;\n"
@@ -179,6 +230,7 @@ public:
 "    color: white;  /* Texte blanc */\n"
 "}\n"
 ""));
+<<<<<<< HEAD
         logo = new QLabel(sidebare);
         logo->setObjectName("logo");
         logo->setGeometry(QRect(20, 20, 111, 111));
@@ -206,6 +258,12 @@ public:
         eq->setObjectName("eq");
         eq->setGeometry(QRect(0, 300, 141, 41));
         eq->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+=======
+        emp1 = new QPushButton(sidebare);
+        emp1->setObjectName("emp1");
+        emp1->setGeometry(QRect(0, 150, 141, 41));
+        emp1->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
 "    border-radius: 5px;         /* Bords arrondis */\n"
@@ -216,6 +274,7 @@ public:
 "\n"
 "QPushButton:hover {\n"
 "    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+<<<<<<< HEAD
 "}"));
         QIcon icon3;
         icon3.addFile(QString::fromUtf8("equipement.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
@@ -235,6 +294,93 @@ public:
         pushButton_8 = new QPushButton(sidebare);
         pushButton_8->setObjectName("pushButton_8");
         pushButton_8->setGeometry(QRect(30, 560, 111, 31));
+=======
+"}\n"
+""));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("../../../Documents/projet_c/projet_c/empe.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        emp1->setIcon(icon);
+        ChercheurButton = new QPushButton(sidebare);
+        ChercheurButton->setObjectName("ChercheurButton");
+        ChercheurButton->setGeometry(QRect(0, 200, 141, 41));
+        ChercheurButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("../../../Documents/projet_c/projet_c/cher.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        ChercheurButton->setIcon(icon1);
+        vac = new QPushButton(sidebare);
+        vac->setObjectName("vac");
+        vac->setGeometry(QRect(0, 250, 141, 41));
+        vac->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8("../../../Documents/projet_c/projet_c/vaccin.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        vac->setIcon(icon2);
+        vac->setIconSize(QSize(20, 20));
+        EquipementButton = new QPushButton(sidebare);
+        EquipementButton->setObjectName("EquipementButton");
+        EquipementButton->setGeometry(QRect(0, 300, 141, 41));
+        EquipementButton->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8("../../../Documents/projet_c/projet_c/equipement.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        EquipementButton->setIcon(icon3);
+        client = new QPushButton(sidebare);
+        client->setObjectName("client");
+        client->setGeometry(QRect(0, 400, 141, 41));
+        client->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8("../../../Documents/projet_c/projet_c/client.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
+        client->setIcon(icon4);
+        pushButton_8 = new QPushButton(sidebare);
+        pushButton_8->setObjectName("pushButton_8");
+        pushButton_8->setGeometry(QRect(30, 550, 111, 31));
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         pushButton_8->setStyleSheet(QString::fromUtf8("QPushButton#pushButton_8 {\n"
 "    background-color: transparent;\n"
 "    color: #E74C3C;  /* Rouge */\n"
@@ -263,6 +409,7 @@ public:
         logout = new QLabel(sidebare);
         logout->setObjectName("logout");
         logout->setGeometry(QRect(10, 560, 31, 31));
+<<<<<<< HEAD
         logout->setPixmap(QPixmap(QString::fromUtf8("../application/logout.png")));
         frame = new QFrame(centralwidget);
         frame->setObjectName("frame");
@@ -270,6 +417,38 @@ public:
         frame->setStyleSheet(QString::fromUtf8("#frame {\n"
 "    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
 "    border-right: 2px solid #dee2e6;;\n"
+=======
+        logout->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        logout->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/application/logout.png")));
+        label_3 = new QLabel(sidebare);
+        label_3->setObjectName("label_3");
+        label_3->setGeometry(QRect(10, 549, 31, 41));
+        label_3->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        label_3->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logout.png")));
+        eq_2 = new QPushButton(sidebare);
+        eq_2->setObjectName("eq_2");
+        eq_2->setGeometry(QRect(0, 350, 141, 41));
+        eq_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        eq_2->setIcon(icon3);
+        sidebare_2 = new QWidget(sidebare);
+        sidebare_2->setObjectName("sidebare_2");
+        sidebare_2->setGeometry(QRect(140, 360, 141, 651));
+        sidebare_2->setStyleSheet(QString::fromUtf8("#sidebare {\n"
+"    background-color: #2C3E50; /* Couleur bleu fonc\303\251 */\n"
+"    border-right: 2px solid #1A252F;\n"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 "}QPushButton:hover {\n"
 "    background-color: #1ABC9C; /* Vert */\n"
 "}\n"
@@ -294,12 +473,19 @@ public:
 "    color: white;  /* Texte blanc */\n"
 "}\n"
 ""));
+<<<<<<< HEAD
         frame->setFrameShape(QFrame::Shape::StyledPanel);
         frame->setFrameShadow(QFrame::Shadow::Raised);
         noti = new QPushButton(frame);
         noti->setObjectName("noti");
         noti->setGeometry(QRect(70, 10, 61, 41));
         noti->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+=======
+        emp1_2 = new QPushButton(sidebare_2);
+        emp1_2->setObjectName("emp1_2");
+        emp1_2->setGeometry(QRect(0, 150, 141, 41));
+        emp1_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
 "    border-radius: 5px;         /* Bords arrondis */\n"
@@ -310,6 +496,7 @@ public:
 "\n"
 "QPushButton:hover {\n"
 "    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+<<<<<<< HEAD
 "}"));
         QIcon icon6;
         icon6.addFile(QString::fromUtf8("notif.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
@@ -322,6 +509,15 @@ public:
         calen->setObjectName("calen");
         calen->setGeometry(QRect(170, 10, 51, 41));
         calen->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+=======
+"}\n"
+""));
+        emp1_2->setIcon(icon);
+        ChercheurButton_2 = new QPushButton(sidebare_2);
+        ChercheurButton_2->setObjectName("ChercheurButton_2");
+        ChercheurButton_2->setGeometry(QRect(0, 200, 141, 41));
+        ChercheurButton_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 "    background-color: #02767F;  /* Vert fonc\303\251 */\n"
 "    color: white;               /* Texte en blanc */\n"
 "    border-radius: 5px;         /* Bords arrondis */\n"
@@ -332,6 +528,7 @@ public:
 "\n"
 "QPushButton:hover {\n"
 "    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+<<<<<<< HEAD
 "}"));
         QIcon icon7;
         icon7.addFile(QString::fromUtf8("calend.png"), QSize(), QIcon::Mode::Normal, QIcon::State::Off);
@@ -782,6 +979,136 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 1536, 26));
+=======
+"}\n"
+""));
+        ChercheurButton_2->setIcon(icon1);
+        vac_2 = new QPushButton(sidebare_2);
+        vac_2->setObjectName("vac_2");
+        vac_2->setGeometry(QRect(0, 250, 141, 41));
+        vac_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        vac_2->setIcon(icon2);
+        vac_2->setIconSize(QSize(20, 20));
+        EquipementButton_2 = new QPushButton(sidebare_2);
+        EquipementButton_2->setObjectName("EquipementButton_2");
+        EquipementButton_2->setGeometry(QRect(0, 300, 141, 41));
+        EquipementButton_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        EquipementButton_2->setIcon(icon3);
+        client_2 = new QPushButton(sidebare_2);
+        client_2->setObjectName("client_2");
+        client_2->setGeometry(QRect(0, 400, 141, 41));
+        client_2->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        client_2->setIcon(icon4);
+        pushButton_11 = new QPushButton(sidebare_2);
+        pushButton_11->setObjectName("pushButton_11");
+        pushButton_11->setGeometry(QRect(30, 550, 111, 31));
+        pushButton_11->setStyleSheet(QString::fromUtf8("QPushButton#pushButton_8 {\n"
+"    background-color: transparent;\n"
+"    color: #E74C3C;  /* Rouge */\n"
+"    font-size: 13px;\n"
+"    font-weight: bold;\n"
+"    border: none;\n"
+"    padding: 8px 15px;\n"
+"    text-align: left;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:hover {\n"
+"    color: #C0392B;  /* Rouge fonc\303\251 au survol */\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_8:pressed {\n"
+"    color: #A93226;  /* Encore plus fonc\303\251 au clic */\n"
+"}\n"
+"\n"
+"/* Ajouter une ic\303\264ne \303\240 gauche du texte */\n"
+"QPushButton#pushButton_8::before {\n"
+"    content: \"\342\217\273 \";  /* Ic\303\264ne de mise hors tension */\n"
+"    font-size: 18px;\n"
+"    margin-right: 8px;\n"
+"}\n"
+""));
+        logout_2 = new QLabel(sidebare_2);
+        logout_2->setObjectName("logout_2");
+        logout_2->setGeometry(QRect(10, 560, 31, 31));
+        logout_2->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        logout_2->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/application/logout.png")));
+        label_4 = new QLabel(sidebare_2);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(10, 549, 31, 41));
+        label_4->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        label_4->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logout.png")));
+        logo1_2 = new QLabel(sidebare_2);
+        logo1_2->setObjectName("logo1_2");
+        logo1_2->setGeometry(QRect(20, 50, 111, 91));
+        logo1_2->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        logo1_2->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logo1.png")));
+        eq_3 = new QPushButton(sidebare_2);
+        eq_3->setObjectName("eq_3");
+        eq_3->setGeometry(QRect(0, 350, 141, 41));
+        eq_3->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}\n"
+""));
+        eq_3->setIcon(icon3);
+        logo1 = new QLabel(sidebare);
+        logo1->setObjectName("logo1");
+        logo1->setGeometry(QRect(10, 40, 111, 91));
+        logo1->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        logo1->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logo1.png")));
+        stackedWidget->addWidget(page);
+        page_2 = new QWidget();
+        page_2->setObjectName("page_2");
+        stackedWidget->addWidget(page_2);
+        MainWindow->setCentralWidget(centralwidget);
+        menubar = new QMenuBar(MainWindow);
+        menubar->setObjectName("menubar");
+        menubar->setGeometry(QRect(0, 0, 1456, 26));
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
@@ -789,15 +1116,19 @@ public:
 
         retranslateUi(MainWindow);
 
+<<<<<<< HEAD
         stackedWidget->setCurrentIndex(1);
 
 
+=======
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+<<<<<<< HEAD
         logo->setText(QString());
         emp1->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
         chercheur->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
@@ -898,6 +1229,28 @@ public:
         groupBox_3->setTitle(QString());
         radioButton_11->setText(QCoreApplication::translate("MainWindow", "Ajouter", nullptr));
         radioButton_12->setText(QCoreApplication::translate("MainWindow", "Modifier", nullptr));
+=======
+        emp1->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
+        ChercheurButton->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
+        vac->setText(QCoreApplication::translate("MainWindow", "vaccins", nullptr));
+        EquipementButton->setText(QCoreApplication::translate("MainWindow", "\303\251quipements", nullptr));
+        client->setText(QCoreApplication::translate("MainWindow", "clients", nullptr));
+        pushButton_8->setText(QCoreApplication::translate("MainWindow", "D\303\251connexion", nullptr));
+        logout->setText(QString());
+        label_3->setText(QString());
+        eq_2->setText(QCoreApplication::translate("MainWindow", "test biologique", nullptr));
+        emp1_2->setText(QCoreApplication::translate("MainWindow", "employ\303\251es", nullptr));
+        ChercheurButton_2->setText(QCoreApplication::translate("MainWindow", "chercheurs", nullptr));
+        vac_2->setText(QCoreApplication::translate("MainWindow", "vaccins", nullptr));
+        EquipementButton_2->setText(QCoreApplication::translate("MainWindow", "\303\251quipements", nullptr));
+        client_2->setText(QCoreApplication::translate("MainWindow", "clients", nullptr));
+        pushButton_11->setText(QCoreApplication::translate("MainWindow", "D\303\251connexion", nullptr));
+        logout_2->setText(QString());
+        label_4->setText(QString());
+        logo1_2->setText(QString());
+        eq_3->setText(QCoreApplication::translate("MainWindow", "test biologique", nullptr));
+        logo1->setText(QString());
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     } // retranslateUi
 
 };

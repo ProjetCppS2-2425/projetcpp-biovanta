@@ -8,8 +8,37 @@
 
 #include "../../../mainwindow.h"
 #include <QtGui/qtextcursor.h>
+<<<<<<< HEAD
 #include <QtCore/qmetatype.h>
 #include <QtCore/QList>
+=======
+#include <QtGui/qscreen.h>
+#include <QtCharts/qlineseries.h>
+#include <QtCharts/qabstractbarseries.h>
+#include <QtCharts/qvbarmodelmapper.h>
+#include <QtCharts/qboxplotseries.h>
+#include <QtCharts/qcandlestickseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qpieseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qboxplotseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qpieseries.h>
+#include <QtCharts/qpieseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qxyseries.h>
+#include <QtCharts/qxyseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qboxplotseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qpieseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCharts/qxyseries.h>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtNetwork/QSslError>
+#include <QtCore/qmetatype.h>
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 
 #include <QtCore/qtmochelpers.h>
 
@@ -38,6 +67,7 @@ namespace {
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::stringData(
     "MainWindow",
+<<<<<<< HEAD
     "initArduinoConnection",
     "",
     "readSerialData",
@@ -64,6 +94,11 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "afficherDisponibiliteSurCalendrier",
     "afficherDetailsEquipement",
     "date"
+=======
+    "on_ChercheurButton_clicked",
+    "",
+    "on_EquipementButton_clicked"
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -76,7 +111,11 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
+<<<<<<< HEAD
       20,   14, // methods
+=======
+       2,   14, // methods
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -84,6 +123,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
+<<<<<<< HEAD
        1,    0,  134,    2, 0x08,    1 /* Private */,
        3,    0,  135,    2, 0x08,    2 /* Private */,
        4,    0,  136,    2, 0x08,    3 /* Private */,
@@ -104,10 +144,15 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       21,    1,  153,    2, 0x08,   19 /* Private */,
       24,    0,  156,    2, 0x08,   21 /* Private */,
       25,    1,  157,    2, 0x08,   22 /* Private */,
+=======
+       1,    0,   26,    2, 0x08,    1 /* Private */,
+       3,    0,   27,    2, 0x08,    2 /* Private */,
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
+<<<<<<< HEAD
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 6,    7,
     QMetaType::Void,
@@ -126,6 +171,8 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void, 0x80000000 | 22,   23,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QDate,   26,
+=======
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 
        0        // eod
 };
@@ -139,6 +186,7 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSMainWindowENDCLASS_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>,
+<<<<<<< HEAD
         // method 'initArduinoConnection'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'readSerialData'
@@ -182,6 +230,12 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         // method 'afficherDetailsEquipement'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QDate &, std::false_type>
+=======
+        // method 'on_ChercheurButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_EquipementButton_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     >,
     nullptr
 } };
@@ -192,6 +246,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<MainWindow *>(_o);
         (void)_t;
         switch (_id) {
+<<<<<<< HEAD
         case 0: _t->initArduinoConnection(); break;
         case 1: _t->readSerialData(); break;
         case 2: _t->showAlertNotification(); break;
@@ -215,6 +270,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         default: ;
         }
     }
+=======
+        case 0: _t->on_ChercheurButton_clicked(); break;
+        case 1: _t->on_EquipementButton_clicked(); break;
+        default: ;
+        }
+    }
+    (void)_a;
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 }
 
 const QMetaObject *MainWindow::metaObject() const
@@ -236,6 +299,7 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
+<<<<<<< HEAD
         if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
         _id -= 20;
@@ -243,6 +307,15 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 20)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 20;
+=======
+        if (_id < 2)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 2;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 2)
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+        _id -= 2;
+>>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     }
     return _id;
 }

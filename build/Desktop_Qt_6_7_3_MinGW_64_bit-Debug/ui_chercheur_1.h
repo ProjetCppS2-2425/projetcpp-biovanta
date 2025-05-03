@@ -41,7 +41,7 @@ public:
     QPushButton *client;
     QPushButton *pushButton_8;
     QLabel *logout;
-    QLabel *logout_3;
+    QLabel *label_3;
     QLabel *logo1;
     QPushButton *eq_2;
     QWidget *sidebare_2;
@@ -77,8 +77,8 @@ public:
     QLabel *label_52;
     QTableWidget *tableWidget_4;
     QLineEdit *S1_4;
+    QPushButton *btn_goToStats;
     QLabel *label_23;
-    QLabel *bg;
     QGroupBox *groupBox_15;
     QRadioButton *radioButton_5;
     QRadioButton *radioButton_6;
@@ -102,6 +102,8 @@ public:
     QLineEdit *lineEdit_24;
     QWidget *page_6;
     QWidget *page_7;
+    QPushButton *backButton;
+    QTableWidget *tableWidget_5;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -312,11 +314,11 @@ public:
         logout->setGeometry(QRect(10, 560, 31, 31));
         logout->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
         logout->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/application/logout.png")));
-        logout_3 = new QLabel(sidebare);
-        logout_3->setObjectName("logout_3");
-        logout_3->setGeometry(QRect(10, 549, 31, 41));
-        logout_3->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
-        logout_3->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logout.png")));
+        label_3 = new QLabel(sidebare);
+        label_3->setObjectName("label_3");
+        label_3->setGeometry(QRect(10, 549, 31, 41));
+        label_3->setStyleSheet(QString::fromUtf8("background-color: #2C3E50;"));
+        label_3->setPixmap(QPixmap(QString::fromUtf8("../../../Documents/projet_c/projet_c/logout.png")));
         logo1 = new QLabel(sidebare);
         logo1->setObjectName("logo1");
         logo1->setGeometry(QRect(20, 50, 111, 91));
@@ -522,10 +524,10 @@ public:
         client->raise();
         pushButton_8->raise();
         logout->raise();
+        label_3->raise();
         eq_2->raise();
         logo1->raise();
         sidebare_2->raise();
-        logout_3->raise();
         widget = new QWidget(centralwidget);
         widget->setObjectName("widget");
         widget->setGeometry(QRect(120, 0, 1391, 51));
@@ -590,7 +592,7 @@ public:
         test->setIcon(icon5);
         groupBox_12 = new QGroupBox(widget_2);
         groupBox_12->setObjectName("groupBox_12");
-        groupBox_12->setGeometry(QRect(350, 10, 1001, 571));
+        groupBox_12->setGeometry(QRect(340, 10, 1021, 571));
         QFont font;
         font.setPointSize(12);
         font.setBold(true);
@@ -754,7 +756,7 @@ public:
         DSC_4->setGeometry(QRect(590, 90, 91, 24));
         groupBox_14 = new QGroupBox(groupBox_12);
         groupBox_14->setObjectName("groupBox_14");
-        groupBox_14->setGeometry(QRect(20, 130, 941, 411));
+        groupBox_14->setGeometry(QRect(20, 130, 981, 411));
         label_51 = new QLabel(groupBox_14);
         label_51->setObjectName("label_51");
         label_51->setGeometry(QRect(20, 10, 161, 31));
@@ -766,7 +768,7 @@ public:
         label_51->setFont(font1);
         supp_6 = new QPushButton(groupBox_14);
         supp_6->setObjectName("supp_6");
-        supp_6->setGeometry(QRect(860, 10, 41, 41));
+        supp_6->setGeometry(QRect(900, 10, 41, 41));
         supp_6->setStyleSheet(QString::fromUtf8("\n"
 "QPushButton {\n"
 "        background-color: #cbddf5; /* Rouge */\n"
@@ -787,7 +789,7 @@ public:
         supp_6->setIconSize(QSize(25, 25));
         label_52 = new QLabel(groupBox_14);
         label_52->setObjectName("label_52");
-        label_52->setGeometry(QRect(630, 20, 211, 20));
+        label_52->setGeometry(QRect(670, 20, 211, 20));
         QFont font2;
         font2.setPointSize(10);
         font2.setBold(false);
@@ -821,10 +823,30 @@ public:
         if (tableWidget_4->rowCount() < 7)
             tableWidget_4->setRowCount(7);
         tableWidget_4->setObjectName("tableWidget_4");
-        tableWidget_4->setGeometry(QRect(20, 60, 871, 311));
+        tableWidget_4->setGeometry(QRect(30, 60, 911, 311));
         S1_4 = new QLineEdit(groupBox_12);
         S1_4->setObjectName("S1_4");
         S1_4->setGeometry(QRect(192, 30, 361, 26));
+        btn_goToStats = new QPushButton(groupBox_12);
+        btn_goToStats->setObjectName("btn_goToStats");
+        btn_goToStats->setGeometry(QRect(840, 10, 171, 41));
+        btn_goToStats->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"                                    stop:0 #2b7a78, stop:1 #3aafa9);\n"
+"    color: white;\n"
+"    font-weight: bold;\n"
+"    padding: 10px 30px;\n"
+"    border-radius: 12px;\n"
+"    border: none;\n"
+"    font-size: 11pt;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"                                    stop:0 #3aafa9, stop:1 #2b7a78);\n"
+"}\n"
+"QPushButton:pressed {\n"
+"    background-color: #2b7a78;\n"
+"}"));
         label_23 = new QLabel(groupBox_12);
         label_23->setObjectName("label_23");
         label_23->setGeometry(QRect(820, 90, 141, 20));
@@ -839,14 +861,11 @@ public:
         DSC_4->raise();
         groupBox_14->raise();
         S1_4->raise();
+        btn_goToStats->raise();
         label_23->raise();
-        bg = new QLabel(widget_2);
-        bg->setObjectName("bg");
-        bg->setGeometry(QRect(-8, 0, 1551, 791));
-        bg->setPixmap(QPixmap(QString::fromUtf8("../../projet_c 22/projet_c/bg.jpg")));
         groupBox_15 = new QGroupBox(widget_2);
         groupBox_15->setObjectName("groupBox_15");
-        groupBox_15->setGeometry(QRect(20, 490, 311, 91));
+        groupBox_15->setGeometry(QRect(10, 490, 311, 91));
         groupBox_15->setStyleSheet(QString::fromUtf8("QGroupBox {\n"
 "    border: 2px solid #02767F; /* Couleur turquoise pour la bordure */\n"
 "    border-radius: 10px;  /* Coins arrondis */\n"
@@ -862,7 +881,7 @@ public:
         radioButton_6->setGeometry(QRect(180, 20, 110, 24));
         groupBox_11 = new QGroupBox(widget_2);
         groupBox_11->setObjectName("groupBox_11");
-        groupBox_11->setGeometry(QRect(20, 10, 311, 491));
+        groupBox_11->setGeometry(QRect(10, 10, 311, 491));
         groupBox_11->setAutoFillBackground(false);
         groupBox_11->setStyleSheet(QString::fromUtf8("QGroupBox {\n"
 "    border: 2px solid #02767F; /* Couleur turquoise pour la bordure */\n"
@@ -941,16 +960,17 @@ public:
         lineEdit_24->setObjectName("lineEdit_24");
         lineEdit_24->setGeometry(QRect(180, 360, 91, 26));
         stackedWidget->addWidget(widget_2);
-        bg->raise();
-        test->raise();
-        groupBox_12->raise();
-        groupBox_15->raise();
-        groupBox_11->raise();
         page_6 = new QWidget();
         page_6->setObjectName("page_6");
         stackedWidget->addWidget(page_6);
         page_7 = new QWidget();
         page_7->setObjectName("page_7");
+        backButton = new QPushButton(page_7);
+        backButton->setObjectName("backButton");
+        backButton->setGeometry(QRect(1120, 10, 93, 29));
+        tableWidget_5 = new QTableWidget(page_7);
+        tableWidget_5->setObjectName("tableWidget_5");
+        tableWidget_5->setGeometry(QRect(970, 230, 256, 192));
         stackedWidget->addWidget(page_7);
         chercheur_1->setCentralWidget(centralwidget);
         menubar = new QMenuBar(chercheur_1);
@@ -979,7 +999,7 @@ public:
         client->setText(QCoreApplication::translate("chercheur_1", "clients", nullptr));
         pushButton_8->setText(QCoreApplication::translate("chercheur_1", "D\303\251connexion", nullptr));
         logout->setText(QString());
-        logout_3->setText(QString());
+        label_3->setText(QString());
         logo1->setText(QString());
         eq_2->setText(QCoreApplication::translate("chercheur_1", "test biologique", nullptr));
         emp1_2->setText(QCoreApplication::translate("chercheur_1", "employ\303\251es", nullptr));
@@ -1032,8 +1052,8 @@ public:
         ___qtablewidgetitem7->setText(QCoreApplication::translate("chercheur_1", "Historique", nullptr));
         QTableWidgetItem *___qtablewidgetitem8 = tableWidget_4->horizontalHeaderItem(8);
         ___qtablewidgetitem8->setText(QCoreApplication::translate("chercheur_1", "Rapport", nullptr));
+        btn_goToStats->setText(QCoreApplication::translate("chercheur_1", "AI RAPPORT", nullptr));
         label_23->setText(QString());
-        bg->setText(QString());
         groupBox_15->setTitle(QString());
         radioButton_5->setText(QCoreApplication::translate("chercheur_1", "Ajouter", nullptr));
         radioButton_6->setText(QCoreApplication::translate("chercheur_1", "Modifier", nullptr));
@@ -1052,6 +1072,7 @@ public:
         label_46->setText(QCoreApplication::translate("chercheur_1", "email", nullptr));
         label_47->setText(QCoreApplication::translate("chercheur_1", "domaine_recherches", nullptr));
         label_48->setText(QCoreApplication::translate("chercheur_1", "project_en_cours", nullptr));
+        backButton->setText(QCoreApplication::translate("chercheur_1", "backButton", nullptr));
     } // retranslateUi
 
 };

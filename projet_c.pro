@@ -1,34 +1,34 @@
-QT       += core gui \
-    quick
-QT+= sql
-QT += printsupport
-QT += charts
-QT += widgets sql printsupport
-QT += serialport
-
+QT       += core gui quick sql printsupport charts widgets serialport network concurrent uitools
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
 SOURCES += \
+    ai_report_generator.cpp \
     arduinoE.cpp \
+    chercheur.cpp \
+    chercheur_1.cpp \
     connection.cpp \
     equipement.cpp \
     equipement1.cpp \
-    mainE.cpp
+    mainE.cpp \
+    menu.cpp
+
 HEADERS += \
+    ai_report_generator.h \
     arduinoE.h \
+    chercheur.h \
+    chercheur_1.h \
     connection.h \
     equipement.h \
-    equipement1.h
+    equipement1.h \
+    menu.h
 
 FORMS += \
-    equipement1.ui
+    equipement1.ui \
+    chercheur_1.ui \
+    menu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
