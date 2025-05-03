@@ -37,7 +37,7 @@ menu::menu(QWidget *parent) :
     // Connexion manuelle des boutons de retour (solution robuste)
     QPushButton* btnRetourChercheur = chercheurInterface->findChild<QPushButton*>("btnRetourChercheur");
     QPushButton* btnRetourEquipement = equipementInterface->findChild<QPushButton*>("btnRetourEquipement");
-
+    QPushButton* btnRetourvaccin = vaccinInterface->findChild<QPushButton*>("btnRetourvaccin");
     if (btnRetourChercheur) {
         connect(btnRetourChercheur, &QPushButton::clicked, this, [this]() {
             qDebug() << "Retour chercheur cliqué";
@@ -55,6 +55,14 @@ menu::menu(QWidget *parent) :
     } else {
         qDebug() << "Erreur: Bouton retour equipement non trouvé!";
     }
+    if (btnRetourvaccin) {
+        connect(btnRetourvaccin, &QPushButton::clicked, this, [this]() {
+            qDebug() << "Retour equipement cliqué";
+            stackedWidget->setCurrentIndex(0);
+        });
+    } else {
+        qDebug() << "Erreur: Bouton retour equipement non trouvé!";
+    }
 }
 
 menu::~menu()
@@ -62,6 +70,7 @@ menu::~menu()
     delete ui;
     delete chercheurInterface;
     delete equipementInterface;
+    delete vaccinInterface;
 }
 
 void menu::on_cherch_clicked()
@@ -91,5 +100,10 @@ void menu::on_btnRetourChercheur_clicked()
 void menu::on_btnRetourEquipement_clicked()
 {
     qDebug() << "Retour via slot automatique (equipement)";
+    stackedWidget->setCurrentIndex(0);
+}
+void menu::on_btnRetourvaccin_clicked()
+{
+    qDebug() << "Retour via slot automatique (vaccin)";
     stackedWidget->setCurrentIndex(0);
 }

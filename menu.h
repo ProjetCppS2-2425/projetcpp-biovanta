@@ -18,7 +18,9 @@ public:
     ~menu();
 private slots:
     void on_btnRetourChercheur_clicked();  // Slot pour le bouton Chercheur
-    void on_btnRetourEquipement_clicked(); // Slot pour le bouton Équipement
+    void on_btnRetourEquipement_clicked();    // Slot pour le bouton Équipement
+    void on_btnRetourvaccin_clicked();
+
 private slots:
     void on_cherch_clicked();  // Bouton "Chercheur"
     void on_equip_clicked();    // Bouton "Équipement"

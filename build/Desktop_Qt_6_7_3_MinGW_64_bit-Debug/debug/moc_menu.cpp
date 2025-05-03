@@ -39,6 +39,7 @@ constexpr auto qt_meta_stringdata_CLASSmenuENDCLASS = QtMocHelpers::stringData(
     "on_btnRetourChercheur_clicked",
     "",
     "on_btnRetourEquipement_clicked",
+    "on_btnRetourvaccin_clicked",
     "on_cherch_clicked",
     "on_equip_clicked",
     "on_equip_2_clicked"
@@ -54,7 +55,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSmenuENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -62,13 +63,15 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSmenuENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   44,    2, 0x08,    1 /* Private */,
-       3,    0,   45,    2, 0x08,    2 /* Private */,
-       4,    0,   46,    2, 0x08,    3 /* Private */,
-       5,    0,   47,    2, 0x08,    4 /* Private */,
-       6,    0,   48,    2, 0x08,    5 /* Private */,
+       1,    0,   50,    2, 0x08,    1 /* Private */,
+       3,    0,   51,    2, 0x08,    2 /* Private */,
+       4,    0,   52,    2, 0x08,    3 /* Private */,
+       5,    0,   53,    2, 0x08,    4 /* Private */,
+       6,    0,   54,    2, 0x08,    5 /* Private */,
+       7,    0,   55,    2, 0x08,    6 /* Private */,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -91,6 +94,8 @@ Q_CONSTINIT const QMetaObject menu::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_btnRetourEquipement_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_btnRetourvaccin_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_cherch_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_equip_clicked'
@@ -109,9 +114,10 @@ void menu::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         switch (_id) {
         case 0: _t->on_btnRetourChercheur_clicked(); break;
         case 1: _t->on_btnRetourEquipement_clicked(); break;
-        case 2: _t->on_cherch_clicked(); break;
-        case 3: _t->on_equip_clicked(); break;
-        case 4: _t->on_equip_2_clicked(); break;
+        case 2: _t->on_btnRetourvaccin_clicked(); break;
+        case 3: _t->on_cherch_clicked(); break;
+        case 4: _t->on_equip_clicked(); break;
+        case 5: _t->on_equip_2_clicked(); break;
         default: ;
         }
     }
@@ -137,13 +143,13 @@ int menu::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 6;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }
