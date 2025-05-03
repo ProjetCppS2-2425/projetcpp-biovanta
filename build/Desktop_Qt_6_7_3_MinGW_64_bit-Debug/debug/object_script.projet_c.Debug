@@ -1,0 +1,10 @@
+debug/ai_report_generator.o
+debug/arduino1.o
+debug/chercheur.o
+debug/chercheur_1.o
+debug/connection.o
+debug/equipement.o
+debug/equipement1.o
+debug/moc_ai_report_generator.o
+debug/moc_chercheur_1.o
+debug/moc_equipement1.o
