@@ -2,6 +2,7 @@
 #include "ui_menu.h"
 #include "chercheur_1.h"
 #include "equipement1.h"
+#include "vaccin1.h"
 #include <QDebug>
 #include <QPushButton>
 
@@ -28,8 +29,10 @@ menu::menu(QWidget *parent) :
     // Création et ajout des interfaces
     chercheurInterface = new chercheur_1();
     equipementInterface = new equipement1();
+    vaccinInterface = new vaccin1();
     stackedWidget->addWidget(chercheurInterface);  // Index 1
     stackedWidget->addWidget(equipementInterface); // Index 2
+    stackedWidget->addWidget(vaccinInterface);
 
     // Connexion manuelle des boutons de retour (solution robuste)
     QPushButton* btnRetourChercheur = chercheurInterface->findChild<QPushButton*>("btnRetourChercheur");
@@ -71,6 +74,11 @@ void menu::on_equip_clicked()
 {
     qDebug() << "Affichage interface equipement";
     stackedWidget->setCurrentIndex(2);  // Page equipement (index 2)
+}
+void menu::on_equip_2_clicked()
+{
+    qDebug() << "Affichage interface vaccin1";
+    stackedWidget->setCurrentIndex(3);  // Page equipement (index 2)
 }
 
 // Slots automatiques (doivent correspondre aux noms exacts des boutons)

@@ -11,7 +11,7 @@
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-class vaccin1;
+class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -66,7 +66,7 @@ private slots:
     void lireDonneesArduino() ;
 
 private:
-    Ui::vaccin1 *ui;
+    Ui::MainWindow *ui;
     vaccin vac;
     bool ASC = false;
     bool DSC = false;

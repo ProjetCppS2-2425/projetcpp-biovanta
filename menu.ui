@@ -24,10 +24,11 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="pageEquipement"/>
     <widget class="QWidget" name="pageChercheur"/>
+    <widget class="QWidget" name="pagevaccin"/>
     <widget class="QWidget" name="pageMenu">
      <widget class="QLabel" name="label">
       <property name="geometry">
@@ -441,7 +442,7 @@
      <x>0</x>
      <y>0</y>
      <width>1545</width>
-     <height>26</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

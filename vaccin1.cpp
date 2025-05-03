@@ -17,7 +17,7 @@ ArduinoManager *arduino;
 
 vaccin1::vaccin1(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::vaccin1)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 

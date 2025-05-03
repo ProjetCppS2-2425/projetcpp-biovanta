@@ -28,6 +28,7 @@ public:
     QStackedWidget *stackedWidget;
     QWidget *pageEquipement;
     QWidget *pageChercheur;
+    QWidget *pagevaccin;
     QWidget *pageMenu;
     QLabel *label;
     QPushButton *equip;
@@ -64,6 +65,9 @@ public:
         pageChercheur = new QWidget();
         pageChercheur->setObjectName("pageChercheur");
         stackedWidget->addWidget(pageChercheur);
+        pagevaccin = new QWidget();
+        pagevaccin->setObjectName("pagevaccin");
+        stackedWidget->addWidget(pagevaccin);
         pageMenu = new QWidget();
         pageMenu->setObjectName("pageMenu");
         label = new QLabel(pageMenu);
@@ -293,7 +297,7 @@ public:
         menu->setCentralWidget(centralwidget);
         menubar = new QMenuBar(menu);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1545, 26));
+        menubar->setGeometry(QRect(0, 0, 1545, 18));
         menu->setMenuBar(menubar);
         statusbar = new QStatusBar(menu);
         statusbar->setObjectName("statusbar");
@@ -301,7 +305,7 @@ public:
 
         retranslateUi(menu);
 
-        stackedWidget->setCurrentIndex(2);
+        stackedWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(menu);
