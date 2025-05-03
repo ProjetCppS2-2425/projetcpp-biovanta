@@ -57,22 +57,22 @@ equipement1::equipement1(QWidget *parent)
             onTriDeclenche();
         }
     });
-    ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
-    ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
-    ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
-    ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
-    ui->supp_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
-    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
-    ui->pdf_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
-    ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
-    ui->eq->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\equipement.png"));
-    ui->test->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\teste.png"));
-    ui->client->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\client.png"));
-    ui->stat_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
-    ui->ok_3->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
-    ui->pushButton_10->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\loading-arrow.png"));
-    ui->noti->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\notif.png"));
-    ui->calen->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\calend.png"));
+    ui->logo->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logo1.png"));
+    ui->bg->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\bg.jpg"));
+    ui->logout->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logout.png"));
+    ui->emp1->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\empe.png"));
+    ui->supp_3->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\effacer.png"));
+    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\cher.png"));
+    ui->pdf_3->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\pdf1.png"));
+    ui->vac->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\vaccin.png"));
+    ui->eq->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\equipement.png"));
+    ui->test->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\teste.png"));
+    ui->client->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\client.png"));
+    ui->stat_3->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\st.png"));
+    ui->ok_3->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\search.png"));
+    ui->pushButton_10->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\loading-arrow.png"));
+    ui->noti->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\notif.png"));
+    ui->calen->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\calend.png"));
 
 
 

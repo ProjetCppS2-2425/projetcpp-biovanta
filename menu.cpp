@@ -10,14 +10,14 @@ menu::menu(QWidget *parent) :
     ui(new Ui::menu)
 {
     ui->setupUi(this);
-    ui->bg_2->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
-    ui->logo->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
-    ui->leqq->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\leq.png"));
-    ui->tes->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\te.png"));
-    ui->ee->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\ee.png"));
-    ui->cc->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cc.png"));
-    ui->hh->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\hh.png"));
-    ui->vv->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vv.png"));
+    ui->bg_2->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\bg.jpg"));
+    ui->logo->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logo1.png"));
+    ui->leqq->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\leq.png"));
+    ui->tes->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\te.png"));
+    ui->ee->setPixmap(QPixmap("C:\\C:\\Users\\user\\Desktop\\projetarwa\\ee.png"));
+    ui->cc->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\cc.png"));
+    ui->hh->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\hh.png"));
+    ui->vv->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\vv.png"));
     // Initialisation du QStackedWidget
     stackedWidget = new QStackedWidget(this);
     setCentralWidget(stackedWidget);

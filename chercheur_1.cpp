@@ -68,19 +68,19 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
 
 
     connect(ui->tableWidget_4, &QTableWidget::cellClicked, this, &chercheur_1::onCellClicked);
-    ui->bg->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\bg.jpg"));
-    ui->logo1->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logo1.png"));
-    ui->logout->setPixmap(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\logout.png"));
-    ui->emp1->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\empe.png"));
-    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\cher.png"));
-    ui->pdf_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\pdf1.png"));
-    ui->vac->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\vaccin.png"));
-    ui->eq->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\equipement.png"));
-    ui->test->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\teste.png"));
-    ui->client->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\client.png"));
-    ui->stat_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\st.png"));
-    ui->ok_4->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\search.png"));
-    ui->supp_6->setIcon(QPixmap("C:\\Users\\manel\\Desktop\\projet_c\\effacer.png"));
+    ui->bg->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\bg.jpg"));
+    ui->logo1->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logo1.png"));
+    ui->logout->setPixmap(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\logout.png"));
+    ui->emp1->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\empe.png"));
+    ui->ChercheurButton->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\cher.png"));
+    ui->pdf_4->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\pdf1.png"));
+    ui->vac->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\vaccin.png"));
+    ui->eq->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\equipement.png"));
+    ui->test->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\teste.png"));
+    ui->client->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\client.png"));
+    ui->stat_4->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\st.png"));
+    ui->ok_4->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\search.png"));
+    ui->supp_6->setIcon(QPixmap("C:\\Users\\user\\Desktop\\projetarwa\\effacer.png"));
 
 
     // Connect search

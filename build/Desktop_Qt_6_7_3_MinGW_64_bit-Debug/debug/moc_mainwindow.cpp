@@ -7,38 +7,7 @@
 *****************************************************************************/
 
 #include "../../../mainwindow.h"
-#include <QtGui/qtextcursor.h>
-<<<<<<< HEAD
 #include <QtCore/qmetatype.h>
-#include <QtCore/QList>
-=======
-#include <QtGui/qscreen.h>
-#include <QtCharts/qlineseries.h>
-#include <QtCharts/qabstractbarseries.h>
-#include <QtCharts/qvbarmodelmapper.h>
-#include <QtCharts/qboxplotseries.h>
-#include <QtCharts/qcandlestickseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qpieseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qboxplotseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qpieseries.h>
-#include <QtCharts/qpieseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qxyseries.h>
-#include <QtCharts/qxyseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qboxplotseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qpieseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCharts/qxyseries.h>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtNetwork/QSslError>
-#include <QtCore/qmetatype.h>
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 
 #include <QtCore/qtmochelpers.h>
 
@@ -67,38 +36,27 @@ namespace {
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::stringData(
     "MainWindow",
-<<<<<<< HEAD
-    "initArduinoConnection",
+    "on_pushButton_7_clicked",
     "",
-    "readSerialData",
-    "showAlertNotification",
-    "on_tableWidget_3_itemClicked",
-    "QTableWidgetItem*",
-    "item",
-    "supp_3_clicked",
-    "on_pushButton_11_clicked",
-    "on_pushButton_12_clicked",
-    "on_pushButton_13_clicked",
-    "on_pdf_3_clicked",
-    "on_stat_3_clicked",
-    "on_ok_3_clicked",
-    "on_pushButton_10_clicked",
-    "onTriDeclenche",
-    "checkEquipmentStatus",
-    "showEquipmentAlerts",
-    "actualiserTableau",
-    "chargerEquipement",
-    "afficherEquipements",
-    "QList<Equipement>",
-    "liste",
-    "afficherDisponibiliteSurCalendrier",
-    "afficherDetailsEquipement",
-    "date"
-=======
-    "on_ChercheurButton_clicked",
-    "",
-    "on_EquipementButton_clicked"
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
+    "on_comboBox_10_currentTextChanged",
+    "arg1",
+    "on_comboBox_11_currentTextChanged",
+    "on_tableView_vaccin_doubleClicked",
+    "QModelIndex",
+    "index",
+    "on_tableView_vaccin_clicked",
+    "on_pushButton_9_clicked",
+    "on_comboBox_7_activated",
+    "on_checkBox_stateChanged",
+    "on_checkBox_2_stateChanged",
+    "on_ok_2_clicked",
+    "on_pushButton_6_clicked",
+    "on_stat_2_clicked",
+    "on_pdf_2_clicked",
+    "on_pushButton_clicked",
+    "on_pushButton_2_clicked",
+    "verifierTempEtMettreAJour",
+    "lireDonneesArduino"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -111,11 +69,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-<<<<<<< HEAD
-      20,   14, // methods
-=======
-       2,   14, // methods
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -123,44 +77,34 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-<<<<<<< HEAD
-       1,    0,  134,    2, 0x08,    1 /* Private */,
-       3,    0,  135,    2, 0x08,    2 /* Private */,
-       4,    0,  136,    2, 0x08,    3 /* Private */,
-       5,    1,  137,    2, 0x08,    4 /* Private */,
-       8,    0,  140,    2, 0x08,    6 /* Private */,
-       9,    0,  141,    2, 0x08,    7 /* Private */,
-      10,    0,  142,    2, 0x08,    8 /* Private */,
-      11,    0,  143,    2, 0x08,    9 /* Private */,
-      12,    0,  144,    2, 0x08,   10 /* Private */,
-      13,    0,  145,    2, 0x08,   11 /* Private */,
-      14,    0,  146,    2, 0x08,   12 /* Private */,
-      15,    0,  147,    2, 0x08,   13 /* Private */,
-      16,    0,  148,    2, 0x08,   14 /* Private */,
-      17,    0,  149,    2, 0x08,   15 /* Private */,
-      18,    0,  150,    2, 0x08,   16 /* Private */,
-      19,    0,  151,    2, 0x08,   17 /* Private */,
-      20,    0,  152,    2, 0x08,   18 /* Private */,
-      21,    1,  153,    2, 0x08,   19 /* Private */,
-      24,    0,  156,    2, 0x08,   21 /* Private */,
-      25,    1,  157,    2, 0x08,   22 /* Private */,
-=======
-       1,    0,   26,    2, 0x08,    1 /* Private */,
-       3,    0,   27,    2, 0x08,    2 /* Private */,
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
+       1,    0,  116,    2, 0x08,    1 /* Private */,
+       3,    1,  117,    2, 0x08,    2 /* Private */,
+       5,    1,  120,    2, 0x08,    4 /* Private */,
+       6,    1,  123,    2, 0x08,    6 /* Private */,
+       9,    1,  126,    2, 0x08,    8 /* Private */,
+      10,    0,  129,    2, 0x08,   10 /* Private */,
+      11,    1,  130,    2, 0x08,   11 /* Private */,
+      12,    1,  133,    2, 0x08,   13 /* Private */,
+      13,    1,  136,    2, 0x08,   15 /* Private */,
+      14,    0,  139,    2, 0x08,   17 /* Private */,
+      15,    0,  140,    2, 0x08,   18 /* Private */,
+      16,    0,  141,    2, 0x08,   19 /* Private */,
+      17,    0,  142,    2, 0x08,   20 /* Private */,
+      18,    0,  143,    2, 0x08,   21 /* Private */,
+      19,    0,  144,    2, 0x08,   22 /* Private */,
+      20,    0,  145,    2, 0x08,   23 /* Private */,
+      21,    0,  146,    2, 0x08,   24 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
+    QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, 0x80000000 | 7,    8,
+    QMetaType::Void, 0x80000000 | 7,    8,
     QMetaType::Void,
-<<<<<<< HEAD
-    QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 6,    7,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    8,
+    QMetaType::Void, QMetaType::Int,    4,
+    QMetaType::Void, QMetaType::Int,    4,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -168,11 +112,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 22,   23,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QDate,   26,
-=======
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 
        0        // eod
 };
@@ -186,56 +126,47 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSMainWindowENDCLASS_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>,
-<<<<<<< HEAD
-        // method 'initArduinoConnection'
+        // method 'on_pushButton_7_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'readSerialData'
+        // method 'on_comboBox_10_currentTextChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'showAlertNotification'
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'on_comboBox_11_currentTextChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_tableWidget_3_itemClicked'
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'on_tableView_vaccin_doubleClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<QTableWidgetItem *, std::false_type>,
-        // method 'supp_3_clicked'
+        QtPrivate::TypeAndForceComplete<const QModelIndex &, std::false_type>,
+        // method 'on_tableView_vaccin_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_pushButton_11_clicked'
+        QtPrivate::TypeAndForceComplete<const QModelIndex &, std::false_type>,
+        // method 'on_pushButton_9_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_pushButton_12_clicked'
+        // method 'on_comboBox_7_activated'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_pushButton_13_clicked'
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'on_checkBox_stateChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_pdf_3_clicked'
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'on_checkBox_2_stateChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_stat_3_clicked'
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'on_ok_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_ok_3_clicked'
+        // method 'on_pushButton_6_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_pushButton_10_clicked'
+        // method 'on_stat_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'onTriDeclenche'
+        // method 'on_pdf_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'checkEquipmentStatus'
+        // method 'on_pushButton_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'showEquipmentAlerts'
+        // method 'on_pushButton_2_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'actualiserTableau'
+        // method 'verifierTempEtMettreAJour'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'chargerEquipement'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'afficherEquipements'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QList<Equipement> &, std::false_type>,
-        // method 'afficherDisponibiliteSurCalendrier'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'afficherDetailsEquipement'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<const QDate &, std::false_type>
-=======
-        // method 'on_ChercheurButton_clicked'
-        QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'on_EquipementButton_clicked'
+        // method 'lireDonneesArduino'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
     >,
     nullptr
 } };
@@ -246,38 +177,23 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<MainWindow *>(_o);
         (void)_t;
         switch (_id) {
-<<<<<<< HEAD
-        case 0: _t->initArduinoConnection(); break;
-        case 1: _t->readSerialData(); break;
-        case 2: _t->showAlertNotification(); break;
-        case 3: _t->on_tableWidget_3_itemClicked((*reinterpret_cast< std::add_pointer_t<QTableWidgetItem*>>(_a[1]))); break;
-        case 4: _t->supp_3_clicked(); break;
-        case 5: _t->on_pushButton_11_clicked(); break;
-        case 6: _t->on_pushButton_12_clicked(); break;
-        case 7: _t->on_pushButton_13_clicked(); break;
-        case 8: _t->on_pdf_3_clicked(); break;
-        case 9: _t->on_stat_3_clicked(); break;
-        case 10: _t->on_ok_3_clicked(); break;
-        case 11: _t->on_pushButton_10_clicked(); break;
-        case 12: _t->onTriDeclenche(); break;
-        case 13: _t->checkEquipmentStatus(); break;
-        case 14: _t->showEquipmentAlerts(); break;
-        case 15: _t->actualiserTableau(); break;
-        case 16: _t->chargerEquipement(); break;
-        case 17: _t->afficherEquipements((*reinterpret_cast< std::add_pointer_t<QList<Equipement>>>(_a[1]))); break;
-        case 18: _t->afficherDisponibiliteSurCalendrier(); break;
-        case 19: _t->afficherDetailsEquipement((*reinterpret_cast< std::add_pointer_t<QDate>>(_a[1]))); break;
+        case 0: _t->on_pushButton_7_clicked(); break;
+        case 1: _t->on_comboBox_10_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 2: _t->on_comboBox_11_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 3: _t->on_tableView_vaccin_doubleClicked((*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[1]))); break;
+        case 4: _t->on_tableView_vaccin_clicked((*reinterpret_cast< std::add_pointer_t<QModelIndex>>(_a[1]))); break;
+        case 5: _t->on_pushButton_9_clicked(); break;
+        case 6: _t->on_comboBox_7_activated((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 7: _t->on_checkBox_stateChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 8: _t->on_checkBox_2_stateChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 9: _t->on_ok_2_clicked(); break;
+        case 10: _t->on_pushButton_6_clicked(); break;
+        case 12: _t->on_pdf_2_clicked(); break;
+        case 13: _t->on_pushButton_clicked(); break;
+        case 14: _t->on_pushButton_2_clicked(); break;
         default: ;
         }
     }
-=======
-        case 0: _t->on_ChercheurButton_clicked(); break;
-        case 1: _t->on_EquipementButton_clicked(); break;
-        default: ;
-        }
-    }
-    (void)_a;
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
 }
 
 const QMetaObject *MainWindow::metaObject() const
@@ -299,23 +215,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-<<<<<<< HEAD
-        if (_id < 20)
+        if (_id < 17)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 17;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 17)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 20;
-=======
-        if (_id < 2)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
->>>>>>> cb734bf3f041d922b5eac73209cc93d85fc93fd4
+        _id -= 17;
     }
     return _id;
 }
