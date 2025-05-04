@@ -69,6 +69,7 @@ public:
     QLabel *debug;
     QPushButton *History;
     QLabel *client_2;
+    QPushButton *retour;
     QGroupBox *groupBox_2;
     QLabel *label_8;
     QComboBox *CBbar;
@@ -459,6 +460,21 @@ public:
         client_2 = new QLabel(frame);
         client_2->setObjectName("client_2");
         client_2->setGeometry(QRect(370, 20, 371, 16));
+        retour = new QPushButton(frame);
+        retour->setObjectName("retour");
+        retour->setGeometry(QRect(950, 10, 83, 29));
+        retour->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"    background-color: #02767F;  /* Vert fonc\303\251 */\n"
+"    color: white;               /* Texte en blanc */\n"
+"    border-radius: 5px;         /* Bords arrondis */\n"
+"    padding: 10px;              /* Espacement interne */\n"
+"    font-weight: bold;          /* Texte en gras */\n"
+"    border: none;               /* Supprimer la bordure */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #247361;  /* Vert plus fonc\303\251 au survol */\n"
+"}"));
         groupBox_2 = new QGroupBox(centralwidget);
         groupBox_2->setObjectName("groupBox_2");
         groupBox_2->setGeometry(QRect(500, 60, 961, 541));
@@ -757,6 +773,7 @@ public:
         debug->setText(QString());
         History->setText(QCoreApplication::translate("client1", "Historique", nullptr));
         client_2->setText(QString());
+        retour->setText(QCoreApplication::translate("client1", "Retour", nullptr));
         groupBox_2->setTitle(QString());
         label_8->setText(QCoreApplication::translate("client1", "rechercher :", nullptr));
         CBbar->setItemText(0, QCoreApplication::translate("client1", "ID", nullptr));

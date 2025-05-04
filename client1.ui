@@ -861,6 +861,33 @@ QPushButton:hover {
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="retour">
+     <property name="geometry">
+      <rect>
+       <x>950</x>
+       <y>10</y>
+       <width>83</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #02767F;  /* Vert foncé */
+    color: white;               /* Texte en blanc */
+    border-radius: 5px;         /* Bords arrondis */
+    padding: 10px;              /* Espacement interne */
+    font-weight: bold;          /* Texte en gras */
+    border: none;               /* Supprimer la bordure */
+}
+
+QPushButton:hover {
+    background-color: #247361;  /* Vert plus foncé au survol */
+}</string>
+     </property>
+     <property name="text">
+      <string>Retour</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">

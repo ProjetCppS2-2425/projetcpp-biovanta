@@ -33,7 +33,7 @@ client1::client1(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::client1)
 {
-
+    ui->setupUi(this);
     ui->logo->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\logo1.png"));
     ui->bg->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\bg.jpg"));
     ui->logout->setPixmap(QPixmap("C:\\Users\\Medie\\Desktop\\projet_c\\projet_c\\logout.png"));
