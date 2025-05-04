@@ -1003,7 +1003,7 @@ public:
         chercheur_1->setCentralWidget(centralwidget);
         menubar = new QMenuBar(chercheur_1);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1752, 18));
+        menubar->setGeometry(QRect(0, 0, 1752, 25));
         chercheur_1->setMenuBar(menubar);
         statusbar = new QStatusBar(chercheur_1);
         statusbar->setObjectName("statusbar");
