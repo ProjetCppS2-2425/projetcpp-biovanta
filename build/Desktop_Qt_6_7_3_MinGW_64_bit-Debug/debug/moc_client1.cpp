@@ -78,7 +78,9 @@ constexpr auto qt_meta_stringdata_CLASSclient1ENDCLASS = QtMocHelpers::stringDat
     "arg1",
     "on_CBbar_currentIndexChanged",
     "index",
-    "on_CBtri_currentIndexChanged"
+    "on_CBtri_currentIndexChanged",
+    "on_Rbar_cursorPositionChanged",
+    "arg2"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -91,7 +93,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSclient1ENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -99,20 +101,21 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSclient1ENDCLASS[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   86,    2, 0x06,    1 /* Public */,
+       1,    1,   92,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    1,   89,    2, 0x0a,    3 /* Public */,
-       7,    0,   92,    2, 0x0a,    5 /* Public */,
-       8,    1,   93,    2, 0x0a,    6 /* Public */,
-       9,    0,   96,    2, 0x0a,    8 /* Public */,
-      10,    0,   97,    2, 0x0a,    9 /* Public */,
-      11,    0,   98,    2, 0x0a,   10 /* Public */,
-      12,    0,   99,    2, 0x08,   11 /* Private */,
-      13,    0,  100,    2, 0x08,   12 /* Private */,
-      14,    1,  101,    2, 0x08,   13 /* Private */,
-      16,    1,  104,    2, 0x08,   15 /* Private */,
-      18,    1,  107,    2, 0x08,   17 /* Private */,
+       5,    1,   95,    2, 0x0a,    3 /* Public */,
+       7,    0,   98,    2, 0x0a,    5 /* Public */,
+       8,    1,   99,    2, 0x0a,    6 /* Public */,
+       9,    0,  102,    2, 0x0a,    8 /* Public */,
+      10,    0,  103,    2, 0x0a,    9 /* Public */,
+      11,    0,  104,    2, 0x0a,   10 /* Public */,
+      12,    0,  105,    2, 0x08,   11 /* Private */,
+      13,    0,  106,    2, 0x08,   12 /* Private */,
+      14,    1,  107,    2, 0x08,   13 /* Private */,
+      16,    1,  110,    2, 0x08,   15 /* Private */,
+      18,    1,  113,    2, 0x08,   17 /* Private */,
+      19,    2,  116,    2, 0x08,   19 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -129,6 +132,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSclient1ENDCLASS[] = {
     QMetaType::Void, QMetaType::QString,   15,
     QMetaType::Void, QMetaType::Int,   17,
     QMetaType::Void, QMetaType::Int,   17,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int,   15,   20,
 
        0        // eod
 };
@@ -171,6 +175,10 @@ Q_CONSTINIT const QMetaObject client1::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
         // method 'on_CBtri_currentIndexChanged'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'on_Rbar_cursorPositionChanged'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>
     >,
     nullptr
@@ -194,6 +202,7 @@ void client1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 9: _t->on_Rbar_textChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 10: _t->on_CBbar_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 11: _t->on_CBtri_currentIndexChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 12: _t->on_Rbar_cursorPositionChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -227,13 +236,13 @@ int client1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 13)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 13;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 13)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 12;
+        _id -= 13;
     }
     return _id;
 }

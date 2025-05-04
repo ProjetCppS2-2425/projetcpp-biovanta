@@ -118,7 +118,7 @@ void menu::on_equip_2_clicked()
 void menu::on_equip_3_clicked()
 {
     qDebug() << "Affichage interface client1";
-    stackedWidget->setCurrentIndex(4);  // Page client1 (new)
+    stackedWidget->setCurrentIndex(4);
 }
 
 // Slots for return buttons (optional, auto-connected)
@@ -139,8 +139,3 @@ void menu::on_btnRetourvaccin_clicked()
     qDebug() << "Retour via slot automatique (vaccin)";
     stackedWidget->setCurrentIndex(0);
 }
-/*void menu::on_btnRetourclient_clicked()
-{
-    qDebug() << "Retour via slot automatique (client)";
-    stackedWidget->setCurrentIndex(0);
-}*/

@@ -65,6 +65,8 @@ private slots:
 
     void on_CBtri_currentIndexChanged(int index);
 
+    void on_Rbar_cursorPositionChanged(int arg1, int arg2);
+
 signals:
      void ajouterResultReady( AjouterResult &A);
 

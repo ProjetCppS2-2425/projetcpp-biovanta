@@ -2,6 +2,7 @@
 #include <QApplication>
 #include "connection.h"
 #include <QMessageBox>
+#include "client1.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
 
     menu w;
     w.show();
+
 
     return a.exec();
 }

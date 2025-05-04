@@ -54,9 +54,13 @@ client1::client1(QWidget *parent)
     connect(ui->History, &QPushButton::clicked, this, &client1::on_History_clicked);
     connect(ui->ASC, &QCheckBox::toggled, this, &client1::on_CBtri_currentIndexChanged);
     connect(ui->DSC, &QCheckBox::toggled, this, &client1::on_CBtri_currentIndexChanged);
-    //ui->debug->setText(QString::number(C.countClients()));
-    //ui->debug->setText( c.check_data_base() ? "true" : "false");
-    //connect(A.getserial(), &QSerialPort::readyRead, this, &client1::checkDatabaseForUID);
+    //ui->tableView->setModel(C.afficher());
+    proxy = new QSortFilterProxyModel(this);
+    proxy->setSourceModel(C.afficher());
+    proxy->setSortCaseSensitivity(Qt::CaseInsensitive);
+    proxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy->setFilterKeyColumn(-1);
+    ui->tableView->setModel(proxy);
 }
 
 client1::~client1()
@@ -507,5 +511,11 @@ void client1::on_pushButton_supp_clicked(){
             else if (ui->DSC->checkState()==Qt::Checked){
                 proxy->sort(index + 1,Qt::DescendingOrder);
             }
+        }
+
+
+        void client1::on_Rbar_cursorPositionChanged(int arg1, int arg2)
+        {
+
         }
 
