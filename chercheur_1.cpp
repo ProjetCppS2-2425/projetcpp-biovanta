@@ -124,13 +124,13 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
     ui->tri_4->clear();
     ui->tri_4->addItems({"ID", "Nom", "Domaine"}); // Exact order matters!
 
-    // Set default radio button (ASC/DSC)
+
     ui->tri_4->setCurrentIndex(0); // First item = "ID"
     ui->ASC_4->setChecked(true);
 
-    // Connect sort button (assuming it's named 'triButton')
+
     connect(ui->tri_4, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &::chercheur_1::onTriClicked);
-    // In MainWindow constructor
+
     connect(ui->ASC_4, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) ui->DSC_4->setChecked(false);
     });
@@ -305,7 +305,7 @@ void chercheur_1::pushButton_2_clicked()
 }
 void chercheur_1::refreshTable()
 {
-    // Clear existing data but preserve columns
+
     ui->tableWidget_4->setRowCount(0);
 
     // Get data
@@ -389,11 +389,9 @@ void chercheur_1::on_searchButton_clicked() {
         ui->tableWidget_4->setItem(i, 3, new QTableWidgetItem(c.getEmail()));
         ui->tableWidget_4->setItem(i, 4, new QTableWidgetItem(QString::number(c.getNumTlp())));
         ui->tableWidget_4->setItem(i, 5, new QTableWidgetItem(c.getDomaineRecherche()));
-
-        // Use getCurrentProject() which returns cleaned name
         ui->tableWidget_4->setItem(i, 6, new QTableWidgetItem(c.getCurrentProject()));
 
-        // Add history icon
+
         addHistoryIcon(i, c.getId());
         QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
         addReportIcon(i, c.getId(), cleanProjectName);
