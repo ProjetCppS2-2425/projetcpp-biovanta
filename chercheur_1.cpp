@@ -747,19 +747,19 @@ void chercheur_1::displayReportForProject(const QString& projectName)
     textEdit->clear();
     textEdit->setText("Génération du rapport en cours...");
 
-    // Request AI report
+
     m_aiGenerator->requestProjectReport(projectName);
 }
 void chercheur_1::generateAIReportPDF(int researcherId, const QString& projectName, const QString& reportContent)
 {
-    // Fetch researcher data
+
     Chercheur c;
     if (!c.fetchDataById(researcherId)) {
         QMessageBox::warning(this, "Erreur", "Chercheur non trouvé.");
         return;
     }
 
-    // Ask for save location
+
     QString filePath = QFileDialog::getSaveFileName(
         this,
         "Enregistrer le rapport en PDF",
@@ -845,7 +845,7 @@ void chercheur_1::generateAIReportPDF(int researcherId, const QString& projectNa
 
     QString currentDate = QDate::currentDate().toString("dd/MM/yyyy");
 
-    // Format the report content - preserve line breaks and basic formatting
+
     QString formattedContent = reportContent.toHtmlEscaped();
     formattedContent.replace("\n", "<br>");
 
@@ -863,7 +863,7 @@ void chercheur_1::generateAIReportPDF(int researcherId, const QString& projectNa
 
     doc.print(&printer);
 
-    // Show success message and open PDF
+
     QMessageBox::information(this, "Succès",
                              QString("Rapport AI généré avec succès!\n\nFichier: %1").arg(filePath));
     QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
