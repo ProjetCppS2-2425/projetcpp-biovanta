@@ -428,7 +428,7 @@ void chercheur_1::onTriClicked() {
         ui->tableWidget_4->setItem(i, 6, new QTableWidgetItem(c.getCurrentProject()));
 
 
-        // Add history icon (assuming it's column 7)
+
         addHistoryIcon(i, c.getId());
         QString cleanProjectName = c.cleanProjectName(c.getProjetEnCours());
         addReportIcon(i, c.getId(), cleanProjectName);
@@ -445,7 +445,7 @@ void chercheur_1::onTriClicked() {
 void chercheur_1::on_stat_clicked()
 {
     Chercheur c;
-    c.afficherStatistiques(ui->stackedWidget); // Pass the stacked widget instead of 'this'
+    c.afficherStatistiques(ui->stackedWidget);
 }
 void chercheur_1::onPdfButtonClicked() {
     // Ask user where to save the PDF
@@ -522,12 +522,12 @@ void chercheur_1::showResearcherHistory(int row)
         header->setObjectName("HeaderLabel");
         mainLayout->addWidget(header);
 
-        // Container for historical entries
+
         QWidget *historyContainer = new QWidget;
         QVBoxLayout *historyLayout = new QVBoxLayout(historyContainer);
         historyLayout->setSpacing(12);
 
-        // Simulate formatted history entries (replace with real parsing if needed)
+
         QStringList entries = c.getFormattedHistory().split("<br>", Qt::SkipEmptyParts);
         for (const QString &entry : entries) {
             QLabel *entryLabel = new QLabel("📌 " + entry.trimmed());
@@ -552,16 +552,16 @@ void chercheur_1::showResearcherHistory(int row)
 
 void chercheur_1::onCellClicked(int row, int column)
 {
-    // 1) History column clicked?
+
     if (column == HISTORY_COLUMN) {
-        // Simply open the history PDF/dialog
+
         generateHistoryPDF(ui->tableWidget_4->item(row, HISTORY_COLUMN)
                                ->data(Qt::UserRole)
                                .toInt());
         return;
     }
 
-    // 2) Report column clicked?
+
     if (column == REPORT_COLUMN) {
         QTableWidgetItem *reportItem = ui->tableWidget_4->item(row, REPORT_COLUMN);
         if (!reportItem) return;
@@ -576,13 +576,13 @@ void chercheur_1::onCellClicked(int row, int column)
             return;
         }
 
-        // Show a modal progress dialog while waiting for the AI report
+
         auto *progress = new QProgressDialog(
             "Génération du rapport AI...", QString(), 0, 0, this);
         progress->setWindowModality(Qt::WindowModal);
         progress->show();
 
-        // Connect only the success signal; capture 'this' and 'progress'
+
         connect(m_aiGenerator, &AIReportGenerator::reportGenerated,
                 this,
                 [this, researcherId, projectName, progress]
@@ -592,7 +592,7 @@ void chercheur_1::onCellClicked(int row, int column)
                     generateAIReportPDF(researcherId, projectName, reportContent);
                 });
 
-        // Trigger the async AI report generation
+
         m_aiGenerator->requestProjectReport(projectName);
     }
 }
@@ -608,10 +608,10 @@ void chercheur_1::generateHistoryPDF(int researcherId)
         return;
     }
 
-    // Retrieve the formatted history (includes current project and history entries)
+
     QString historyText = c.getFormattedHistory();
 
-    // Ask the user where to save the PDF file
+
     QString filePath = QFileDialog::getSaveFileName(
         this,
         "Enregistrer l'historique en PDF",
@@ -703,10 +703,10 @@ void chercheur_1::generateHistoryPDF(int researcherId)
 
     doc.setHtml(html);
 
-    // Print the document to PDF
+
     doc.print(&printer);
 
-    // Inform the user and open the PDF
+
     QMessageBox::information(this, "Succès", QString("Historique PDF généré avec succès!\n\nFichier: %1").arg(filePath));
     QDesktopServices::openUrl(QUrl::fromLocalFile(filePath));
 }
@@ -719,7 +719,7 @@ void chercheur_1::addHistoryIcon(int row, int researcherId)
     historyIcon->setData(Qt::UserRole, researcherId);
     ui->tableWidget_4->setItem(row, HISTORY_COLUMN, historyIcon);
 }
-// Add this new function:
+
 void chercheur_1::addReportIcon(int row, int researcherId, const QString& projectName)
 {
     if (row < 0 || row >= ui->tableWidget_4->rowCount()) return;
@@ -735,15 +735,15 @@ void chercheur_1::addReportIcon(int row, int researcherId, const QString& projec
 }
 void chercheur_1::displayReportForProject(const QString& projectName)
 {
-    // Find or create the text edit
+
     QTextEdit *textEdit = findChild<QTextEdit*>("textEditReport");
     if (!textEdit) {
         textEdit = new QTextEdit(ui->stackedWidget->widget(2)); // page 2
         textEdit->setObjectName("textEditReport");
-        // Add to layout if needed
+
     }
 
-    // Clear and show loading message
+
     textEdit->clear();
     textEdit->setText("Génération du rapport en cours...");
 
