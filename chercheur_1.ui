@@ -1289,12 +1289,12 @@ font: 900 italic 14pt &quot;Segoe UI&quot;;)</string>
         </column>
         <column>
          <property name="text">
-          <string>telepone</string>
+          <string>email</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>email</string>
+          <string>telephone</string>
          </property>
         </column>
         <column>

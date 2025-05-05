@@ -1021,9 +1021,9 @@ public:
         QTableWidgetItem *___qtablewidgetitem2 = tableWidget_4->horizontalHeaderItem(2);
         ___qtablewidgetitem2->setText(QCoreApplication::translate("chercheur_1", "prenom", nullptr));
         QTableWidgetItem *___qtablewidgetitem3 = tableWidget_4->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QCoreApplication::translate("chercheur_1", "telepone", nullptr));
+        ___qtablewidgetitem3->setText(QCoreApplication::translate("chercheur_1", "email", nullptr));
         QTableWidgetItem *___qtablewidgetitem4 = tableWidget_4->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QCoreApplication::translate("chercheur_1", "email", nullptr));
+        ___qtablewidgetitem4->setText(QCoreApplication::translate("chercheur_1", "telephone", nullptr));
         QTableWidgetItem *___qtablewidgetitem5 = tableWidget_4->horizontalHeaderItem(5);
         ___qtablewidgetitem5->setText(QCoreApplication::translate("chercheur_1", "domaine de recherche", nullptr));
         QTableWidgetItem *___qtablewidgetitem6 = tableWidget_4->horizontalHeaderItem(6);

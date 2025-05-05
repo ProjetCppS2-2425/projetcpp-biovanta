@@ -216,7 +216,11 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
     QSqlQuery query;
 
     QString sqlQuery = "SELECT * FROM CHERCHEUR WHERE ";
-    if (filter == "Nom") {
+
+    if (filter == "ID") {
+        sqlQuery += "ID_CHERCHEUR = :searchTerm";  // Exact match for ID
+    }
+    else if (filter == "Nom") {
         sqlQuery += "NOM LIKE :searchTerm";
     }
     else if (filter == "Email") {
@@ -226,12 +230,20 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
         sqlQuery += "PROJET_EN_COURS LIKE :searchTerm";
     }
     else {
-        // Default case if filter doesn't match
-        sqlQuery += "(NOM LIKE :searchTerm OR EMAIL LIKE :searchTerm OR PROJET_EN_COURS LIKE :searchTerm)";
+        // Default case searches all specified fields
+        sqlQuery += "(ID_CHERCHEUR = :searchTerm OR "
+                    "NOM LIKE :searchTerm OR "
+                    "EMAIL LIKE :searchTerm OR "
+                    "PROJET_EN_COURS LIKE :searchTerm)";
     }
 
     query.prepare(sqlQuery);
-    query.bindValue(":searchTerm", "%" + searchTerm + "%");
+
+    if (filter == "ID") {
+        query.bindValue(":searchTerm", searchTerm.toInt());  // No wildcards for ID
+    } else {
+        query.bindValue(":searchTerm", "%" + searchTerm + "%");  // Wildcards for others
+    }
 
     if (!query.exec()) {
         qDebug() << "Search error:" << query.lastError().text();
@@ -244,7 +256,7 @@ QList<Chercheur> Chercheur::searchChercheur(const QString &searchTerm, const QSt
             query.value("NOM").toString(),
             query.value("PRENOM").toString(),
             query.value("EMAIL").toString(),
-            query.value("NUM_TLP").toInt(),
+            query.value("NUM_TLP").toInt(),  // Kept original toInt()
             query.value("DOMAINE_RECHERCHE").toString(),
             query.value("PROJET_EN_COURS").toString()
             );
@@ -262,8 +274,10 @@ QList<Chercheur> Chercheur::getChercheursSorted(const QString& sortBy, bool asce
         orderBy = "ID_CHERCHEUR";
     } else if (sortBy == "Nom") {
         orderBy = "NOM";
-    } else if (sortBy == "Domaine de Recherche") {
-        orderBy = "DOMAINE_RECHERCHE";
+    } else if (sortBy == "Email") {
+        orderBy = "EMAIL";
+    } else if (sortBy == "Projet En Cours") {
+        orderBy = "PROJET_EN_COURS";
     } else {
         orderBy = "ID_CHERCHEUR"; // Default fallback
     }
