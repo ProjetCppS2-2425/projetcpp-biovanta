@@ -104,9 +104,7 @@ chercheur_1::chercheur_1(QWidget *parent)  // Fixed: QWidget not Widget
     ui->stat_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\st.png"));
     ui->ok_4->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\search.png"));
     ui->supp_6->setIcon(QPixmap("C:\\Users\\nesri\\Downloads\\projet_c (3) (2)\\projet_c\\effacer.png"));
-    // Replace whatever displays the current project with:
 
-    // Connect search
     connect(ui->ok_4, &QPushButton::clicked, this, &chercheur_1::on_searchButton_clicked);
 
 
